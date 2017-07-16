@@ -7,6 +7,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -25,8 +26,9 @@ import java.util.List;
 public class Yelp {
     private final String clientId;
     private final String clientSecret;
-    private URI authenticationURI;
-    private CloseableHttpClient client;
+    private final URI authenticationURI;
+    private final CloseableHttpClient client;
+    private AccessToken token;
 
     public Yelp(String clientId, String clientSecret) {
         authenticationURI = createAuthenticationURI();
@@ -42,10 +44,64 @@ public class Yelp {
             if (response.getStatusLine().getStatusCode() != 200)
                 throw new RuntimeException("Something went wrong");
 
-            return createAccessToken(response.getEntity());
+            token = createAccessToken(response.getEntity());
+
+            return token;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<Business> search(SearchCriteria criteria) {
+        try {
+            CloseableHttpResponse response = searchBusinesses(criteria);
+
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new RuntimeException(String.format(
+                    "Cannot find businesses with criteria: %s", criteria.toString()
+                ));
+            }
+
+            return parseResults(new JSONObject(EntityUtils.toString(response.getEntity())));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private CloseableHttpResponse searchBusinesses(SearchCriteria criteria) throws IOException {
+        HttpGet get = new HttpGet(buildSearchURI(criteria));
+        get.setHeader("Authorization", String.format("Bearer %s", accessToken()));
+        return client.execute(get);
+    }
+
+    private URI buildSearchURI(SearchCriteria criteria) {
+        try {
+            URIBuilder builder = new URIBuilder();
+            builder
+                .setScheme("https")
+                .setHost("api.yelp.com")
+                .setPath("/v3/businesses/search")
+            ;
+            criteria.addQueryParametersTo(builder);
+            return builder.build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String accessToken() {
+        if (token == null || token.isExpired()) authenticate();
+
+        return token.accessToken();
+    }
+
+    private List<Business> parseResults(JSONObject results) {
+        List<Business> businesses = new ArrayList<>();
+
+        for (Object business : results.getJSONArray("businesses"))
+            businesses.add(Business.from((JSONObject) business));
+
+        return businesses;
     }
 
     private AccessToken createAccessToken(HttpEntity json) throws IOException {

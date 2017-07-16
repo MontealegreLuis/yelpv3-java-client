@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Properties;
 
 import static org.hamcrest.core.Is.is;
@@ -17,12 +18,22 @@ import static org.junit.Assert.assertThat;
 
 public class YelpTest {
     @Test
-    public void it_can_get_an_access_token() throws Exception {
+    public void it_gets_an_access_token() throws Exception {
         AccessToken token = yelp.authenticate();
 
         assertThat(token.tokenType(), is("Bearer"));
         assertThat(token.accessToken().length(), is(128));
         assertThat(token.isExpired(), is(false));
+    }
+
+    @Test
+    public void it_searches_by_location() {
+        SearchCriteria criteria = SearchCriteria.byLocation("San Antonio");
+        List<Business> businesses = yelp.search(criteria);
+
+        assertThat(businesses.size(), is(20));
+        assertThat(businesses.get(0).location().city(), is("San Antonio"));
+        assertThat(businesses.get(19).location().city(), is("San Antonio"));
     }
 
     @Before
