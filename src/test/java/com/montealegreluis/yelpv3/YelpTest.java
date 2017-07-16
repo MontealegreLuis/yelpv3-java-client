@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -28,12 +29,20 @@ public class YelpTest {
 
     @Test
     public void it_searches_by_location() {
-        SearchCriteria criteria = SearchCriteria.byLocation("San Antonio");
-        List<Business> businesses = yelp.search(criteria);
+        List<Business> businesses = yelp.search(SearchCriteria.byLocation("San Antonio"));
 
         assertThat(businesses.size(), is(20));
         assertThat(businesses.get(0).location().city(), is("San Antonio"));
         assertThat(businesses.get(19).location().city(), is("San Antonio"));
+    }
+
+    @Test
+    public void it_searches_by_coordinates()
+    {
+        List<Business> businesses = yelp.search(SearchCriteria.byCoordinates(29.426786, -98.489576));
+
+        assertThat(businesses.size(), greaterThan(0));
+        assertThat(businesses.get(0).location().city(), is("San Antonio"));
     }
 
     @Before

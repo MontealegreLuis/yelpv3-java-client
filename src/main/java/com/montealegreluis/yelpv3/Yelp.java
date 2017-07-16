@@ -58,7 +58,9 @@ public class Yelp {
 
             if (response.getStatusLine().getStatusCode() != 200) {
                 throw new RuntimeException(String.format(
-                    "Cannot find businesses with criteria: %s", criteria.toString()
+                    "Cannot find businesses with criteria: %s%nSee response for more details%n%s",
+                    criteria.toString(),
+                    response.getEntity().getContent()
                 ));
             }
 
