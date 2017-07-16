@@ -3,22 +3,12 @@
  */
 package com.montealegreluis.yelpv3;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.StatusLine;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Properties;
 
 public class App
@@ -38,44 +28,28 @@ public class App
         System.out.printf("Token type:%s%n", token.tokenType());
         System.out.printf("Is it expired? %s%n", token.isExpired());
 
-        // Search restaurants in San Antonio
-        CloseableHttpClient client = HttpClientBuilder.create().build();
 
-        URIBuilder builder = new URIBuilder();
-        builder
-            .setScheme("https")
-            .setHost("api.yelp.com")
-            .setPath("/v3/businesses/search")
-            .setParameter("term", "restaurants")
-            .setParameter("location", "San Antonio")
-        ;
-        HttpGet get = new HttpGet(builder.build());
-        get.setHeader("Authorization", String.format("Bearer %s", token.accessToken()));
+        // Search businesses in San Antonio
+        List<Business> businesses = yelp.search(SearchCriteria.byLocation("San Antonio"));
 
-        CloseableHttpResponse response = client.execute(get);
-        HttpEntity entity = response.getEntity();
-        StatusLine line = response.getStatusLine();
-        if (line.getStatusCode() != 200) {
-            System.out.println("Cannot find restaurants in San Antonio...");
-            return;
-        }
+        System.out.println(businesses.size());
+        for (Business business : businesses) printBusinessInformation(business);
+    }
 
-        JSONObject restaurants = new JSONObject(EntityUtils.toString(entity));
-        JSONArray businesses = restaurants.getJSONArray("businesses");
-        JSONObject business = businesses.getJSONObject(0);
-        JSONObject location = business.getJSONObject("location");
-        JSONObject coordinates = business.getJSONObject("coordinates");
-        JSONArray transactions = business.getJSONArray("transactions");
-
-        System.out.println(businesses.length());
-        System.out.println(business.getString("name"));
-        System.out.println(business.getInt("rating"));
-        System.out.println(business.getDouble("distance"));
-        System.out.println(location.getString("address1"));
-        System.out.println(location.getString("zip_code"));
-        System.out.println(coordinates.getDouble("latitude"));
-        System.out.println(coordinates.getDouble("longitude"));
-
-        if (transactions.length() > 0) transactions.getString(0);
+    private static void printBusinessInformation(Business business) {
+        System.out.println("--------------------------------------");
+        System.out.println(business.name());
+        System.out.println(business.rating());
+        System.out.println(business.distance());
+        System.out.println("Location:");
+        System.out.println(business.location().address1());
+        System.out.println(business.location().zipCode());
+        System.out.println("Coordinates:");
+        System.out.println(business.coordinates().latitude());
+        System.out.println(business.coordinates().longitude());
+        System.out.println("Transactions");
+        if (business.transactions().size() > 0)
+            business.transactions().forEach(System.out::println);
+        else System.out.println("No transactions for this business");
     }
 }
