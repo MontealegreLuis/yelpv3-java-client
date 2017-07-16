@@ -68,6 +68,17 @@ public class YelpTest {
         ;
     }
 
+    @Test
+    public void it_searches_by_id()
+    {
+        String businessId = "bella-on-the-river-san-antonio";
+        Business business = yelp.searchBy(businessId);
+
+        assertThat(business.id(), is(businessId));
+        assertThat(business.location().city(), is("San Antonio"));
+    }
+
+
     @Before
     public void loadYelpCredentials() throws Exception {
         Properties properties = new Properties();

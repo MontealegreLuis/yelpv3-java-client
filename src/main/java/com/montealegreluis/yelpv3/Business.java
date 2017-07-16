@@ -89,7 +89,7 @@ public class Business {
         phone = information.getString("phone");
         url = information.getString("url");
         image = information.getString("image_url");
-        distance = information.getDouble("distance");
+        distance = !information.isNull("distance") ? information.getDouble("distance") : 0.0;
         rating = information.getDouble("rating");
         reviewCount = information.getInt("review_count");
         priceLevel = information.has("price") ? information.getString("price") : "";

@@ -40,6 +40,7 @@ public class App
 
     private static void printBusinessInformation(Business business) {
         System.out.println("--------------------------------------");
+        System.out.println(business.id());
         System.out.println(business.name());
         System.out.println(business.rating());
         System.out.println(business.distance());

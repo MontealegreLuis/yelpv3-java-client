@@ -70,6 +70,43 @@ public class Yelp {
         }
     }
 
+    public Business searchBy(String id) {
+        try {
+            CloseableHttpResponse response = searchBusiness(id);
+
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new RuntimeException(String.format(
+                    "Cannot find businesses with id: %s%nSee response for more details%n%s",
+                    id,
+                    response.getEntity().getContent()
+                ));
+            }
+
+            return Business.from(new JSONObject(EntityUtils.toString(response.getEntity())));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private CloseableHttpResponse searchBusiness(String id) throws IOException {
+        HttpGet get = new HttpGet(businessURI(id));
+        get.setHeader("Authorization", String.format("Bearer %s", accessToken()));
+        return client.execute(get);
+    }
+
+    private URI businessURI(String id) {
+        try {
+            return new URIBuilder()
+                .setScheme("https")
+                .setHost("api.yelp.com")
+                .setPath(String.format("/v3/businesses/%s", id))
+                .build()
+            ;
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private CloseableHttpResponse searchBusinesses(SearchCriteria criteria) throws IOException {
         HttpGet get = new HttpGet(buildSearchURI(criteria));
         get.setHeader("Authorization", String.format("Bearer %s", accessToken()));
