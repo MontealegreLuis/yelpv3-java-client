@@ -29,8 +29,10 @@ public class App
         System.out.printf("Is it expired? %s%n", token.isExpired());
 
 
-        // Search businesses in San Antonio
-        List<Business> businesses = yelp.search(SearchCriteria.byLocation("San Antonio"));
+        // Search businesses near 600 Navarro St. San Antonio TX.
+        List<Business> businesses = yelp.search(
+            SearchCriteria.byCoordinates(29.426786, -98.489576).limit(2)
+        );
 
         System.out.println(businesses.size());
         for (Business business : businesses) printBusinessInformation(business);

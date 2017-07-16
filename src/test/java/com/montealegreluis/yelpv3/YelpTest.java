@@ -62,7 +62,7 @@ public class YelpTest {
     public void it_does_not_allow_more_than_50_results() {
         exception.expect(RuntimeException.class);
 
-        SearchCriteria criteria = SearchCriteria
+        SearchCriteria
             .byCoordinates(29.426786, -98.489576)
             .limit(3)
         ;
