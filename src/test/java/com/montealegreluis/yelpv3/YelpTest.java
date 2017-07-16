@@ -5,9 +5,9 @@ package com.montealegreluis.yelpv3;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -37,16 +37,39 @@ public class YelpTest {
     }
 
     @Test
-    public void it_searches_by_coordinates()
-    {
+    public void it_searches_by_coordinates() {
         List<Business> businesses = yelp.search(SearchCriteria.byCoordinates(29.426786, -98.489576));
 
         assertThat(businesses.size(), greaterThan(0));
         assertThat(businesses.get(0).location().city(), is("San Antonio"));
     }
 
+    @Test
+    public void it_limits_the_amount_of_results() {
+        SearchCriteria criteria = SearchCriteria
+            .byCoordinates(29.426786, -98.489576)
+            .limit(3)
+        ;
+        List<Business> businesses = yelp.search(criteria);
+
+        assertThat(businesses.size(), is(3));
+        assertThat(businesses.get(0).location().city(), is("San Antonio"));
+        assertThat(businesses.get(1).location().city(), is("San Antonio"));
+        assertThat(businesses.get(2).location().city(), is("San Antonio"));
+    }
+
+    @Test
+    public void it_does_not_allow_more_than_50_results() {
+        exception.expect(RuntimeException.class);
+
+        SearchCriteria criteria = SearchCriteria
+            .byCoordinates(29.426786, -98.489576)
+            .limit(3)
+        ;
+    }
+
     @Before
-    public void loadYelpCredentials() throws IOException {
+    public void loadYelpCredentials() throws Exception {
         Properties properties = new Properties();
         Path path = Paths.get("src/main/resources/application.properties");
         properties.load(new FileInputStream(path.toAbsolutePath().toString()));
@@ -58,4 +81,5 @@ public class YelpTest {
     }
 
     private Yelp yelp;
+    private ExpectedException exception = ExpectedException.none();
 }

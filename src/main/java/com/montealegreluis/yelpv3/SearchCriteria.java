@@ -19,6 +19,26 @@ public class SearchCriteria {
         return new SearchCriteria(latitude, longitude);
     }
 
+    public SearchCriteria limit(Integer limit) {
+        if (limit > 50) {
+            throw new RuntimeException(String.format(
+                "Maximum amount of results is 50, %d given", limit
+            ));
+        }
+
+        parameters.put("limit", limit.toString());
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return parameters.toString();
+    }
+
+    void addQueryParametersTo(URIBuilder builder) {
+        parameters.forEach(builder::setParameter);
+    }
+
     private SearchCriteria(Double latitude, Double longitude) {
         parameters.put("latitude", latitude.toString());
         parameters.put("longitude", longitude.toString());
@@ -26,14 +46,5 @@ public class SearchCriteria {
 
     private SearchCriteria(String location) {
         parameters.put("location", location);
-    }
-
-    public void addQueryParametersTo(URIBuilder builder) {
-        parameters.forEach(builder::setParameter);
-    }
-
-    @Override
-    public String toString() {
-        return parameters.toString();
     }
 }
