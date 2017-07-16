@@ -35,7 +35,7 @@ public class App
         builder.setScheme("https").setHost("api.yelp.com").setPath("/oauth2/token");
         HttpPost post = new HttpPost(builder.build());
 
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("grant_type", "client_credentials"));
         params.add(new BasicNameValuePair("client_id", properties.getProperty("yelp.api.client_id")));
         params.add(new BasicNameValuePair("client_secret", properties.getProperty("yelp.api.client_secret")));
