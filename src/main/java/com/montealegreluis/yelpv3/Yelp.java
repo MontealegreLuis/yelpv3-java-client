@@ -37,20 +37,9 @@ public class Yelp {
         this.clientSecret = clientSecret;
     }
 
-    public void authenticate() {
-        try {
-            CloseableHttpResponse response = requestToken();
-
-            if (response.getStatusLine().getStatusCode() != 200)
-                throw new RuntimeException("Something went wrong");
-
-            token = createAccessToken(response.getEntity());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public AccessToken token() {
+        if (token == null) authenticate();
+
         return token;
     }
 
@@ -134,6 +123,19 @@ public class Yelp {
         if (token == null || token.isExpired()) authenticate();
 
         return token.accessToken();
+    }
+
+    private void authenticate() {
+        try {
+            CloseableHttpResponse response = requestToken();
+
+            if (response.getStatusLine().getStatusCode() != 200)
+                throw new RuntimeException("Something went wrong");
+
+            token = createAccessToken(response.getEntity());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private List<Business> parseResults(JSONObject results) {

@@ -20,8 +20,6 @@ import static org.junit.Assert.assertThat;
 public class YelpTest {
     @Test
     public void it_gets_an_access_token() throws Exception {
-        yelp.authenticate();
-
         AccessToken token = yelp.token();
 
         assertThat(token.tokenType(), is("Bearer"));

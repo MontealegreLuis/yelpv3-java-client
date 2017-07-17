@@ -42,7 +42,6 @@ is present.
 public class Demo {
     public static void main(String[] args){
         Yelp yelp = new Yelp("YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET");
-        yelp.authenticate();
         
         AccessToken token = yelp.token();
         
