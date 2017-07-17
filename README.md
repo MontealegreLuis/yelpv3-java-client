@@ -148,3 +148,20 @@ public class Demo {
     }
 }
 ```
+
+#### Using an existing token
+
+As tokens expire every 180 days. It is possible to store the token and the expiration date
+in a database and use it, instead of getting a new token every time.
+
+```java
+public class Demo {
+    public static void main(String[] args){
+        AccessToken token = AccessToken.fromValues("EXISTING_TOKEN", "TOKEN_TYPE", 15552000);
+        
+        Yelp yelp = new Yelp("YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", token);
+        
+        Business business = yelp.searchById("bella-on-the-river-san-antonio");
+    }
+}
+```

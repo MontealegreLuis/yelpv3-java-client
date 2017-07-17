@@ -3,7 +3,7 @@
  */
 package com.montealegreluis.yelpv3;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
@@ -20,6 +20,7 @@ import static org.junit.Assert.assertThat;
 public class YelpTest {
     @Test
     public void it_gets_an_access_token() throws Exception {
+        Yelp yelp = new Yelp(clientID, clientSecret);
         AccessToken token = yelp.token();
 
         assertThat(token.tokenType(), is("Bearer"));
@@ -72,25 +73,41 @@ public class YelpTest {
     public void it_searches_by_id()
     {
         String businessId = "bella-on-the-river-san-antonio";
+
         Business business = yelp.searchById(businessId);
 
         assertThat(business.id(), is(businessId));
         assertThat(business.location().city(), is("San Antonio"));
     }
 
+    @Test
+    public void it_uses_an_existing_token()
+    {
+        Yelp yelp = new Yelp(clientID, clientSecret, token);
+        String businessId = "bella-on-the-river-san-antonio";
 
-    @Before
-    public void loadYelpCredentials() throws Exception {
+        Business business = yelp.searchById(businessId);
+
+        assertThat(business.id(), is(businessId));
+        assertThat(business.location().city(), is("San Antonio"));
+    }
+
+    @BeforeClass
+    public static void loadYelpCredentials() throws Exception {
         Properties properties = new Properties();
         Path path = Paths.get("src/main/resources/application.properties");
         properties.load(new FileInputStream(path.toAbsolutePath().toString()));
 
-        yelp = new Yelp(
-            properties.getProperty("yelp.api.client_id"),
-            properties.getProperty("yelp.api.client_secret")
-        );
+        clientID = properties.getProperty("yelp.api.client_id");
+        clientSecret = properties.getProperty("yelp.api.client_secret");
+
+        yelp = new Yelp(clientID, clientSecret);
+        token = yelp.token();
     }
 
-    private Yelp yelp;
+    private static Yelp yelp;
+    private static String clientID;
+    private static String clientSecret;
+    private static AccessToken token;
     private ExpectedException exception = ExpectedException.none();
 }

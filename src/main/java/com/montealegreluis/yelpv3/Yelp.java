@@ -37,6 +37,11 @@ public class Yelp {
         this.clientSecret = clientSecret;
     }
 
+    public Yelp(String clientID, String clientSecret, AccessToken token) {
+        this(clientID, clientSecret);
+        this.token = token;
+    }
+
     public AccessToken token() {
         if (token == null) authenticate();
 
@@ -150,7 +155,7 @@ public class Yelp {
     private AccessToken createAccessToken(HttpEntity json) throws IOException {
         JSONObject token = new JSONObject(EntityUtils.toString(json));
 
-        return new AccessToken(
+        return AccessToken.fromYELP(
             token.getString("access_token"),
             token.getString("token_type"),
             token.getLong("expires_in")

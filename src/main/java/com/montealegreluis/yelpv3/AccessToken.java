@@ -10,10 +10,20 @@ public class AccessToken {
     private final String tokenType;
     private final long expiresOn;
 
-    public AccessToken(String accessToken, String tokenType, long expiresIn) {
+    private AccessToken(String accessToken, String tokenType, long expiresOn) {
         this.accessToken = accessToken;
         this.tokenType = tokenType;
-        this.expiresOn = new Date().getTime() + expiresIn;
+        this.expiresOn = expiresOn;
+    }
+
+    public static AccessToken fromYELP(String accessToken, String tokenType, long expiresIn) {
+        return new AccessToken(
+            accessToken, tokenType, new Date().getTime() + expiresIn
+        );
+    }
+
+    public static AccessToken fromValues(String accessToken, String tokenType, long expiresOn) {
+        return new AccessToken(accessToken, tokenType, expiresOn);
     }
 
     public String accessToken() {
