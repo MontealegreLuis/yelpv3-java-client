@@ -14,6 +14,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -145,9 +146,10 @@ public class Yelp {
 
     private List<Business> parseResults(JSONObject results) {
         List<Business> businesses = new ArrayList<>();
+        JSONArray jsonArray = results.getJSONArray("businesses");
 
-        for (Object business : results.getJSONArray("businesses"))
-            businesses.add(Business.from((JSONObject) business));
+        for (int i = 0; i < jsonArray.length(); i++)
+            businesses.add(Business.from(jsonArray.getJSONObject(i)));
 
         return businesses;
     }
