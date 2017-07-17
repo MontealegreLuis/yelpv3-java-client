@@ -1,5 +1,7 @@
 # YELP API V3 client
 
+[![codebeat badge](https://codebeat.co/badges/6af99e8b-adb4-4f26-9fa8-e586aa7986e6)](https://codebeat.co/projects/github-com-montealegreluis-yelpv3-java-client-master)
+
 This is a Java Client for [YELP Fusion](https://www.yelp.com/developers/documentation/v3)
 
 # Installation
