@@ -8,12 +8,12 @@ import java.util.Date;
 public class AccessToken {
     private final String accessToken;
     private final String tokenType;
-    private final long expiresAt;
+    private final long expiresOn;
 
     public AccessToken(String accessToken, String tokenType, long expiresIn) {
         this.accessToken = accessToken;
         this.tokenType = tokenType;
-        this.expiresAt = new Date().getTime() + expiresIn;
+        this.expiresOn = new Date().getTime() + expiresIn;
     }
 
     public String accessToken() {
@@ -24,7 +24,11 @@ public class AccessToken {
         return tokenType;
     }
 
+    public long expiresOn() {
+        return expiresOn;
+    }
+
     public boolean isExpired() {
-        return expiresAt < new Date().getTime();
+        return expiresOn < new Date().getTime();
     }
 }

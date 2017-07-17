@@ -37,7 +37,7 @@ public class Yelp {
         this.clientSecret = clientSecret;
     }
 
-    public AccessToken authenticate() {
+    public void authenticate() {
         try {
             CloseableHttpResponse response = requestToken();
 
@@ -45,11 +45,13 @@ public class Yelp {
                 throw new RuntimeException("Something went wrong");
 
             token = createAccessToken(response.getEntity());
-
-            return token;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public AccessToken token() {
+        return token;
     }
 
     public List<Business> search(SearchCriteria criteria) {
@@ -70,7 +72,7 @@ public class Yelp {
         }
     }
 
-    public Business searchBy(String id) {
+    public Business searchById(String id) {
         try {
             CloseableHttpResponse response = searchBusiness(id);
 

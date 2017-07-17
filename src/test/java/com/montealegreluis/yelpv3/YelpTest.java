@@ -20,7 +20,9 @@ import static org.junit.Assert.assertThat;
 public class YelpTest {
     @Test
     public void it_gets_an_access_token() throws Exception {
-        AccessToken token = yelp.authenticate();
+        yelp.authenticate();
+
+        AccessToken token = yelp.token();
 
         assertThat(token.tokenType(), is("Bearer"));
         assertThat(token.accessToken().length(), is(128));
@@ -72,7 +74,7 @@ public class YelpTest {
     public void it_searches_by_id()
     {
         String businessId = "bella-on-the-river-san-antonio";
-        Business business = yelp.searchBy(businessId);
+        Business business = yelp.searchById(businessId);
 
         assertThat(business.id(), is(businessId));
         assertThat(business.location().city(), is("San Antonio"));
