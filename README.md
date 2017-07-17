@@ -25,7 +25,7 @@ Now add the following dependency.
     <dependency>
         <groupId>com.github.MontealegreLuis</groupId>
         <artifactId>yelpv3-java-client</artifactId>
-        <version>master-SNAPSHOT</version>
+        <version>1.0.0</version>
     </dependency>
 </dependencies>
 ```
