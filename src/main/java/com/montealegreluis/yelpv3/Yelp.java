@@ -136,7 +136,10 @@ public class Yelp {
             CloseableHttpResponse response = requestToken();
 
             if (response.getStatusLine().getStatusCode() != 200)
-                throw new RuntimeException("Something went wrong");
+                throw new RuntimeException(String.format(
+                    "Cannot retrieve access token%nSee response for more details%n%s",
+                    response.getEntity().getContent()
+                ));
 
             token = createAccessToken(response.getEntity());
         } catch (IOException e) {
