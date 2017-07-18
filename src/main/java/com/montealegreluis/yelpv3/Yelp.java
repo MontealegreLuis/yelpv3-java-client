@@ -4,36 +4,29 @@
 package com.montealegreluis.yelpv3;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Yelp {
     private final String clientId;
     private final String clientSecret;
-    private final URI authenticationURI;
-    private final CloseableHttpClient client;
+    private final YelpClient yelpClient;
+    private final YelpURIs yelpURIs;
     private AccessToken token;
 
     public Yelp(String clientId, String clientSecret) {
-        authenticationURI = createAuthenticationURI();
-        client = HttpClientBuilder.create().build();
+        yelpClient = new YelpClient(HttpClientBuilder.create().build());
+        yelpURIs = new YelpURIs();
         this.clientId = clientId;
         this.clientSecret = clientSecret;
     }
@@ -50,17 +43,9 @@ public class Yelp {
     }
 
     public List<Business> search(SearchCriteria criteria) {
+        CloseableHttpResponse response;
         try {
-            CloseableHttpResponse response = searchBusinesses(criteria);
-
-            if (response.getStatusLine().getStatusCode() != 200) {
-                throw new RuntimeException(String.format(
-                    "Cannot find businesses with criteria: %s%nSee response for more details%n%s",
-                    criteria.toString(),
-                    response.getEntity().getContent()
-                ));
-            }
-
+            response = yelpClient.getFrom(yelpURIs.searchBy(criteria), accessToken());
             return parseResults(new JSONObject(EntityUtils.toString(response.getEntity())));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -68,59 +53,21 @@ public class Yelp {
     }
 
     public Business searchById(String id) {
+        CloseableHttpResponse response;
         try {
-            CloseableHttpResponse response = searchBusiness(id);
-
-            if (response.getStatusLine().getStatusCode() != 200) {
-                throw new RuntimeException(String.format(
-                    "Cannot find businesses with id: %s%nSee response for more details%n%s",
-                    id,
-                    response.getEntity().getContent()
-                ));
-            }
-
+            response = yelpClient.getFrom(yelpURIs.businessBy(id), accessToken());
             return Business.from(new JSONObject(EntityUtils.toString(response.getEntity())));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private CloseableHttpResponse searchBusiness(String id) throws IOException {
-        HttpGet get = new HttpGet(businessURI(id));
-        get.setHeader("Authorization", String.format("Bearer %s", accessToken()));
-        return client.execute(get);
-    }
-
-    private URI businessURI(String id) {
+    private void authenticate() {
+        CloseableHttpResponse response;
         try {
-            return new URIBuilder()
-                .setScheme("https")
-                .setHost("api.yelp.com")
-                .setPath(String.format("/v3/businesses/%s", id))
-                .build()
-            ;
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private CloseableHttpResponse searchBusinesses(SearchCriteria criteria) throws IOException {
-        HttpGet get = new HttpGet(buildSearchURI(criteria));
-        get.setHeader("Authorization", String.format("Bearer %s", accessToken()));
-        return client.execute(get);
-    }
-
-    private URI buildSearchURI(SearchCriteria criteria) {
-        try {
-            URIBuilder builder = new URIBuilder();
-            builder
-                .setScheme("https")
-                .setHost("api.yelp.com")
-                .setPath("/v3/businesses/search")
-            ;
-            criteria.addQueryParametersTo(builder);
-            return builder.build();
-        } catch (URISyntaxException e) {
+            response = yelpClient.postTo(yelpURIs.authentication(), authenticationParameters());
+            token = createAccessToken(response.getEntity());
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -129,22 +76,6 @@ public class Yelp {
         if (token == null || token.isExpired()) authenticate();
 
         return token.accessToken();
-    }
-
-    private void authenticate() {
-        try {
-            CloseableHttpResponse response = requestToken();
-
-            if (response.getStatusLine().getStatusCode() != 200)
-                throw new RuntimeException(String.format(
-                    "Cannot retrieve access token%nSee response for more details%n%s",
-                    response.getEntity().getContent()
-                ));
-
-            token = createAccessToken(response.getEntity());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private List<Business> parseResults(JSONObject results) {
@@ -167,30 +98,11 @@ public class Yelp {
         );
     }
 
-    private CloseableHttpResponse requestToken() throws IOException {
-        HttpPost post = new HttpPost(authenticationURI);
-        post.setEntity(authenticationParameters());
-        return client.execute(post);
-    }
-
-    private UrlEncodedFormEntity authenticationParameters() throws UnsupportedEncodingException {
-        List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("grant_type", "client_credentials"));
-        params.add(new BasicNameValuePair("client_id", clientId));
-        params.add(new BasicNameValuePair("client_secret", clientSecret));
-        return new UrlEncodedFormEntity(params);
-    }
-
-    private URI createAuthenticationURI() {
-        try {
-            return new URIBuilder()
-                .setScheme("https")
-                .setHost("api.yelp.com")
-                .setPath("/oauth2/token")
-                .build()
-            ;
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+    private Map<String, String> authenticationParameters() throws UnsupportedEncodingException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("grant_type", "client_credentials");
+        parameters.put("client_id", clientId);
+        parameters.put("client_secret", clientSecret);
+        return parameters;
     }
 }
