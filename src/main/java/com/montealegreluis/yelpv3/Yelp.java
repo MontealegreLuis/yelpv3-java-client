@@ -18,15 +18,13 @@ public class Yelp {
     private final String clientId;
     private final String clientSecret;
     private final YelpClient yelpClient;
-    private final YelpURIs yelpURIs;
     private AccessToken token;
 
     public Yelp(String clientId, String clientSecret) {
         this(
             clientId,
             clientSecret,
-            new YelpClient(HttpClientBuilder.create().build()),
-            new YelpURIs()
+            new YelpClient(HttpClientBuilder.create().build(), new YelpURIs())
         );
     }
 
@@ -35,33 +33,25 @@ public class Yelp {
         this.token = token;
     }
 
-    public Yelp(String clientId, String clientSecret, YelpClient yelpClient, YelpURIs yelpURIs) {
+    public Yelp(String clientId, String clientSecret, YelpClient yelpClient) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.yelpClient = yelpClient;
-        this.yelpURIs = yelpURIs;
     }
 
     public Yelp(
         String clientId,
         String clientSecret,
         YelpClient yelpClient,
-        YelpURIs yelpURIs,
         AccessToken token
     ) {
-        this(clientId, clientSecret, yelpClient, yelpURIs);
+        this(clientId, clientSecret, yelpClient);
         this.token = token;
-    }
-
-    public AccessToken token() {
-        if (token == null) authenticate();
-
-        return token;
     }
 
     public List<Business> search(SearchCriteria criteria) {
         try {
-            yelpClient.getFrom(yelpURIs.searchBy(criteria), accessToken());
+            yelpClient.allBusinessesMatching(criteria, accessToken());
             return parseResults(new JSONObject(yelpClient.responseBody()));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -70,16 +60,22 @@ public class Yelp {
 
     public Business searchById(String id) {
         try {
-            yelpClient.getFrom(yelpURIs.businessBy(id), accessToken());
+            yelpClient.businessWith(id, accessToken());
             return Business.from(new JSONObject(yelpClient.responseBody()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    public AccessToken token() {
+        if (token == null) authenticate();
+
+        return token;
+    }
+
     private void authenticate() {
         try {
-            yelpClient.postTo(yelpURIs.authentication(), authenticationParameters());
+            yelpClient.authenticate(credentials());
             token = createAccessToken(yelpClient.responseBody());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -112,7 +108,7 @@ public class Yelp {
         );
     }
 
-    private Map<String, String> authenticationParameters() throws UnsupportedEncodingException {
+    private Map<String, String> credentials() throws UnsupportedEncodingException {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("grant_type", "client_credentials");
         parameters.put("client_id", clientId);

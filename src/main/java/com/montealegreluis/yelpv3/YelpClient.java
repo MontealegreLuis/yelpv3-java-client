@@ -22,12 +22,26 @@ import java.util.Map;
 public class YelpClient {
     private final CloseableHttpClient client;
     private CloseableHttpResponse response;
+    private final YelpURIs yelpURIs;
 
-    public YelpClient(CloseableHttpClient client) {
+    public YelpClient(CloseableHttpClient client, YelpURIs yelpURIs) {
         this.client = client;
+        this.yelpURIs = yelpURIs;
     }
 
-    public void postTo(
+    public void allBusinessesMatching(SearchCriteria criteria, String accessToken) throws IOException {
+        getFrom(yelpURIs.searchBy(criteria), accessToken);
+    }
+
+    public void businessWith(String id, String accessToken) throws IOException {
+        getFrom(yelpURIs.businessBy(id), accessToken);
+    }
+
+    public void authenticate(Map<String, String> credentials) throws IOException {
+        postTo(yelpURIs.authentication(), credentials);
+    }
+
+    private void postTo(
         URI uri,
         Map<String, String> bodyParameters
     ) throws IOException {
@@ -37,7 +51,7 @@ public class YelpClient {
         checkStatus(uri);
     }
 
-    public void getFrom(URI uri, String bearerToken) throws IOException {
+    private void getFrom(URI uri, String bearerToken) throws IOException {
         HttpGet get = new HttpGet(uri);
         get.setHeader("Authorization", String.format("Bearer %s", bearerToken));
         response = client.execute(get);
