@@ -22,14 +22,34 @@ public class Yelp {
     private AccessToken token;
 
     public Yelp(String clientId, String clientSecret) {
-        yelpClient = new YelpClient(HttpClientBuilder.create().build());
-        yelpURIs = new YelpURIs();
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
+        this(
+            clientId,
+            clientSecret,
+            new YelpClient(HttpClientBuilder.create().build()),
+            new YelpURIs()
+        );
     }
 
     public Yelp(String clientID, String clientSecret, AccessToken token) {
         this(clientID, clientSecret);
+        this.token = token;
+    }
+
+    public Yelp(String clientId, String clientSecret, YelpClient yelpClient, YelpURIs yelpURIs) {
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
+        this.yelpClient = yelpClient;
+        this.yelpURIs = yelpURIs;
+    }
+
+    public Yelp(
+        String clientId,
+        String clientSecret,
+        YelpClient yelpClient,
+        YelpURIs yelpURIs,
+        AccessToken token
+    ) {
+        this(clientId, clientSecret, yelpClient, yelpURIs);
         this.token = token;
     }
 
