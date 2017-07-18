@@ -20,7 +20,7 @@ import static org.junit.Assert.assertThat;
 public class YelpTest {
     @Test
     public void it_gets_an_access_token() throws Exception {
-        Yelp yelp = new Yelp(clientID, clientSecret);
+        Yelp yelp = new Yelp(new Credentials(clientID, clientSecret));
         AccessToken token = yelp.token();
 
         assertThat(token.tokenType(), is("Bearer"));
@@ -83,7 +83,7 @@ public class YelpTest {
     @Test
     public void it_uses_an_existing_token()
     {
-        Yelp yelp = new Yelp(clientID, clientSecret, token);
+        Yelp yelp = new Yelp(new Credentials(clientID, clientSecret, token));
         String businessId = "bella-on-the-river-san-antonio";
 
         Business business = yelp.searchById(businessId);
@@ -101,7 +101,7 @@ public class YelpTest {
         clientID = properties.getProperty("yelp.api.client_id");
         clientSecret = properties.getProperty("yelp.api.client_secret");
 
-        yelp = new Yelp(clientID, clientSecret);
+        yelp = new Yelp(new Credentials(clientID, clientSecret));
         token = yelp.token();
     }
 

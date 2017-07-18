@@ -8,50 +8,25 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Yelp {
-    private final String clientId;
-    private final String clientSecret;
+    private final Credentials credentials;
     private final YelpClient yelpClient;
-    private AccessToken token;
 
-    public Yelp(String clientId, String clientSecret) {
-        this(
-            clientId,
-            clientSecret,
-            new YelpClient(HttpClientBuilder.create().build(), new YelpURIs())
-        );
+    public Yelp(Credentials credentials) {
+        this(credentials, new YelpClient(HttpClientBuilder.create().build(), new YelpURIs()));
     }
 
-    public Yelp(String clientID, String clientSecret, AccessToken token) {
-        this(clientID, clientSecret);
-        this.token = token;
-    }
-
-    public Yelp(String clientId, String clientSecret, YelpClient yelpClient) {
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
+    public Yelp(Credentials credentials, YelpClient yelpClient) {
+        this.credentials = credentials;
         this.yelpClient = yelpClient;
-    }
-
-    public Yelp(
-        String clientId,
-        String clientSecret,
-        YelpClient yelpClient,
-        AccessToken token
-    ) {
-        this(clientId, clientSecret, yelpClient);
-        this.token = token;
     }
 
     public List<Business> search(SearchCriteria criteria) {
         try {
-            yelpClient.allBusinessesMatching(criteria, accessToken());
+            yelpClient.allBusinessesMatching(criteria, token().accessToken());
             return parseResults(new JSONObject(yelpClient.responseBody()));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -60,7 +35,7 @@ public class Yelp {
 
     public Business searchById(String id) {
         try {
-            yelpClient.businessWith(id, accessToken());
+            yelpClient.businessWith(id, token().accessToken());
             return Business.from(new JSONObject(yelpClient.responseBody()));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -68,24 +43,18 @@ public class Yelp {
     }
 
     public AccessToken token() {
-        if (token == null) authenticate();
+        if (credentials.isTokenExpired()) authenticate();
 
-        return token;
+        return credentials.token();
     }
 
     private void authenticate() {
         try {
-            yelpClient.authenticate(credentials());
-            token = createAccessToken(yelpClient.responseBody());
+            yelpClient.authenticate(credentials.toMap());
+            credentials.updateToken(createAccessToken(yelpClient.responseBody()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private String accessToken() {
-        if (token == null || token.isExpired()) authenticate();
-
-        return token.accessToken();
     }
 
     private List<Business> parseResults(JSONObject results) {
@@ -106,13 +75,5 @@ public class Yelp {
             token.getString("token_type"),
             token.getLong("expires_in")
         );
-    }
-
-    private Map<String, String> credentials() throws UnsupportedEncodingException {
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("grant_type", "client_credentials");
-        parameters.put("client_id", clientId);
-        parameters.put("client_secret", clientSecret);
-        return parameters;
     }
 }
