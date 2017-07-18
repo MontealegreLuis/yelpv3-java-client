@@ -3,10 +3,7 @@
  */
 package com.montealegreluis.yelpv3;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -43,30 +40,27 @@ public class Yelp {
     }
 
     public List<Business> search(SearchCriteria criteria) {
-        CloseableHttpResponse response;
         try {
-            response = yelpClient.getFrom(yelpURIs.searchBy(criteria), accessToken());
-            return parseResults(new JSONObject(EntityUtils.toString(response.getEntity())));
+            yelpClient.getFrom(yelpURIs.searchBy(criteria), accessToken());
+            return parseResults(new JSONObject(yelpClient.responseBody()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     public Business searchById(String id) {
-        CloseableHttpResponse response;
         try {
-            response = yelpClient.getFrom(yelpURIs.businessBy(id), accessToken());
-            return Business.from(new JSONObject(EntityUtils.toString(response.getEntity())));
+            yelpClient.getFrom(yelpURIs.businessBy(id), accessToken());
+            return Business.from(new JSONObject(yelpClient.responseBody()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     private void authenticate() {
-        CloseableHttpResponse response;
         try {
-            response = yelpClient.postTo(yelpURIs.authentication(), authenticationParameters());
-            token = createAccessToken(response.getEntity());
+            yelpClient.postTo(yelpURIs.authentication(), authenticationParameters());
+            token = createAccessToken(yelpClient.responseBody());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -88,8 +82,8 @@ public class Yelp {
         return businesses;
     }
 
-    private AccessToken createAccessToken(HttpEntity json) throws IOException {
-        JSONObject token = new JSONObject(EntityUtils.toString(json));
+    private AccessToken createAccessToken(String jsonResponse) throws IOException {
+        JSONObject token = new JSONObject(jsonResponse);
 
         return AccessToken.fromYELP(
             token.getString("access_token"),

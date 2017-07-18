@@ -10,6 +10,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -20,31 +21,34 @@ import java.util.Map;
 
 public class YelpClient {
     private final CloseableHttpClient client;
+    private CloseableHttpResponse response;
 
     public YelpClient(CloseableHttpClient client) {
         this.client = client;
     }
 
-    public CloseableHttpResponse postTo(
+    public void postTo(
         URI uri,
         Map<String, String> bodyParameters
     ) throws IOException {
         HttpPost post = new HttpPost(uri);
         post.setEntity(createFormEntityWith(bodyParameters));
-        CloseableHttpResponse response = client.execute(post);
-        checkStatus(uri, response);
-        return response;
+        response = client.execute(post);
+        checkStatus(uri);
     }
 
-    public CloseableHttpResponse getFrom(URI uri, String bearerToken) throws IOException {
+    public void getFrom(URI uri, String bearerToken) throws IOException {
         HttpGet get = new HttpGet(uri);
         get.setHeader("Authorization", String.format("Bearer %s", bearerToken));
-        CloseableHttpResponse response = client.execute(get);
-        checkStatus(uri, response);
-        return response;
+        response = client.execute(get);
+        checkStatus(uri);
     }
 
-    private void checkStatus(URI uri, CloseableHttpResponse response) throws IOException {
+    public String responseBody() throws IOException {
+        return EntityUtils.toString(response.getEntity());
+    }
+
+    private void checkStatus(URI uri) throws IOException {
         int statusCode = response.getStatusLine().getStatusCode();
 
         if (statusCode == 200) return;
