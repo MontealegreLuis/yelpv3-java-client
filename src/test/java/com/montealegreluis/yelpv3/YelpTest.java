@@ -13,7 +13,9 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -35,6 +37,22 @@ public class YelpTest {
         assertThat(businesses.size(), is(20));
         assertThat(businesses.get(0).location().city(), is("San Antonio"));
         assertThat(businesses.get(19).location().city(), is("San Antonio"));
+    }
+
+    @Test
+    public void it_includes_a_term_in_the_search() {
+        SearchCriteria criteria = SearchCriteria
+            .byLocation("San Antonio")
+            .limit(5)
+            .withTerm("bbq")
+        ;
+        List<Business> businesses = yelp.search(criteria);
+        assertThat(businesses.size(), is(5));
+        // This is brittle
+        assertThat(
+            businesses.get(0).categories(),
+            contains(hasProperty("alias", is("bbq")))
+        );
     }
 
     @Test
@@ -70,8 +88,7 @@ public class YelpTest {
     }
 
     @Test
-    public void it_searches_by_id()
-    {
+    public void it_searches_by_id() {
         String businessId = "bella-on-the-river-san-antonio";
 
         Business business = yelp.searchById(businessId);
@@ -81,8 +98,7 @@ public class YelpTest {
     }
 
     @Test
-    public void it_uses_an_existing_token()
-    {
+    public void it_uses_an_existing_token() {
         Yelp yelp = new Yelp(new Credentials(clientID, clientSecret, token));
         String businessId = "bella-on-the-river-san-antonio";
 

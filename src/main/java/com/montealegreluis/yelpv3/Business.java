@@ -23,6 +23,7 @@ public class Business {
     private final Location location;
     private final Coordinates coordinates;
     private final List<String> transactions = new ArrayList<>();
+    private List<Category> categories = new ArrayList<>();
 
     public static Business from(JSONObject information) {
         try {
@@ -79,6 +80,10 @@ public class Business {
         return coordinates;
     }
 
+    public List<Category> categories() {
+        return categories;
+    }
+
     public List<String> transactions() {
         return transactions;
     }
@@ -95,11 +100,21 @@ public class Business {
         priceLevel = information.has("price") ? information.getString("price") : "";
         location = Location.from(information.getJSONObject("location"));
         coordinates = Coordinates.from(information.getJSONObject("coordinates"));
+        setCategories(information.getJSONArray("categories"));
         setTransactions(information.getJSONArray("transactions"));
     }
 
     private void setTransactions(JSONArray businessTransactions) {
         for (int i = 0; i < businessTransactions.length(); i++)
             transactions.add(businessTransactions.getString(i));
+    }
+
+    private void setCategories(JSONArray businessCategories) {
+        for (int i = 0; i < businessCategories.length(); i++) {
+            JSONObject category = businessCategories.getJSONObject(i);
+            categories.add(
+                new Category(category.getString("alias"), category.getString("title"))
+            );
+        }
     }
 }
