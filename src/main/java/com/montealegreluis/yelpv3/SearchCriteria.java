@@ -35,6 +35,11 @@ public class SearchCriteria {
         return this;
     }
 
+    public SearchCriteria withinARadiusOf(Integer meters) {
+        parameters.put("radius", meters.toString());
+        return this;
+    }
+
     @Override
     public String toString() {
         return parameters.toString();

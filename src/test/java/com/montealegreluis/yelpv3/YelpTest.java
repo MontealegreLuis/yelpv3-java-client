@@ -13,9 +13,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -54,6 +52,28 @@ public class YelpTest {
             contains(hasProperty("alias", is("bbq")))
         );
     }
+
+    @Test
+    public void it_searches_within_a_specific_radius() {
+        int radiusInMeters = 1000;
+        int deltaInMeters = 200; // Brittle warning...
+        SearchCriteria criteria = SearchCriteria
+            .byLocation("San Antonio")
+            .withinARadiusOf(radiusInMeters)
+            .limit(2)
+        ;
+        List<Business> businesses = yelp.search(criteria);
+        assertThat(businesses.size(), is(2));
+        assertThat(
+            businesses.get(0).distance(),
+            is(lessThan((double) (radiusInMeters + deltaInMeters)))
+        );
+        assertThat(
+            businesses.get(1).distance(),
+            is(lessThan((double) (radiusInMeters + deltaInMeters)))
+        );
+    }
+
 
     @Test
     public void it_searches_by_coordinates() {
