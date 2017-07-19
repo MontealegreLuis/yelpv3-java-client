@@ -16,7 +16,7 @@ public class Business {
     private final String phone;
     private final String url;
     private final String image;
-    private final double distance;
+    private final double distanceInMeters;
     private final double rating;
     private final int reviewCount;
     private final String priceLevel;
@@ -56,8 +56,11 @@ public class Business {
         return image;
     }
 
+    /**
+     * @return Distance in meters
+     */
     public double distance() {
-        return distance;
+        return distanceInMeters;
     }
 
     public double rating() {
@@ -94,7 +97,7 @@ public class Business {
         phone = information.getString("phone");
         url = information.getString("url");
         image = information.getString("image_url");
-        distance = !information.isNull("distance") ? information.getDouble("distance") : 0.0;
+        distanceInMeters = !information.isNull("distance") ? information.getDouble("distance") : 0.0;
         rating = information.getDouble("rating");
         reviewCount = information.getInt("review_count");
         priceLevel = information.has("price") ? information.getString("price") : "";
