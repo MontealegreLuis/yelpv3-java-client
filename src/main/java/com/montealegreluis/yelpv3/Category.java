@@ -16,6 +16,13 @@ public class Category {
         return alias;
     }
 
+    /**
+     * Case insensitive comparison
+     */
+    public boolean hasAlias(String alias) {
+        return this.alias.equalsIgnoreCase(alias);
+    }
+
     public String getTitle() {
         return title;
     }

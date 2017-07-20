@@ -68,4 +68,13 @@ public class SearchCriteria {
     private SearchCriteria(String location) {
         parameters.put("location", location);
     }
+
+    /**
+     * @param categories Comma separated list of categories
+     *                   See https://www.yelp.com/developers/documentation/v2/all_category_list
+     */
+    public SearchCriteria inCategories(String categories) {
+        parameters.put("categories", categories);
+        return this;
+    }
 }

@@ -71,7 +71,7 @@ public class YelpClient {
             "HTTP Error occurred%nStatus code: %d%nURI: %s%nResponse body: %s",
             statusCode,
             uri.toString(),
-            response.getEntity().getContent()
+            EntityUtils.toString(response.getEntity())
         ));
     }
 

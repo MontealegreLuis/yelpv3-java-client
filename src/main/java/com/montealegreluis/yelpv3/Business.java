@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Business {
     private final String id;
@@ -125,5 +126,14 @@ public class Business {
                 new Category(category.getString("alias"), category.getString("title"))
             );
         }
+    }
+
+    public boolean isInCategory(String categoryAlias) {
+        return categories
+            .stream()
+            .filter(category -> category.hasAlias(categoryAlias))
+            .collect(Collectors.toList())
+            .size() > 0
+        ;
     }
 }

@@ -5,7 +5,6 @@ package com.montealegreluis.yelpv3;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.io.FileInputStream;
 import java.nio.file.Path;
@@ -39,18 +38,14 @@ public class YelpTest {
 
     @Test
     public void it_includes_a_term_in_the_search() {
-        SearchCriteria criteria = SearchCriteria
+        List<Business> businesses = yelp.search(SearchCriteria
             .byLocation("San Antonio")
-            .limit(5)
+            .limit(2)
             .withTerm("bbq")
-        ;
-        List<Business> businesses = yelp.search(criteria);
-        assertThat(businesses.size(), is(5));
-        // This is brittle
-        assertThat(
-            businesses.get(0).categories(),
-            contains(hasProperty("alias", is("bbq")))
         );
+        assertThat(businesses.size(), is(2));
+        assertThat(businesses.get(0).isInCategory("bbq"), is(true));
+        assertThat(businesses.get(1).isInCategory("bbq"), is(true));
     }
 
     @Test
@@ -84,6 +79,17 @@ public class YelpTest {
         assertThat(businesses.get(1).isClosed(), is(false));
     }
 
+    @Test
+    public void it_searches_by_category() {
+        List<Business> restaurants = yelp.search(SearchCriteria
+            .byCoordinates(29.426786, -98.489576)
+            .inCategories("mexican")
+            .limit(2)
+        );
+        assertThat(restaurants.size(), is(2));
+        assertThat(restaurants.get(0).isInCategory("mexican"), is(true));
+        assertThat(restaurants.get(1).isInCategory("mexican"), is(true));
+    }
 
     @Test
     public void it_searches_by_coordinates() {
