@@ -75,6 +75,17 @@ public class YelpTest {
     }
 
     @Test
+    public void it_searches_only_open_businesses() {
+        List<Business> businesses = yelp.search(
+            SearchCriteria.byLocation("San Antonio").onlyOpenBusinesses().limit(2)
+        );
+        assertThat(businesses.size(), is(2));
+        assertThat(businesses.get(0).isClosed(), is(false));
+        assertThat(businesses.get(1).isClosed(), is(false));
+    }
+
+
+    @Test
     public void it_searches_by_coordinates() {
         List<Business> businesses = yelp.search(SearchCriteria.byCoordinates(29.426786, -98.489576));
 

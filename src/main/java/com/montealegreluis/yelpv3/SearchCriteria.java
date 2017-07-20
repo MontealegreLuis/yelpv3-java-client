@@ -46,6 +46,11 @@ public class SearchCriteria {
         return this;
     }
 
+    public SearchCriteria onlyOpenBusinesses() {
+        parameters.put("open_now", Boolean.toString(true));
+        return this;
+    }
+
     @Override
     public String toString() {
         return parameters.toString();
