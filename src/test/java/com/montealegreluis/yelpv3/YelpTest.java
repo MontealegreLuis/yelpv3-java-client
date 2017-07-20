@@ -74,7 +74,6 @@ public class YelpTest {
         );
     }
 
-
     @Test
     public void it_searches_by_coordinates() {
         List<Business> businesses = yelp.search(SearchCriteria.byCoordinates(29.426786, -98.489576));
@@ -95,16 +94,6 @@ public class YelpTest {
         assertThat(businesses.get(0).location().city(), is("San Antonio"));
         assertThat(businesses.get(1).location().city(), is("San Antonio"));
         assertThat(businesses.get(2).location().city(), is("San Antonio"));
-    }
-
-    @Test
-    public void it_does_not_allow_more_than_50_results() {
-        exception.expect(RuntimeException.class);
-
-        SearchCriteria
-            .byCoordinates(29.426786, -98.489576)
-            .limit(3)
-        ;
     }
 
     @Test
@@ -145,5 +134,4 @@ public class YelpTest {
     private static String clientID;
     private static String clientSecret;
     private static AccessToken token;
-    private ExpectedException exception = ExpectedException.none();
 }

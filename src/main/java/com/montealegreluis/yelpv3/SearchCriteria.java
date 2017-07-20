@@ -36,6 +36,12 @@ public class SearchCriteria {
     }
 
     public SearchCriteria withinARadiusOf(Integer meters) {
+        if (meters > 40000) {
+            throw new RuntimeException(String.format(
+                "Cannot search within a radius greater than 40000 meters, %d given",
+                meters
+            ));
+        }
         parameters.put("radius", meters.toString());
         return this;
     }
