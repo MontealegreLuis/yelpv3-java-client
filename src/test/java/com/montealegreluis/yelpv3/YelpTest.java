@@ -92,6 +92,19 @@ public class YelpTest {
     }
 
     @Test
+    public void it_searches_with_a_specific_price_level() {
+        List<Business> businesses = yelp.search(SearchCriteria
+            .byLocation("San Antonio")
+            .withPricing(PricingLevel.AVERAGE)
+            .limit(2)
+        );
+
+        assertThat(businesses.size(), is(2));
+        assertThat(businesses.get(0).priceLevel(), is(PricingLevel.AVERAGE.symbol()));
+        assertThat(businesses.get(1).priceLevel(), is(PricingLevel.AVERAGE.symbol()));
+    }
+
+    @Test
     public void it_searches_by_coordinates() {
         List<Business> businesses = yelp.search(SearchCriteria.byCoordinates(29.426786, -98.489576));
 

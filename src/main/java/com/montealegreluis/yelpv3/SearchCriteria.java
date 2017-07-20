@@ -51,9 +51,18 @@ public class SearchCriteria {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return parameters.toString();
+    /**
+     * @param categories Comma separated list of categories
+     *                   See https://www.yelp.com/developers/documentation/v2/all_category_list
+     */
+    public SearchCriteria inCategories(String categories) {
+        parameters.put("categories", categories);
+        return this;
+    }
+
+    public SearchCriteria withPricing(PricingLevel level) {
+        parameters.put("price", level.value().toString());
+        return this;
     }
 
     void addQueryParametersTo(URIBuilder builder) {
@@ -69,12 +78,8 @@ public class SearchCriteria {
         parameters.put("location", location);
     }
 
-    /**
-     * @param categories Comma separated list of categories
-     *                   See https://www.yelp.com/developers/documentation/v2/all_category_list
-     */
-    public SearchCriteria inCategories(String categories) {
-        parameters.put("categories", categories);
-        return this;
+    @Override
+    public String toString() {
+        return parameters.toString();
     }
 }
