@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
+import static com.montealegreluis.yelpv3.Attribute.*;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -103,6 +104,20 @@ public class YelpTest {
         assertThat(businesses.get(0).priceLevel(), is(PricingLevel.AVERAGE.symbol()));
         assertThat(businesses.get(1).priceLevel(), is(PricingLevel.AVERAGE.symbol()));
     }
+
+    @Test
+    public void it_searches_with_specific_attributes() {
+        SearchCriteria criteria = SearchCriteria
+            .byLocation("San Antonio")
+            .withAttributes(HOT_AND_NEW, DEALS)
+            .limit(1)
+        ;
+
+        List<Business> businesses = yelp.search(criteria);
+
+        assertThat(businesses.size(), is(1)); // I don't know how to confirm it, I can only trust it :p
+    }
+
 
     @Test
     public void it_searches_by_coordinates() {

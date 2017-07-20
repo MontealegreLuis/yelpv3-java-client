@@ -65,6 +65,13 @@ public class SearchCriteria {
         return this;
     }
 
+    public SearchCriteria withAttributes(Attribute... attributes) {
+        StringBuilder filters = new StringBuilder();
+        for (Attribute attribute : attributes) filters.append(attribute.value()).append(",");
+        parameters.put("attributes", filters.substring(0, filters.length() - 1));
+        return this;
+    }
+
     void addQueryParametersTo(URIBuilder builder) {
         parameters.forEach(builder::setParameter);
     }
