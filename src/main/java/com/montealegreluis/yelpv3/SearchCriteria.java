@@ -6,6 +6,7 @@ package com.montealegreluis.yelpv3;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class SearchCriteria {
@@ -98,6 +99,15 @@ public class SearchCriteria {
 
     private SearchCriteria(String location) {
         parameters.put("location", location);
+    }
+
+    /**
+     * See https://www.yelp.com/developers/documentation/v3/supported_locales for the full list
+     * of supported locales
+     */
+    public SearchCriteria withLocale(Locale locale) {
+        parameters.put("locale", locale.toString());
+        return this;
     }
 
     @Override

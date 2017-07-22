@@ -3,6 +3,8 @@
  */
 package com.montealegreluis.yelpv3;
 
+import com.detectlanguage.DetectLanguage;
+import com.detectlanguage.Result;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -10,8 +12,11 @@ import java.io.FileInputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import static com.montealegreluis.yelpv3.Attribute.*;
 import static com.montealegreluis.yelpv3.SortingMode.REVIEW_COUNT;
@@ -191,6 +196,29 @@ public class YelpTest {
     }
 
     @Test
+    public void it_searches_using_a_specific_locale() throws Exception {
+        List<Business> businesses = yelp.search(SearchCriteria
+            .byLocation("San Antonio")
+            .withLocale(new Locale("es", "MX"))
+            .limit(1)
+        );
+
+        DetectLanguage.apiKey = languageDetectKey;
+        List<Result> detected = new ArrayList<>();
+        for (Category category : businesses.get(0).categories())
+            detected.addAll(DetectLanguage.detect(category.getTitle()));
+
+        List<Result> categoriesInSpanish = detected
+            .stream()
+            .filter(result -> result.isReliable && result.language.equalsIgnoreCase("es"))
+            .collect(Collectors.toList())
+        ;
+
+        // Translations are not accurate, so at least 1 should be detected as Spanish
+        assertThat(categoriesInSpanish.size(), greaterThan(0));
+    }
+
+    @Test
     public void it_searches_by_id() {
         String businessId = "bella-on-the-river-san-antonio";
 
@@ -217,6 +245,7 @@ public class YelpTest {
         Path path = Paths.get("src/main/resources/application.properties");
         properties.load(new FileInputStream(path.toAbsolutePath().toString()));
 
+        languageDetectKey = properties.getProperty("languagedetect.api.key");
         clientID = properties.getProperty("yelp.api.client_id");
         clientSecret = properties.getProperty("yelp.api.client_secret");
 
@@ -228,4 +257,5 @@ public class YelpTest {
     private static String clientID;
     private static String clientSecret;
     private static AccessToken token;
+    private static String languageDetectKey;
 }
