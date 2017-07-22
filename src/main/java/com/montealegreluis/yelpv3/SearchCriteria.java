@@ -30,6 +30,11 @@ public class SearchCriteria {
         return this;
     }
 
+    public SearchCriteria offset(Integer offset) {
+        parameters.put("offset", offset.toString());
+        return this;
+    }
+
     public SearchCriteria withTerm(String term) {
         parameters.put("term", term);
         return this;

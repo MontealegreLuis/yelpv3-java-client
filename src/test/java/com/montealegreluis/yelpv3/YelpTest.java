@@ -163,6 +163,22 @@ public class YelpTest {
     }
 
     @Test
+    public void it_paginates_a_search_result() {
+        List<Business> all = yelp.search(SearchCriteria.byLocation("San Antonio").limit(4));
+        List<Business> firstTwo = yelp.search(SearchCriteria.byLocation("San Antonio").limit(2));
+        List<Business> lastTwo = yelp.search(SearchCriteria
+            .byLocation("San Antonio")
+            .limit(2)
+            .offset(2)
+        );
+
+        assertThat(all.get(0).id(), is(firstTwo.get(0).id()));
+        assertThat(all.get(1).id(), is(firstTwo.get(1).id()));
+        assertThat(all.get(2).id(), is(lastTwo.get(0).id()));
+        assertThat(all.get(3).id(), is(lastTwo.get(1).id()));
+    }
+
+    @Test
     public void it_searches_by_id() {
         String businessId = "bella-on-the-river-san-antonio";
 
