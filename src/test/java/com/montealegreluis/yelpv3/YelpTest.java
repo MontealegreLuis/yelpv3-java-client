@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Properties;
 
 import static com.montealegreluis.yelpv3.Attribute.*;
+import static com.montealegreluis.yelpv3.SortingMode.REVIEW_COUNT;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -176,6 +177,17 @@ public class YelpTest {
         assertThat(all.get(1).id(), is(firstTwo.get(1).id()));
         assertThat(all.get(2).id(), is(lastTwo.get(0).id()));
         assertThat(all.get(3).id(), is(lastTwo.get(1).id()));
+    }
+
+    @Test
+    public void it_sorts_the_search_by_given_mode() {
+        List<Business> sorted = yelp.search(SearchCriteria
+            .byLocation("San Antonio")
+            .sortBy(REVIEW_COUNT)
+        );
+
+        assertThat(sorted.get(0).reviewCount(), greaterThan(sorted.get(1).reviewCount()));
+        assertThat(sorted.get(1).reviewCount(), greaterThan(sorted.get(2).reviewCount()));
     }
 
     @Test

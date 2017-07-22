@@ -35,6 +35,11 @@ public class SearchCriteria {
         return this;
     }
 
+    public SearchCriteria sortBy(SortingMode mode) {
+        parameters.put("sort_by", mode.toString());
+        return this;
+    }
+
     public SearchCriteria withTerm(String term) {
         parameters.put("term", term);
         return this;
