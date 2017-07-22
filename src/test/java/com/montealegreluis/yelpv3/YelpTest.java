@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.io.FileInputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.util.List;
 import java.util.Properties;
 
@@ -118,6 +119,26 @@ public class YelpTest {
         assertThat(businesses.size(), is(1)); // I don't know how to confirm it, I can only trust it :p
     }
 
+    @Test
+    public void it_searches_businesses_opened_at_a_given_time() {
+        List<Business> businessesOpenAt = yelp.search(SearchCriteria
+            .byLocation("San Antonio")
+            .openAt(Instant.now().getEpochSecond())
+            .limit(1)
+        );
+
+        assertThat(businessesOpenAt.size(), is(1));
+
+        List<Business> businessesOpenNow = yelp.search(SearchCriteria
+            .byLocation("San Antonio")
+            .onlyOpenBusinesses()
+            .limit(1)
+        );
+
+        assertThat(businessesOpenNow.size(), is(1));
+
+        assertThat(businessesOpenAt.get(0).id(), is(businessesOpenNow.get(0).id()));
+    }
 
     @Test
     public void it_searches_by_coordinates() {

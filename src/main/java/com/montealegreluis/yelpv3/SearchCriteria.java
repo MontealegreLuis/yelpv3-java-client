@@ -72,6 +72,11 @@ public class SearchCriteria {
         return this;
     }
 
+    public SearchCriteria openAt(Long timestamp) {
+        parameters.put("open_at", timestamp.toString());
+        return this;
+    }
+
     void addQueryParametersTo(URIBuilder builder) {
         parameters.forEach(builder::setParameter);
     }
