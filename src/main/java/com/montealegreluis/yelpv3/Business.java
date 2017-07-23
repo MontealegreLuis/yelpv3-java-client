@@ -25,7 +25,8 @@ public class Business {
     private final Coordinates coordinates;
     private final List<String> transactions = new ArrayList<>();
     private List<Category> categories = new ArrayList<>();
-    private boolean closed;
+    private boolean closedPermanently;
+    private Schedule schedule;
 
     public static Business from(JSONObject information) {
         try {
@@ -77,8 +78,8 @@ public class Business {
         return priceLevel;
     }
 
-    public boolean isClosed() {
-        return closed;
+    public boolean isClosedPermanently() {
+        return closedPermanently;
     }
 
     public Location location() {
@@ -87,6 +88,10 @@ public class Business {
 
     public Coordinates coordinates() {
         return coordinates;
+    }
+
+    public Schedule schedule() {
+        return schedule;
     }
 
     public List<Category> categories() {
@@ -107,9 +112,10 @@ public class Business {
         rating = information.getDouble("rating");
         reviewCount = information.getInt("review_count");
         priceLevel = information.has("price") ? information.getString("price") : "";
-        closed = information.getBoolean("is_closed");
+        closedPermanently = information.getBoolean("is_closed");
         location = Location.from(information.getJSONObject("location"));
         coordinates = Coordinates.from(information.getJSONObject("coordinates"));
+        schedule = !information.isNull("hours") ? Schedule.from(information.getJSONArray("hours")) : null;
         setCategories(information.getJSONArray("categories"));
         setTransactions(information.getJSONArray("transactions"));
     }

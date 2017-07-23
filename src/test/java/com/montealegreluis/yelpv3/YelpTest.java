@@ -79,12 +79,16 @@ public class YelpTest {
 
     @Test
     public void it_searches_only_open_businesses() {
-        List<Business> businesses = yelp.search(
-            SearchCriteria.byLocation("San Antonio").onlyOpenBusinesses().limit(2)
+        List<Business> businesses = yelp.search(SearchCriteria
+            .byLocation("San Antonio")
+            .onlyOpenBusinesses()
+            .limit(1)
         );
-        assertThat(businesses.size(), is(2));
-        assertThat(businesses.get(0).isClosed(), is(false));
-        assertThat(businesses.get(1).isClosed(), is(false));
+        assertThat(businesses.size(), is(1));
+
+        Business businessDetails = yelp.searchById(businesses.get(0).id());
+
+        assertThat(businessDetails.schedule().isOpenNow(), is(true));
     }
 
     @Test
