@@ -20,6 +20,7 @@ public class Business {
     private final double distanceInMeters;
     private final double rating;
     private final int reviewCount;
+    private final boolean claimed;
     private final PricingLevel pricingLevel;
     private final Location location;
     private final Coordinates coordinates;
@@ -78,6 +79,10 @@ public class Business {
         return pricingLevel;
     }
 
+    public boolean isClaimed() {
+        return claimed;
+    }
+
     public boolean isClosedPermanently() {
         return closedPermanently;
     }
@@ -111,6 +116,7 @@ public class Business {
         distanceInMeters = !information.isNull("distance") ? information.getDouble("distance") : 0.0;
         rating = information.getDouble("rating");
         reviewCount = information.getInt("review_count");
+        claimed = !information.isNull("is_claimed") && information.getBoolean("is_claimed");
         pricingLevel = information.has("price") ? PricingLevel.fromSymbol(information.getString("price")) : null;
         closedPermanently = information.getBoolean("is_closed");
         location = Location.from(information.getJSONObject("location"));
