@@ -112,8 +112,8 @@ public class YelpTest {
         );
 
         assertThat(businesses.size(), is(2));
-        assertThat(businesses.get(0).priceLevel(), is(PricingLevel.AVERAGE.symbol()));
-        assertThat(businesses.get(1).priceLevel(), is(PricingLevel.AVERAGE.symbol()));
+        assertThat(businesses.get(0).priceLevel(), is(PricingLevel.AVERAGE));
+        assertThat(businesses.get(1).priceLevel(), is(PricingLevel.AVERAGE));
     }
 
     @Test

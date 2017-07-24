@@ -20,7 +20,7 @@ public class Business {
     private final double distanceInMeters;
     private final double rating;
     private final int reviewCount;
-    private final String priceLevel;
+    private final PricingLevel pricingLevel;
     private final Location location;
     private final Coordinates coordinates;
     private final List<String> transactions = new ArrayList<>();
@@ -74,8 +74,8 @@ public class Business {
         return reviewCount;
     }
 
-    public String priceLevel() {
-        return priceLevel;
+    public PricingLevel priceLevel() {
+        return pricingLevel;
     }
 
     public boolean isClosedPermanently() {
@@ -111,7 +111,7 @@ public class Business {
         distanceInMeters = !information.isNull("distance") ? information.getDouble("distance") : 0.0;
         rating = information.getDouble("rating");
         reviewCount = information.getInt("review_count");
-        priceLevel = information.has("price") ? information.getString("price") : "";
+        pricingLevel = information.has("price") ? PricingLevel.fromSymbol(information.getString("price")) : null;
         closedPermanently = information.getBoolean("is_closed");
         location = Location.from(information.getJSONObject("location"));
         coordinates = Coordinates.from(information.getJSONObject("coordinates"));
