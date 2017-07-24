@@ -3,7 +3,11 @@
  */
 package com.montealegreluis.yelpv3;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Location {
     private final String address1;
@@ -13,6 +17,8 @@ public class Location {
     private final String state;
     private final String country;
     private final String zipCode;
+    private final String crossStreets;
+    private final List<String> displayAddress = new ArrayList<>();
 
     public static Location from(JSONObject location) {
         return new Location(location);
@@ -46,6 +52,14 @@ public class Location {
         return zipCode;
     }
 
+    public String crossStreets() {
+        return crossStreets;
+    }
+
+    public List<String> displayAddress() {
+        return displayAddress;
+    }
+
     private Location(JSONObject location) {
         address1 = location.getString("address1");
         address2 = !location.isNull("address2") ? location.getString("address2") : "";
@@ -54,5 +68,12 @@ public class Location {
         state = location.getString("state");
         country = location.getString("country");
         zipCode = location.getString("zip_code");
+        crossStreets = !location.isNull("cross_streets") ? location.getString("cross_streets") : "";
+        if (!location.isNull("display_address")) setDisplayAddress(location.getJSONArray("display_address"));
+    }
+
+    private void setDisplayAddress(JSONArray displayAddress) {
+        for (int i = 0; i < displayAddress.length(); i++)
+            this.displayAddress.add(displayAddress.getString(i));
     }
 }
