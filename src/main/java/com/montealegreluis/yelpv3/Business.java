@@ -24,6 +24,7 @@ public class Business {
     private final PricingLevel pricingLevel;
     private final Location location;
     private final Coordinates coordinates;
+    private final List<String> photos = new ArrayList<>();
     private final List<String> transactions = new ArrayList<>();
     private List<Category> categories = new ArrayList<>();
     private boolean closedPermanently;
@@ -123,12 +124,12 @@ public class Business {
         coordinates = Coordinates.from(information.getJSONObject("coordinates"));
         schedule = !information.isNull("hours") ? Schedule.from(information.getJSONArray("hours")) : null;
         setCategories(information.getJSONArray("categories"));
-        setTransactions(information.getJSONArray("transactions"));
+        addAllTo(information.getJSONArray("transactions"), transactions);
+        if (!information.isNull("photos")) addAllTo(information.getJSONArray("photos"), photos);
     }
 
-    private void setTransactions(JSONArray businessTransactions) {
-        for (int i = 0; i < businessTransactions.length(); i++)
-            transactions.add(businessTransactions.getString(i));
+    private void addAllTo(JSONArray entries, List<String> collection) {
+        for (int i = 0; i < entries.length(); i++) collection.add(entries.getString(i));
     }
 
     private void setCategories(JSONArray businessCategories) {
