@@ -3,7 +3,7 @@
  */
 package com.montealegreluis.yelpv3;
 
-import java.util.Date;
+import java.time.Instant;
 
 public class AccessToken {
     private final String accessToken;
@@ -18,7 +18,9 @@ public class AccessToken {
 
     public static AccessToken fromYELP(String accessToken, String tokenType, long expiresIn) {
         return new AccessToken(
-            accessToken, tokenType, new Date().getTime() + expiresIn
+            accessToken,
+            tokenType,
+            Instant.now().getEpochSecond() + expiresIn
         );
     }
 
@@ -39,6 +41,6 @@ public class AccessToken {
     }
 
     public boolean isExpired() {
-        return expiresOn < new Date().getTime();
+        return expiresOn < Instant.now().getEpochSecond();
     }
 }
