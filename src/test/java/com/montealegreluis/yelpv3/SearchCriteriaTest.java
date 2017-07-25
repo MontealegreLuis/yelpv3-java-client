@@ -7,6 +7,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.time.Instant;
+
 import static com.montealegreluis.yelpv3.Attribute.*;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertThat;
@@ -14,7 +16,7 @@ import static org.junit.Assert.assertThat;
 public class SearchCriteriaTest {
     @Test
     public void it_does_not_allow_a_radius_bigger_than_40000_meters() {
-        exception.expect(RuntimeException.class);
+        exception.expect(AreaTooLarge.class);
 
         SearchCriteria
             .byLocation("San Antonio")
@@ -24,13 +26,25 @@ public class SearchCriteriaTest {
 
     @Test
     public void it_does_not_allow_more_than_50_results() {
-        exception.expect(RuntimeException.class);
+        exception.expect(TooManyResults.class);
 
         SearchCriteria
             .byCoordinates(29.426786, -98.489576)
             .limit(51)
         ;
     }
+
+    @Test
+    public void it_does_not_allow_searches_with_open_at_and_open_now() {
+        exception.expect(IncompatibleCriteria.class);
+
+        SearchCriteria
+            .byCoordinates(29.426786, -98.489576)
+            .onlyOpenBusinesses()
+            .openAt(Instant.now().getEpochSecond())
+        ;
+    }
+
 
     @Test
     public void it_adds_several_attributes() {
