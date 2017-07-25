@@ -9,7 +9,7 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 public class Hours {
-    private boolean isOvernight = false;
+    private boolean overnight = false;
     private DayOfWeek day;
     private LocalTime start;
     private LocalTime end;
@@ -18,8 +18,8 @@ public class Hours {
         return new Hours(jsonHours);
     }
 
-    public boolean isOvernight() {
-        return isOvernight;
+    public boolean overnight() {
+        return overnight;
     }
 
     public DayOfWeek day() {
