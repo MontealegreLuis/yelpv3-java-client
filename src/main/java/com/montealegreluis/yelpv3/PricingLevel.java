@@ -7,10 +7,10 @@ package com.montealegreluis.yelpv3;
  * Represents the approximate cost of a meal per person
  */
 public enum PricingLevel {
-    LOW_COST("$", "under $10"),
-    AVERAGE("$$", "$11-$30"),
-    ABOVE_AVERAGE("$$$", "$31-$60"),
-    EXPENSIVE("$$$$", "above $60");
+    INEXPENSIVE("$", "Under $10"),
+    MODERATE("$$", "$11-$30"),
+    PRICEY("$$$", "$31-$60"),
+    ULTRA_HIGH_END("$$$$", "Above $60");
 
     private final String symbol;
     private final String description;
@@ -23,13 +23,13 @@ public enum PricingLevel {
     public static PricingLevel fromSymbol(String symbol) {
         switch (symbol) {
             case "$":
-                return LOW_COST;
+                return INEXPENSIVE;
             case "$$":
-                return AVERAGE;
+                return MODERATE;
             case "$$$":
-                return ABOVE_AVERAGE;
+                return PRICEY;
             case "$$$$":
-                return EXPENSIVE;
+                return ULTRA_HIGH_END;
             default:
                 throw UnknownPricingLevel.with(symbol);
         }

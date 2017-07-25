@@ -107,13 +107,13 @@ public class YelpTest {
     public void it_searches_with_a_specific_price_level() {
         List<Business> businesses = yelp.search(SearchCriteria
             .byLocation("San Antonio")
-            .withPricing(PricingLevel.AVERAGE)
+            .withPricing(PricingLevel.MODERATE)
             .limit(2)
         );
 
         assertThat(businesses.size(), is(2));
-        assertThat(businesses.get(0).priceLevel(), is(PricingLevel.AVERAGE));
-        assertThat(businesses.get(1).priceLevel(), is(PricingLevel.AVERAGE));
+        assertThat(businesses.get(0).priceLevel(), is(PricingLevel.MODERATE));
+        assertThat(businesses.get(1).priceLevel(), is(PricingLevel.MODERATE));
     }
 
     @Test
