@@ -31,7 +31,7 @@ public enum PricingLevel {
             case "$$$$":
                 return EXPENSIVE;
             default:
-                throw new RuntimeException(String.format("Unknown pricing level %s", symbol));
+                throw UnknownPricingLevel.with(symbol);
         }
     }
 
