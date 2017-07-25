@@ -21,11 +21,7 @@ public class SearchCriteria {
     }
 
     public SearchCriteria limit(Integer limit) {
-        if (limit > 50) {
-            throw new RuntimeException(String.format(
-                "Maximum amount of results is 50, %d given", limit
-            ));
-        }
+        if (limit > 50) throw TooManyResults.requested(limit);
 
         parameters.put("limit", limit.toString());
         return this;
@@ -47,17 +43,16 @@ public class SearchCriteria {
     }
 
     public SearchCriteria withinARadiusOf(Integer meters) {
-        if (meters > 40000) {
-            throw new RuntimeException(String.format(
-                "Cannot search within a radius greater than 40000 meters, %d given",
-                meters
-            ));
-        }
+        if (meters > 40000) throw AreaTooLarge.withAMeasureOf(meters);
+
         parameters.put("radius", meters.toString());
         return this;
     }
 
     public SearchCriteria onlyOpenBusinesses() {
+        if (parameters.containsKey("open_at"))
+            throw IncompatibleCriteria.mixing("open_at", "open_now");
+
         parameters.put("open_now", Boolean.toString(true));
         return this;
     }
@@ -84,6 +79,9 @@ public class SearchCriteria {
     }
 
     public SearchCriteria openAt(Long timestamp) {
+        if (parameters.containsKey("open_now"))
+            throw IncompatibleCriteria.mixing("open_now", "open_at");
+
         parameters.put("open_at", timestamp.toString());
         return this;
     }
