@@ -7,17 +7,19 @@ package com.montealegreluis.yelpv3;
  * Represents the approximate cost of a meal per person
  */
 public enum PricingLevel {
-    INEXPENSIVE("$", "Under $10"),
-    MODERATE("$$", "$11-$30"),
-    PRICEY("$$$", "$31-$60"),
-    ULTRA_HIGH_END("$$$$", "Above $60");
+    INEXPENSIVE("$", "Under $10", "Inexpensive"),
+    MODERATE("$$", "$11-$30", "Moderate"),
+    PRICEY("$$$", "$31-$60", "Pricey"),
+    ULTRA_HIGH_END("$$$$", "Above $60", "Ultra High-End");
 
     private final String symbol;
     private final String description;
+    private final String label;
 
-    PricingLevel(String symbol, String description) {
+    PricingLevel(String symbol, String description, String label) {
         this.symbol = symbol;
         this.description = description;
+        this.label = label;
     }
 
     public static PricingLevel fromSymbol(String symbol) {
@@ -39,12 +41,16 @@ public enum PricingLevel {
         return symbol;
     }
 
-    public Integer value() {
-        return ordinal() + 1;
-    }
-
     public String description() {
         return description;
+    }
+
+    public String label() {
+        return label;
+    }
+
+    public Integer value() {
+        return ordinal() + 1;
     }
 
     @Override
