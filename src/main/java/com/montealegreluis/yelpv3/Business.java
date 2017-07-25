@@ -108,6 +108,10 @@ public class Business {
         return transactions;
     }
 
+    public List<String> photos() {
+        return photos;
+    }
+
     private Business(JSONObject information) {
         id = information.getString("id");
         name = information.getString("name");
