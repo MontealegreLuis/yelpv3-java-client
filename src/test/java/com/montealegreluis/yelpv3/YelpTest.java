@@ -5,6 +5,9 @@ package com.montealegreluis.yelpv3;
 
 import com.detectlanguage.DetectLanguage;
 import com.detectlanguage.Result;
+import com.montealegreluis.yelpv3.businesses.Business;
+import com.montealegreluis.yelpv3.businesses.Category;
+import com.montealegreluis.yelpv3.businesses.PricingLevel;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
