@@ -3,13 +3,14 @@
  */
 package com.montealegreluis.yelpv3.businesses;
 
+import org.json.JSONObject;
+
 public class Category {
     private String alias;
     private String title;
 
-    public Category(String alias, String title) {
-        this.alias = alias;
-        this.title = title;
+    public static Category from(JSONObject category) {
+        return new Category(category.getString("alias"), category.getString("title"));
     }
 
     public String getAlias() {
@@ -30,5 +31,10 @@ public class Category {
     @Override
     public String toString() {
         return String.format("Title: %s, alias: %s", title, alias);
+    }
+
+    private Category(String alias, String title) {
+        this.alias = alias;
+        this.title = title;
     }
 }

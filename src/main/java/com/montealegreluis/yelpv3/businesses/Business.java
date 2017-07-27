@@ -137,12 +137,8 @@ public class Business {
     }
 
     private void setCategories(JSONArray businessCategories) {
-        for (int i = 0; i < businessCategories.length(); i++) {
-            JSONObject category = businessCategories.getJSONObject(i);
-            categories.add(
-                new Category(category.getString("alias"), category.getString("title"))
-            );
-        }
+        for (int i = 0; i < businessCategories.length(); i++)
+            categories.add(Category.from(businessCategories.getJSONObject(i)));
     }
 
     public boolean isInCategory(String categoryAlias) {
