@@ -3,6 +3,7 @@
  */
 package com.montealegreluis.yelpv3.businesses;
 
+import com.montealegreluis.yelpv3.ParsingFailure;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,72 +13,56 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Business {
-    private final String id;
-    private final String name;
-    private final String phone;
-    private final String url;
-    private final String image;
-    private final double distanceInMeters;
-    private final double rating;
-    private final int reviewCount;
+    private final BasicInformation basicInformation;
     private final boolean claimed;
-    private final PricingLevel pricingLevel;
-    private final Location location;
-    private final Coordinates coordinates;
     private final List<String> photos = new ArrayList<>();
-    private final List<String> transactions = new ArrayList<>();
-    private List<Category> categories = new ArrayList<>();
-    private boolean closedPermanently;
     private Schedule schedule;
 
     public static Business from(JSONObject information) {
         try {
             return new Business(information);
-        } catch (JSONException e) {
-            throw new RuntimeException(
-                String.format("Cannot parse object%s", information.toString(2)),
-                e
-            );
+        } catch (JSONException exception) {
+            throw ParsingFailure.producedBy(information, exception);
         }
     }
 
     public String id() {
-        return id;
+        return basicInformation.id;
     }
 
     public String name() {
-        return name;
+        return basicInformation.name;
     }
 
     public String phone() {
-        return phone;
+        return basicInformation.phone;
     }
 
     public String url() {
-        return url;
+        return basicInformation.url;
     }
 
     public String image() {
-        return image;
+        return basicInformation.image;
     }
 
     /**
      * @return Distance in meters
      */
     public double distance() {
-        return distanceInMeters;
+        return basicInformation.distanceInMeters;
     }
 
     public double rating() {
-        return rating;
+        return basicInformation.rating;
     }
 
     public int reviewCount() {
-        return reviewCount;
+        return basicInformation.reviewCount;
     }
 
     public PricingLevel priceLevel() {
-        return pricingLevel;
+        return basicInformation.pricingLevel;
     }
 
     public boolean isClaimed() {
@@ -85,15 +70,15 @@ public class Business {
     }
 
     public boolean isClosedPermanently() {
-        return closedPermanently;
+        return basicInformation.closedPermanently;
     }
 
     public Location location() {
-        return location;
+        return basicInformation.location;
     }
 
     public Coordinates coordinates() {
-        return coordinates;
+        return basicInformation.coordinates;
     }
 
     public Schedule schedule() {
@@ -101,11 +86,11 @@ public class Business {
     }
 
     public List<Category> categories() {
-        return categories;
+        return basicInformation.categories;
     }
 
     public List<String> transactions() {
-        return transactions;
+        return basicInformation.transactions;
     }
 
     public List<String> photos() {
@@ -113,22 +98,9 @@ public class Business {
     }
 
     private Business(JSONObject information) {
-        id = information.getString("id");
-        name = information.getString("name");
-        phone = information.getString("phone");
-        url = information.getString("url");
-        image = information.getString("image_url");
-        distanceInMeters = !information.isNull("distance") ? information.getDouble("distance") : 0.0;
-        rating = information.getDouble("rating");
-        reviewCount = information.getInt("review_count");
+        basicInformation = BasicInformation.from(information);
         claimed = !information.isNull("is_claimed") && information.getBoolean("is_claimed");
-        pricingLevel = information.has("price") ? PricingLevel.fromSymbol(information.getString("price")) : null;
-        closedPermanently = information.getBoolean("is_closed");
-        location = Location.from(information.getJSONObject("location"));
-        coordinates = Coordinates.from(information.getJSONObject("coordinates"));
         schedule = !information.isNull("hours") ? Schedule.from(information.getJSONArray("hours")) : null;
-        setCategories(information.getJSONArray("categories"));
-        addAllTo(information.getJSONArray("transactions"), transactions);
         if (!information.isNull("photos")) addAllTo(information.getJSONArray("photos"), photos);
     }
 
@@ -136,13 +108,8 @@ public class Business {
         for (int i = 0; i < entries.length(); i++) collection.add(entries.getString(i));
     }
 
-    private void setCategories(JSONArray businessCategories) {
-        for (int i = 0; i < businessCategories.length(); i++)
-            categories.add(Category.from(businessCategories.getJSONObject(i)));
-    }
-
     public boolean isInCategory(String categoryAlias) {
-        return categories
+        return basicInformation.categories
             .stream()
             .filter(category -> category.hasAlias(categoryAlias))
             .collect(Collectors.toList())
