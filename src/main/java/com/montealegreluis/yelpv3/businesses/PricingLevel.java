@@ -12,9 +12,9 @@ public enum PricingLevel {
     PRICEY("$$$", "$31-$60", "Pricey"),
     ULTRA_HIGH_END("$$$$", "Above $60", "Ultra High-End");
 
-    private final String symbol;
-    private final String description;
-    private final String label;
+    public final String symbol;
+    public final String description;
+    public final String label;
 
     PricingLevel(String symbol, String description, String label) {
         this.symbol = symbol;
@@ -35,18 +35,6 @@ public enum PricingLevel {
             default:
                 throw UnknownPricingLevel.with(symbol);
         }
-    }
-
-    public String symbol() {
-        return symbol;
-    }
-
-    public String description() {
-        return description;
-    }
-
-    public String label() {
-        return label;
     }
 
     public Integer value() {
