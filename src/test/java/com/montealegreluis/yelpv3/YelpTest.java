@@ -43,8 +43,8 @@ public class YelpTest {
         List<Business> businesses = yelp.search(SearchCriteria.byLocation("San Antonio"));
 
         assertThat(businesses.size(), is(20));
-        assertThat(businesses.get(0).basicInformation.location.city(), is("San Antonio"));
-        assertThat(businesses.get(19).basicInformation.location.city(), is("San Antonio"));
+        assertThat(businesses.get(0).basicInformation.location.city, is("San Antonio"));
+        assertThat(businesses.get(19).basicInformation.location.city, is("San Antonio"));
     }
 
     @Test
@@ -158,7 +158,7 @@ public class YelpTest {
         List<Business> businesses = yelp.search(SearchCriteria.byCoordinates(29.426786, -98.489576));
 
         assertThat(businesses.size(), greaterThan(0));
-        assertThat(businesses.get(0).basicInformation.location.city(), is("San Antonio"));
+        assertThat(businesses.get(0).basicInformation.location.city, is("San Antonio"));
     }
 
     @Test
@@ -170,9 +170,9 @@ public class YelpTest {
         List<Business> businesses = yelp.search(criteria);
 
         assertThat(businesses.size(), is(3));
-        assertThat(businesses.get(0).basicInformation.location.city(), is("San Antonio"));
-        assertThat(businesses.get(1).basicInformation.location.city(), is("San Antonio"));
-        assertThat(businesses.get(2).basicInformation.location.city(), is("San Antonio"));
+        assertThat(businesses.get(0).basicInformation.location.city, is("San Antonio"));
+        assertThat(businesses.get(1).basicInformation.location.city, is("San Antonio"));
+        assertThat(businesses.get(2).basicInformation.location.city, is("San Antonio"));
     }
 
     @Test
@@ -232,7 +232,7 @@ public class YelpTest {
         Business business = yelp.searchById(businessId);
 
         assertThat(business.basicInformation.id, is(businessId));
-        assertThat(business.basicInformation.location.city(), is("San Antonio"));
+        assertThat(business.basicInformation.location.city, is("San Antonio"));
     }
 
     @Test
@@ -243,7 +243,7 @@ public class YelpTest {
         Business business = yelp.searchById(businessId);
 
         assertThat(business.basicInformation.id, is(businessId));
-        assertThat(business.basicInformation.location.city(), is("San Antonio"));
+        assertThat(business.basicInformation.location.city, is("San Antonio"));
     }
 
     @BeforeClass
