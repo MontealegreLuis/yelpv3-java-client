@@ -6,15 +6,11 @@ package com.montealegreluis.yelpv3.businesses;
 import org.json.JSONObject;
 
 public class Category {
-    private String alias;
-    private String title;
+    public final String alias;
+    public final String title;
 
     public static Category from(JSONObject category) {
         return new Category(category.getString("alias"), category.getString("title"));
-    }
-
-    public String getAlias() {
-        return alias;
     }
 
     /**
@@ -22,10 +18,6 @@ public class Category {
      */
     public boolean hasAlias(String alias) {
         return this.alias.equalsIgnoreCase(alias);
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     @Override

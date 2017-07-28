@@ -213,7 +213,7 @@ public class YelpTest {
         DetectLanguage.apiKey = languageDetectKey;
         List<Result> detected = new ArrayList<>();
         for (Category category : businesses.get(0).basicInformation.categories)
-            detected.addAll(DetectLanguage.detect(category.getTitle()));
+            detected.addAll(DetectLanguage.detect(category.title));
 
         List<Result> categoriesInSpanish = detected
             .stream()
