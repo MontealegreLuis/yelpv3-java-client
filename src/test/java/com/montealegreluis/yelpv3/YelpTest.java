@@ -91,7 +91,7 @@ public class YelpTest {
 
         Business businessDetails = yelp.searchById(businesses.get(0).basicInformation.id);
 
-        assertThat(businessDetails.schedule().openNow, is(true));
+        assertThat(businessDetails.details.schedule.openNow, is(true));
     }
 
     @Test
