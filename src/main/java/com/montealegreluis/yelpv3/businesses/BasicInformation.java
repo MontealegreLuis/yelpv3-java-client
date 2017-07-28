@@ -22,7 +22,7 @@ public class BasicInformation {
     public final Coordinates coordinates;
     public final String image;
     public final Location location;
-    public final double distanceInMeters;
+    public final Distance distance;
     public final List<String> transactions = new ArrayList<>();
 
     static BasicInformation from(JSONObject information) {
@@ -42,7 +42,7 @@ public class BasicInformation {
         coordinates = Coordinates.from(information.getJSONObject("coordinates"));
         image = information.getString("image_url");
         location = Location.from(information.getJSONObject("location"));
-        distanceInMeters = !information.isNull("distance") ? information.getDouble("distance") : 0.0;
+        distance = !information.isNull("distance") ? new Distance(information.getDouble("distance")) : null;
         setTransactions(information.getJSONArray("transactions"));
     }
 

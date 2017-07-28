@@ -71,11 +71,11 @@ public class YelpTest {
         List<Business> businesses = yelp.search(criteria);
         assertThat(businesses.size(), is(2));
         assertThat(
-            businesses.get(0).basicInformation.distanceInMeters,
+            businesses.get(0).basicInformation.distance.meters,
             is(lessThan((double) (radiusInMeters + deltaInMeters)))
         );
         assertThat(
-            businesses.get(1).basicInformation.distanceInMeters,
+            businesses.get(1).basicInformation.distance.meters,
             is(lessThan((double) (radiusInMeters + deltaInMeters)))
         );
     }
