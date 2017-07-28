@@ -9,29 +9,13 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 public class Hours {
-    private boolean overnight = false;
-    private DayOfWeek day;
-    private LocalTime start;
-    private LocalTime end;
+    public final boolean overnight = false;
+    public final DayOfWeek day;
+    public final LocalTime start;
+    public final LocalTime end;
 
     public static Hours from(JSONObject jsonHours) {
         return new Hours(jsonHours);
-    }
-
-    public boolean overnight() {
-        return overnight;
-    }
-
-    public DayOfWeek day() {
-        return day;
-    }
-
-    public LocalTime start() {
-        return start;
-    }
-
-    public LocalTime end() {
-        return end;
     }
 
     private Hours(JSONObject jsonHours) {
