@@ -43,8 +43,8 @@ public class YelpTest {
         List<Business> businesses = yelp.search(SearchCriteria.byLocation("San Antonio"));
 
         assertThat(businesses.size(), is(20));
-        assertThat(businesses.get(0).location().city(), is("San Antonio"));
-        assertThat(businesses.get(19).location().city(), is("San Antonio"));
+        assertThat(businesses.get(0).basicInformation.location.city(), is("San Antonio"));
+        assertThat(businesses.get(19).basicInformation.location.city(), is("San Antonio"));
     }
 
     @Test
@@ -71,11 +71,11 @@ public class YelpTest {
         List<Business> businesses = yelp.search(criteria);
         assertThat(businesses.size(), is(2));
         assertThat(
-            businesses.get(0).distance(),
+            businesses.get(0).basicInformation.distanceInMeters,
             is(lessThan((double) (radiusInMeters + deltaInMeters)))
         );
         assertThat(
-            businesses.get(1).distance(),
+            businesses.get(1).basicInformation.distanceInMeters,
             is(lessThan((double) (radiusInMeters + deltaInMeters)))
         );
     }
@@ -89,7 +89,7 @@ public class YelpTest {
         );
         assertThat(businesses.size(), is(1));
 
-        Business businessDetails = yelp.searchById(businesses.get(0).id());
+        Business businessDetails = yelp.searchById(businesses.get(0).basicInformation.id);
 
         assertThat(businessDetails.schedule().isOpenNow(), is(true));
     }
@@ -115,8 +115,8 @@ public class YelpTest {
         );
 
         assertThat(businesses.size(), is(2));
-        assertThat(businesses.get(0).priceLevel(), is(PricingLevel.MODERATE));
-        assertThat(businesses.get(1).priceLevel(), is(PricingLevel.MODERATE));
+        assertThat(businesses.get(0).basicInformation.pricingLevel, is(PricingLevel.MODERATE));
+        assertThat(businesses.get(1).basicInformation.pricingLevel, is(PricingLevel.MODERATE));
     }
 
     @Test
@@ -150,7 +150,7 @@ public class YelpTest {
 
         assertThat(businessesOpenNow.size(), is(1));
 
-        assertThat(businessesOpenAt.get(0).id(), is(businessesOpenNow.get(0).id()));
+        assertThat(businessesOpenAt.get(0).basicInformation.id, is(businessesOpenNow.get(0).basicInformation.id));
     }
 
     @Test
@@ -158,7 +158,7 @@ public class YelpTest {
         List<Business> businesses = yelp.search(SearchCriteria.byCoordinates(29.426786, -98.489576));
 
         assertThat(businesses.size(), greaterThan(0));
-        assertThat(businesses.get(0).location().city(), is("San Antonio"));
+        assertThat(businesses.get(0).basicInformation.location.city(), is("San Antonio"));
     }
 
     @Test
@@ -170,9 +170,9 @@ public class YelpTest {
         List<Business> businesses = yelp.search(criteria);
 
         assertThat(businesses.size(), is(3));
-        assertThat(businesses.get(0).location().city(), is("San Antonio"));
-        assertThat(businesses.get(1).location().city(), is("San Antonio"));
-        assertThat(businesses.get(2).location().city(), is("San Antonio"));
+        assertThat(businesses.get(0).basicInformation.location.city(), is("San Antonio"));
+        assertThat(businesses.get(1).basicInformation.location.city(), is("San Antonio"));
+        assertThat(businesses.get(2).basicInformation.location.city(), is("San Antonio"));
     }
 
     @Test
@@ -185,10 +185,10 @@ public class YelpTest {
             .offset(2)
         );
 
-        assertThat(all.get(0).id(), is(firstTwo.get(0).id()));
-        assertThat(all.get(1).id(), is(firstTwo.get(1).id()));
-        assertThat(all.get(2).id(), is(lastTwo.get(0).id()));
-        assertThat(all.get(3).id(), is(lastTwo.get(1).id()));
+        assertThat(all.get(0).basicInformation.id, is(firstTwo.get(0).basicInformation.id));
+        assertThat(all.get(1).basicInformation.id, is(firstTwo.get(1).basicInformation.id));
+        assertThat(all.get(2).basicInformation.id, is(lastTwo.get(0).basicInformation.id));
+        assertThat(all.get(3).basicInformation.id, is(lastTwo.get(1).basicInformation.id));
     }
 
     @Test
@@ -198,8 +198,8 @@ public class YelpTest {
             .sortBy(REVIEW_COUNT)
         );
 
-        assertThat(sorted.get(0).reviewCount(), greaterThan(sorted.get(1).reviewCount()));
-        assertThat(sorted.get(1).reviewCount(), greaterThan(sorted.get(2).reviewCount()));
+        assertThat(sorted.get(0).basicInformation.reviewCount, greaterThan(sorted.get(1).basicInformation.reviewCount));
+        assertThat(sorted.get(1).basicInformation.reviewCount, greaterThan(sorted.get(2).basicInformation.reviewCount));
     }
 
     @Test
@@ -212,7 +212,7 @@ public class YelpTest {
 
         DetectLanguage.apiKey = languageDetectKey;
         List<Result> detected = new ArrayList<>();
-        for (Category category : businesses.get(0).categories())
+        for (Category category : businesses.get(0).basicInformation.categories)
             detected.addAll(DetectLanguage.detect(category.getTitle()));
 
         List<Result> categoriesInSpanish = detected
@@ -231,8 +231,8 @@ public class YelpTest {
 
         Business business = yelp.searchById(businessId);
 
-        assertThat(business.id(), is(businessId));
-        assertThat(business.location().city(), is("San Antonio"));
+        assertThat(business.basicInformation.id, is(businessId));
+        assertThat(business.basicInformation.location.city(), is("San Antonio"));
     }
 
     @Test
@@ -242,8 +242,8 @@ public class YelpTest {
 
         Business business = yelp.searchById(businessId);
 
-        assertThat(business.id(), is(businessId));
-        assertThat(business.location().city(), is("San Antonio"));
+        assertThat(business.basicInformation.id, is(businessId));
+        assertThat(business.basicInformation.location.city(), is("San Antonio"));
     }
 
     @BeforeClass

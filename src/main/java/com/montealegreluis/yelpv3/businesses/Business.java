@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Business {
-    private final BasicInformation basicInformation;
-    private final boolean claimed;
-    private final List<String> photos = new ArrayList<>();
-    private Schedule schedule;
+    public final BasicInformation basicInformation;
+    public final boolean claimed;
+    public final List<String> photos = new ArrayList<>();
+    public final Schedule schedule;
 
     public static Business from(JSONObject information) {
         try {
@@ -26,75 +26,12 @@ public class Business {
         }
     }
 
-    public String id() {
-        return basicInformation.id;
-    }
-
-    public String name() {
-        return basicInformation.name;
-    }
-
-    public String phone() {
-        return basicInformation.phone;
-    }
-
-    public String url() {
-        return basicInformation.url;
-    }
-
-    public String image() {
-        return basicInformation.image;
-    }
-
-    /**
-     * @return Distance in meters
-     */
-    public double distance() {
-        return basicInformation.distanceInMeters;
-    }
-
-    public double rating() {
-        return basicInformation.rating;
-    }
-
-    public int reviewCount() {
-        return basicInformation.reviewCount;
-    }
-
-    public PricingLevel priceLevel() {
-        return basicInformation.pricingLevel;
-    }
-
     public boolean isClaimed() {
         return claimed;
     }
 
-    public boolean isClosedPermanently() {
-        return basicInformation.closedPermanently;
-    }
-
-    public Location location() {
-        return basicInformation.location;
-    }
-
-    public Coordinates coordinates() {
-        return basicInformation.coordinates;
-    }
-
     public Schedule schedule() {
         return schedule;
-    }
-
-    public List<Category> categories() {
-        return basicInformation.categories;
-    }
-
-    public List<String> transactions() {
-        return basicInformation.transactions;
-    }
-
-    public List<String> photos() {
-        return photos;
     }
 
     private Business(JSONObject information) {

@@ -9,21 +9,21 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-class BasicInformation {
-    final double rating;
-    final PricingLevel pricingLevel;
-    final String phone;
-    final String id;
-    final boolean closedPermanently;
-    final List<Category> categories = new ArrayList<>();
-    final int reviewCount;
-    final String name;
-    final String url;
-    final Coordinates coordinates;
-    final String image;
-    final Location location;
-    final double distanceInMeters;
-    final List<String> transactions = new ArrayList<>();
+public class BasicInformation {
+    public final double rating;
+    public final PricingLevel pricingLevel;
+    public final String phone;
+    public final String id;
+    public final boolean closedPermanently;
+    public final List<Category> categories = new ArrayList<>();
+    public final int reviewCount;
+    public final String name;
+    public final String url;
+    public final Coordinates coordinates;
+    public final String image;
+    public final Location location;
+    public final double distanceInMeters;
+    public final List<String> transactions = new ArrayList<>();
 
     static BasicInformation from(JSONObject information) {
         return new BasicInformation(information);
