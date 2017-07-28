@@ -10,7 +10,8 @@ public enum PricingLevel {
     INEXPENSIVE("$", "Under $10", "Inexpensive"),
     MODERATE("$$", "$11-$30", "Moderate"),
     PRICEY("$$$", "$31-$60", "Pricey"),
-    ULTRA_HIGH_END("$$$$", "Above $60", "Ultra High-End");
+    ULTRA_HIGH_END("$$$$", "Above $60", "Ultra High-End"),
+    NONE("", "?", "There's no pricing information");
 
     public final String symbol;
     public final String description;

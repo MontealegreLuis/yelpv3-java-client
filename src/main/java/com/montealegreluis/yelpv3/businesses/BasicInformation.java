@@ -31,7 +31,7 @@ public class BasicInformation {
 
     private BasicInformation(JSONObject information) {
         rating = information.getDouble("rating");
-        pricingLevel = information.has("price") ? PricingLevel.fromSymbol(information.getString("price")) : null;
+        pricingLevel = information.has("price") ? PricingLevel.fromSymbol(information.getString("price")) : PricingLevel.NONE;
         phone = information.getString("phone");
         id = information.getString("id");
         closedPermanently = information.getBoolean("is_closed");
