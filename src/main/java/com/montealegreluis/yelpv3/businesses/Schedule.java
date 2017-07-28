@@ -10,24 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Schedule {
-    private String hoursType = "REGULAR";
-    private boolean openNow;
-    private List<Hours> hours = new ArrayList<>();
+    public final String hoursType = "REGULAR";
+    public final boolean openNow;
+    public final List<Hours> hours = new ArrayList<>();
 
     public static Schedule from(JSONArray hours) {
         return new Schedule(hours);
-    }
-
-    public String hoursType() {
-        return hoursType;
-    }
-
-    public boolean isOpenNow() {
-        return openNow;
-    }
-
-    public List<Hours> hours() {
-        return hours;
     }
 
     private Schedule(JSONArray hours) {
