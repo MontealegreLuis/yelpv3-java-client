@@ -3,6 +3,7 @@
  */
 package com.montealegreluis.yelpv3;
 
+import com.montealegreluis.yelpv3.search.SearchCriteria;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.net.URI;

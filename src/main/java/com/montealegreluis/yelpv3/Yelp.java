@@ -4,6 +4,7 @@
 package com.montealegreluis.yelpv3;
 
 import com.montealegreluis.yelpv3.businesses.Business;
+import com.montealegreluis.yelpv3.search.SearchCriteria;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 import java.io.IOException;

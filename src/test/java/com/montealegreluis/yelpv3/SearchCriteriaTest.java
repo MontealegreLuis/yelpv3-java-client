@@ -3,13 +3,17 @@
  */
 package com.montealegreluis.yelpv3;
 
+import com.montealegreluis.yelpv3.search.AreaTooLarge;
+import com.montealegreluis.yelpv3.search.IncompatibleCriteria;
+import com.montealegreluis.yelpv3.search.SearchCriteria;
+import com.montealegreluis.yelpv3.search.TooManyResults;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.time.Instant;
 
-import static com.montealegreluis.yelpv3.Attribute.*;
+import static com.montealegreluis.yelpv3.search.Attribute.*;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertThat;
 

@@ -3,6 +3,7 @@
  */
 package com.montealegreluis.yelpv3;
 
+import com.montealegreluis.yelpv3.search.SearchCriteria;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;

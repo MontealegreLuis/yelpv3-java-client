@@ -8,6 +8,7 @@ import com.detectlanguage.Result;
 import com.montealegreluis.yelpv3.businesses.Business;
 import com.montealegreluis.yelpv3.businesses.Category;
 import com.montealegreluis.yelpv3.businesses.PricingLevel;
+import com.montealegreluis.yelpv3.search.SearchCriteria;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -21,8 +22,8 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-import static com.montealegreluis.yelpv3.Attribute.*;
-import static com.montealegreluis.yelpv3.SortingMode.REVIEW_COUNT;
+import static com.montealegreluis.yelpv3.search.Attribute.*;
+import static com.montealegreluis.yelpv3.search.SortingMode.REVIEW_COUNT;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;

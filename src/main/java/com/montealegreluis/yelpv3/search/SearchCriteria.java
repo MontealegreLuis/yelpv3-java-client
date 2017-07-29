@@ -1,7 +1,7 @@
 /*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
-package com.montealegreluis.yelpv3;
+package com.montealegreluis.yelpv3.search;
 
 import com.montealegreluis.yelpv3.businesses.PricingLevel;
 import org.apache.http.client.utils.URIBuilder;
@@ -87,7 +87,7 @@ public class SearchCriteria {
         return this;
     }
 
-    void addQueryParametersTo(URIBuilder builder) {
+    public void addQueryParametersTo(URIBuilder builder) {
         parameters.forEach(builder::setParameter);
     }
 

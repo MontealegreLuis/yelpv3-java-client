@@ -1,7 +1,7 @@
 /*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
-package com.montealegreluis.yelpv3;
+package com.montealegreluis.yelpv3.search;
 
 public enum Attribute {
     HOT_AND_NEW("hot_and_new", "Hot and New businesses"),
