@@ -4,6 +4,10 @@
 package com.montealegreluis.yelpv3;
 
 import com.montealegreluis.yelpv3.businesses.Business;
+import com.montealegreluis.yelpv3.client.AccessToken;
+import com.montealegreluis.yelpv3.client.Credentials;
+import com.montealegreluis.yelpv3.client.YelpClient;
+import com.montealegreluis.yelpv3.client.YelpURIs;
 import com.montealegreluis.yelpv3.parser.JSONParser;
 import com.montealegreluis.yelpv3.search.SearchCriteria;
 import org.apache.http.impl.client.HttpClientBuilder;

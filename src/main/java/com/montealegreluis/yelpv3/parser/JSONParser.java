@@ -3,7 +3,7 @@
  */
 package com.montealegreluis.yelpv3.parser;
 
-import com.montealegreluis.yelpv3.AccessToken;
+import com.montealegreluis.yelpv3.client.AccessToken;
 import com.montealegreluis.yelpv3.businesses.Business;
 import org.json.JSONArray;
 import org.json.JSONObject;

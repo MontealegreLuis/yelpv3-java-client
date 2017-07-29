@@ -8,6 +8,8 @@ import com.detectlanguage.Result;
 import com.montealegreluis.yelpv3.businesses.Business;
 import com.montealegreluis.yelpv3.businesses.Category;
 import com.montealegreluis.yelpv3.businesses.PricingLevel;
+import com.montealegreluis.yelpv3.client.AccessToken;
+import com.montealegreluis.yelpv3.client.Credentials;
 import com.montealegreluis.yelpv3.search.SearchCriteria;
 import org.junit.BeforeClass;
 import org.junit.Test;
