@@ -3,7 +3,7 @@
  */
 package com.montealegreluis.yelpv3.businesses;
 
-import com.montealegreluis.yelpv3.ParsingFailure;
+import com.montealegreluis.yelpv3.parser.ParsingFailure;
 import org.json.JSONException;
 import org.json.JSONObject;
 

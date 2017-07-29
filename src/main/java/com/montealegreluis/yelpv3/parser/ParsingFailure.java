@@ -1,7 +1,7 @@
 /*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
-package com.montealegreluis.yelpv3;
+package com.montealegreluis.yelpv3.parser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
