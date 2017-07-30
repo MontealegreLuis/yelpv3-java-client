@@ -3,27 +3,15 @@
  */
 package com.montealegreluis.yelpv3.businesses;
 
-import com.montealegreluis.yelpv3.parser.ParsingFailure;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.stream.Collectors;
 
 public class Business {
     public final BasicInformation basicInformation;
     public final Details details;
 
-    public static Business from(JSONObject information) {
-        try {
-            return new Business(information);
-        } catch (JSONException exception) {
-            throw ParsingFailure.producedBy(information, exception);
-        }
-    }
-
-    private Business(JSONObject information) {
-        basicInformation = BasicInformation.from(information);
-        details = Details.from(information);
+    public Business(BasicInformation basicInformation, Details details) {
+        this.basicInformation = basicInformation;
+        this.details = details;
     }
 
     public boolean isInCategory(String categoryAlias) {

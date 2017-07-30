@@ -11,22 +11,12 @@ import java.util.List;
 
 public class SearchResult {
     public final int total;
-    public final List<Business> businesses = new ArrayList<>();
+    public final List<Business> businesses;
     public final Region region;
 
-    private SearchResult(JSONObject searchResult) {
-        total = searchResult.getInt("total");
-        setBusinesses(searchResult);
-        region = Region.withCenter(Coordinates.from(searchResult.getJSONObject("region")));
-    }
-
-    private void setBusinesses(JSONObject searchResult) {
-        JSONArray businesses = searchResult.getJSONArray("businesses");
-        for (int i = 0; i < businesses.length(); i++)
-            this.businesses.add(Business.from(businesses.getJSONObject(i)));
-    }
-
-    public static SearchResult from(JSONObject searchResult) {
-        return new SearchResult(searchResult);
+    public SearchResult(int total, List<Business> businesses, Region region) {
+        this.total = total;
+        this.businesses = businesses;
+        this.region = region;
     }
 }

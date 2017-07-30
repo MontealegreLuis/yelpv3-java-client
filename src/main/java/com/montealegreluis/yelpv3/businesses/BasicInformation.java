@@ -25,7 +25,7 @@ public class BasicInformation {
     public final Distance distance;
     public final List<String> transactions = new ArrayList<>();
 
-    static BasicInformation from(JSONObject information) {
+    public static BasicInformation from(JSONObject information) {
         return new BasicInformation(information);
     }
 

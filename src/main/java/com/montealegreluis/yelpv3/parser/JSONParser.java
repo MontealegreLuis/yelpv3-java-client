@@ -8,15 +8,18 @@ import com.montealegreluis.yelpv3.client.AccessToken;
 import com.montealegreluis.yelpv3.businesses.Business;
 import org.json.JSONObject;
 
-public class JSONParser {
+public class JSONParser implements Parser {
+    @Override
     public Business business(String response) {
-        return Business.from(new JSONObject(response));
+        return BusinessParser.parseFrom(new JSONObject(response));
     }
 
+    @Override
     public SearchResult businesses(String response) {
-        return SearchResult.from(new JSONObject(response));
+        return SearchResultParser.parseFrom(new JSONObject(response));
     }
 
+    @Override
     public AccessToken token(String response) {
         JSONObject token = new JSONObject(response);
 

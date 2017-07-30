@@ -10,6 +10,7 @@ import com.montealegreluis.yelpv3.client.Credentials;
 import com.montealegreluis.yelpv3.client.YelpClient;
 import com.montealegreluis.yelpv3.client.YelpURIs;
 import com.montealegreluis.yelpv3.parser.JSONParser;
+import com.montealegreluis.yelpv3.parser.Parser;
 import com.montealegreluis.yelpv3.search.SearchCriteria;
 import org.apache.http.impl.client.HttpClientBuilder;
 
@@ -18,7 +19,7 @@ import java.io.IOException;
 public class Yelp {
     private final Credentials credentials;
     private final YelpClient yelpClient;
-    private final JSONParser parser;
+    private final Parser parser;
 
     public Yelp(Credentials credentials) {
         this(
@@ -32,7 +33,7 @@ public class Yelp {
         this(credentials, yelpClient, new JSONParser());
     }
 
-    public Yelp(Credentials credentials, YelpClient yelpClient, JSONParser parser) {
+    public Yelp(Credentials credentials, YelpClient yelpClient, Parser parser) {
         this.credentials = credentials;
         this.yelpClient = yelpClient;
         this.parser = parser;
