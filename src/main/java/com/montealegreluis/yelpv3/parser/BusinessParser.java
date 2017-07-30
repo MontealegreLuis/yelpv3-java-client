@@ -16,7 +16,7 @@ class BusinessParser {
         try {
             return new Business(
                 BasicInformationParser.from(businessInformation),
-                Details.from(businessInformation)
+                DetailsParser.from(businessInformation)
             );
         } catch (JSONException exception) {
             throw ParsingFailure.producedBy(businessInformation, exception);
@@ -32,7 +32,7 @@ class BasicInformationParser {
             information.getString("phone"),
             information.getString("id"),
             information.getBoolean("is_closed"),
-            setCategories(information.getJSONArray("categories")),
+            buildCategories(information.getJSONArray("categories")),
             information.getInt("review_count"),
             information.getString("name"),
             information.getString("url"),
@@ -40,21 +40,39 @@ class BasicInformationParser {
             information.getString("image_url"),
             Location.from(information.getJSONObject("location")),
             !information.isNull("distance") ? new Distance(information.getDouble("distance")) : null,
-            setTransactions(information.getJSONArray("transactions"))
+            buildTransactions(information.getJSONArray("transactions"))
         );
     }
 
-    private static List<Category> setCategories(JSONArray businessCategories) {
+    private static List<Category> buildCategories(JSONArray businessCategories) {
         List<Category> categories = new ArrayList<>();
         for (int i = 0; i < businessCategories.length(); i++)
             categories.add(Category.from(businessCategories.getJSONObject(i)));
         return categories;
     }
 
-    private static List<String> setTransactions(JSONArray registeredTransactions) {
+    private static List<String> buildTransactions(JSONArray registeredTransactions) {
         List<String> transactions = new ArrayList<>();
         for (int i = 0; i < registeredTransactions.length(); i++)
             transactions.add(registeredTransactions.getString(i));
         return transactions;
+    }
+}
+
+class DetailsParser {
+    static Details from(JSONObject information) {
+        return new Details(
+            !information.isNull("is_claimed") && information.getBoolean("is_claimed"),
+            !information.isNull("photos") ? buildPhotos(information.getJSONArray("photos")) : null,
+            !information.isNull("hours") ? Schedule.from(information.getJSONArray("hours")) : null
+        );
+    }
+
+    private static List<String> buildPhotos(JSONArray businessPhotos) {
+        List<String> photos = new ArrayList<>();
+
+        for (int i = 0; i < businessPhotos.length(); i++) photos.add(businessPhotos.getString(i));
+
+        return photos;
     }
 }
