@@ -1,10 +1,9 @@
 /*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
-package com.montealegreluis.yelpv3.parser;
+package com.montealegreluis.yelpv3.jsonparser;
 
 import com.montealegreluis.yelpv3.businesses.Business;
-import com.montealegreluis.yelpv3.businesses.Coordinates;
 import com.montealegreluis.yelpv3.businesses.Region;
 import com.montealegreluis.yelpv3.businesses.SearchResult;
 import org.json.JSONArray;

@@ -1,9 +1,10 @@
 /*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
-package com.montealegreluis.yelpv3.parser;
+package com.montealegreluis.yelpv3.jsonparser;
 
 import com.montealegreluis.yelpv3.businesses.*;
+import com.montealegreluis.yelpv3.parser.ParsingFailure;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
