@@ -6,12 +6,12 @@ package com.montealegreluis.yelpv3.businesses;
 import java.util.List;
 
 public class Details {
-    public final boolean claimed;
+    public final boolean isClaimed;
     public final List<String> photos;
     public final Schedule schedule;
 
-    public Details(boolean claimed, List<String> photos, Schedule schedule) {
-        this.claimed = claimed;
+    public Details(boolean isClaimed, List<String> photos, Schedule schedule) {
+        this.isClaimed = isClaimed;
         this.photos = photos;
         this.schedule = schedule;
     }

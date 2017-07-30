@@ -10,7 +10,7 @@ public class BasicInformation {
     public final PricingLevel pricingLevel;
     public final String phone;
     public final String id;
-    public final boolean closedPermanently;
+    public final boolean isClosedPermanently;
     public final List<Category> categories;
     public final int reviewCount;
     public final String name;
@@ -26,7 +26,7 @@ public class BasicInformation {
         PricingLevel pricingLevel,
         String phone,
         String id,
-        boolean closedPermanently,
+        boolean isClosedPermanently,
         List<Category> categories,
         int reviewCount,
         String name,
@@ -41,7 +41,7 @@ public class BasicInformation {
         this.pricingLevel = pricingLevel;
         this.phone = phone;
         this.id = id;
-        this.closedPermanently = closedPermanently;
+        this.isClosedPermanently = isClosedPermanently;
         this.categories = categories;
         this.reviewCount = reviewCount;
         this.name = name;

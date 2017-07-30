@@ -7,12 +7,12 @@ import java.util.List;
 
 public class Schedule {
     public final String hoursType;
-    public final boolean openNow;
+    public final boolean isOpenNow;
     public final List<Hours> hours;
 
-    public Schedule(boolean openNow, List<Hours> hours) {
+    public Schedule(boolean isOpenNow, List<Hours> hours) {
         this.hoursType = "REGULAR";
-        this.openNow = openNow;
+        this.isOpenNow = isOpenNow;
         this.hours = hours;
     }
 }

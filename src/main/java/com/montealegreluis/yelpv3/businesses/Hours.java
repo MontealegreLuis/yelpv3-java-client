@@ -7,13 +7,13 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 public class Hours {
-    public final boolean overnight;
+    public final boolean isOvernight;
     public final DayOfWeek day;
     public final LocalTime start;
     public final LocalTime end;
 
     public Hours(DayOfWeek day, LocalTime start, LocalTime end) {
-        overnight = false;
+        isOvernight = false;
         this.day = day;
         this.start = start;
         this.end = end;
