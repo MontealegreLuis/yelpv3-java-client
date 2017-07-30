@@ -8,6 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,8 +136,25 @@ class ScheduleParser {
         List<Hours> hours = new ArrayList<>();
 
         for (int i = 0; i < businessHours.length(); i++)
-            hours.add(Hours.from(businessHours.getJSONObject(i)));
+            hours.add(HoursParser.from(businessHours.getJSONObject(i)));
 
         return hours;
+    }
+}
+
+class HoursParser {
+    static Hours from(JSONObject hours) {
+        return new Hours(
+            DayOfWeek.of(hours.getInt("day") + 1),
+            createTimeFrom(hours.getString("start")),
+            createTimeFrom(hours.getString("end"))
+        );
+    }
+
+    private static LocalTime createTimeFrom(String text) {
+        return LocalTime.of(
+            Integer.valueOf(text.substring(0, 2)),
+            Integer.valueOf(text.substring(2, 4))
+        );
     }
 }
