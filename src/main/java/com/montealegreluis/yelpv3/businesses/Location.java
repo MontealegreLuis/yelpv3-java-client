@@ -3,10 +3,6 @@
  */
 package com.montealegreluis.yelpv3.businesses;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class Location {
@@ -18,26 +14,27 @@ public class Location {
     public final String country;
     public final String zipCode;
     public final String crossStreets;
-    public final List<String> displayAddress = new ArrayList<>();
+    public final List<String> displayAddress;
 
-    public static Location from(JSONObject location) {
-        return new Location(location);
-    }
-
-    private Location(JSONObject location) {
-        address1 = location.getString("address1");
-        address2 = !location.isNull("address2") ? location.getString("address2") : "";
-        address3 = !location.isNull("address3") ? location.getString("address3") : "";
-        city = location.getString("city");
-        state = location.getString("state");
-        country = location.getString("country");
-        zipCode = location.getString("zip_code");
-        crossStreets = !location.isNull("cross_streets") ? location.getString("cross_streets") : "";
-        if (!location.isNull("display_address")) setDisplayAddress(location.getJSONArray("display_address"));
-    }
-
-    private void setDisplayAddress(JSONArray displayAddress) {
-        for (int i = 0; i < displayAddress.length(); i++)
-            this.displayAddress.add(displayAddress.getString(i));
+    public Location(
+        String address1,
+        String address2,
+        String address3,
+        String city,
+        String state,
+        String country,
+        String zipCode,
+        String crossStreets,
+        List<String> displayAddress
+    ) {
+        this.address1 = address1;
+        this.address2 = address2;
+        this.address3 = address3;
+        this.city = city;
+        this.state = state;
+        this.country = country;
+        this.zipCode = zipCode;
+        this.crossStreets = crossStreets;
+        this.displayAddress = displayAddress;
     }
 }

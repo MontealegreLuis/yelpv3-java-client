@@ -38,7 +38,7 @@ class BasicInformationParser {
             information.getString("url"),
             CoordinatesParser.from(information.getJSONObject("coordinates")),
             information.getString("image_url"),
-            Location.from(information.getJSONObject("location")),
+            LocationParser.from(information.getJSONObject("location")),
             !information.isNull("distance") ? new Distance(information.getDouble("distance")) : null,
             buildTransactions(information.getJSONArray("transactions"))
         );
@@ -65,6 +65,31 @@ class CoordinatesParser {
             !coordinates.isNull("latitude") ? coordinates.getDouble("latitude") : 0,
             !coordinates.isNull("longitude") ? coordinates.getDouble("longitude") : 0
         );
+    }
+}
+
+class LocationParser {
+    static Location from(JSONObject location) {
+        return new Location(
+            location.getString("address1"),
+            !location.isNull("address2") ? location.getString("address2") : "",
+            !location.isNull("address3") ? location.getString("address3") : "",
+            location.getString("city"),
+            location.getString("state"),
+            location.getString("country"),
+            location.getString("zip_code"),
+            !location.isNull("cross_streets") ? location.getString("cross_streets") : "",
+            !location.isNull("display_address") ? setDisplayAddress(location.getJSONArray("display_address")) : null
+        );
+    }
+
+    private static List<String> setDisplayAddress(JSONArray businessDisplayAddress) {
+        List<String> displayAddress = new ArrayList<>();
+
+        for (int i = 0; i < businessDisplayAddress.length(); i++)
+            displayAddress.add(businessDisplayAddress.getString(i));
+
+        return displayAddress;
     }
 }
 
