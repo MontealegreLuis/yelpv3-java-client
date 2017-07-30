@@ -36,7 +36,7 @@ class BasicInformationParser {
             information.getInt("review_count"),
             information.getString("name"),
             information.getString("url"),
-            Coordinates.from(information.getJSONObject("coordinates")),
+            CoordinatesParser.from(information.getJSONObject("coordinates")),
             information.getString("image_url"),
             Location.from(information.getJSONObject("location")),
             !information.isNull("distance") ? new Distance(information.getDouble("distance")) : null,
@@ -56,6 +56,15 @@ class BasicInformationParser {
         for (int i = 0; i < registeredTransactions.length(); i++)
             transactions.add(registeredTransactions.getString(i));
         return transactions;
+    }
+}
+
+class CoordinatesParser {
+    static Coordinates from(JSONObject coordinates) {
+        return new Coordinates(
+            !coordinates.isNull("latitude") ? coordinates.getDouble("latitude") : 0,
+            !coordinates.isNull("longitude") ? coordinates.getDouble("longitude") : 0
+        );
     }
 }
 

@@ -3,18 +3,12 @@
  */
 package com.montealegreluis.yelpv3.businesses;
 
-import org.json.JSONObject;
-
 public class Coordinates {
     public final double latitude;
     public final double longitude;
 
-    public static Coordinates from(JSONObject coordinates) {
-        return new Coordinates(coordinates);
-    }
-
-    private Coordinates(JSONObject coordinates) {
-        latitude = !coordinates.isNull("latitude") ? coordinates.getDouble("latitude") : 0;
-        longitude = !coordinates.isNull("longitude") ? coordinates.getDouble("longitude") : 0;
+    public Coordinates(double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 }
