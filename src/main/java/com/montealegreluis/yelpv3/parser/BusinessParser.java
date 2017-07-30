@@ -47,7 +47,7 @@ class BasicInformationParser {
     private static List<Category> buildCategories(JSONArray businessCategories) {
         List<Category> categories = new ArrayList<>();
         for (int i = 0; i < businessCategories.length(); i++)
-            categories.add(Category.from(businessCategories.getJSONObject(i)));
+            categories.add(CategoryParser.from(businessCategories.getJSONObject(i)));
         return categories;
     }
 
@@ -90,6 +90,15 @@ class LocationParser {
             displayAddress.add(businessDisplayAddress.getString(i));
 
         return displayAddress;
+    }
+}
+
+class CategoryParser {
+    static Category from(JSONObject category) {
+        return new Category(
+            category.getString("alias"),
+            category.getString("title")
+        );
     }
 }
 
