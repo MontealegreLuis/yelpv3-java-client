@@ -13,8 +13,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchResultParser {
-    public static SearchResult parseFrom(JSONObject result) {
+class SearchResultParser {
+    static SearchResult parseFrom(JSONObject result) {
         return new SearchResult(
             result.getInt("total"),
             parseBusinesses(result.getJSONArray("businesses")),
