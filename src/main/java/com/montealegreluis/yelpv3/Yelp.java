@@ -4,6 +4,7 @@
 package com.montealegreluis.yelpv3;
 
 import com.montealegreluis.yelpv3.businesses.Business;
+import com.montealegreluis.yelpv3.businesses.SearchResult;
 import com.montealegreluis.yelpv3.client.AccessToken;
 import com.montealegreluis.yelpv3.client.Credentials;
 import com.montealegreluis.yelpv3.client.YelpClient;
@@ -13,7 +14,6 @@ import com.montealegreluis.yelpv3.search.SearchCriteria;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 import java.io.IOException;
-import java.util.List;
 
 public class Yelp {
     private final Credentials credentials;
@@ -38,7 +38,7 @@ public class Yelp {
         this.parser = parser;
     }
 
-    public List<Business> search(SearchCriteria criteria) {
+    public SearchResult search(SearchCriteria criteria) {
         try {
             yelpClient.allBusinessesMatching(criteria, token().accessToken());
             return parser.businesses(yelpClient.responseBody());

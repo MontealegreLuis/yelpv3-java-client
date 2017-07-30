@@ -6,6 +6,7 @@ package com.montealegreluis.yelpv3;
 import com.detectlanguage.DetectLanguage;
 import com.detectlanguage.Result;
 import com.montealegreluis.yelpv3.businesses.Business;
+import com.montealegreluis.yelpv3.businesses.SearchResult;
 import com.montealegreluis.yelpv3.businesses.Category;
 import com.montealegreluis.yelpv3.businesses.PricingLevel;
 import com.montealegreluis.yelpv3.client.AccessToken;
@@ -43,23 +44,23 @@ public class YelpTest {
 
     @Test
     public void it_searches_by_location() {
-        List<Business> businesses = yelp.search(SearchCriteria.byLocation("San Antonio"));
+        SearchResult searchResult = yelp.search(SearchCriteria.byLocation("San Antonio"));
 
-        assertThat(businesses.size(), is(20));
-        assertThat(businesses.get(0).basicInformation.location.city, is("San Antonio"));
-        assertThat(businesses.get(19).basicInformation.location.city, is("San Antonio"));
+        assertThat(searchResult.businesses.size(), is(20));
+        assertThat(searchResult.businesses.get(0).basicInformation.location.city, is("San Antonio"));
+        assertThat(searchResult.businesses.get(19).basicInformation.location.city, is("San Antonio"));
     }
 
     @Test
     public void it_includes_a_term_in_the_search() {
-        List<Business> businesses = yelp.search(SearchCriteria
+        SearchResult searchResult = yelp.search(SearchCriteria
             .byLocation("San Antonio")
             .limit(2)
             .withTerm("bbq")
         );
-        assertThat(businesses.size(), is(2));
-        assertThat(businesses.get(0).isInCategory("bbq"), is(true));
-        assertThat(businesses.get(1).isInCategory("bbq"), is(true));
+        assertThat(searchResult.businesses.size(), is(2));
+        assertThat(searchResult.businesses.get(0).isInCategory("bbq"), is(true));
+        assertThat(searchResult.businesses.get(1).isInCategory("bbq"), is(true));
     }
 
     @Test
@@ -71,55 +72,55 @@ public class YelpTest {
             .withinARadiusOf(radiusInMeters)
             .limit(2)
         ;
-        List<Business> businesses = yelp.search(criteria);
-        assertThat(businesses.size(), is(2));
+        SearchResult searchResult = yelp.search(criteria);
+        assertThat(searchResult.businesses.size(), is(2));
         assertThat(
-            businesses.get(0).basicInformation.distance.meters,
+            searchResult.businesses.get(0).basicInformation.distance.meters,
             is(lessThan((double) (radiusInMeters + deltaInMeters)))
         );
         assertThat(
-            businesses.get(1).basicInformation.distance.meters,
+            searchResult.businesses.get(1).basicInformation.distance.meters,
             is(lessThan((double) (radiusInMeters + deltaInMeters)))
         );
     }
 
     @Test
     public void it_searches_only_open_businesses() {
-        List<Business> businesses = yelp.search(SearchCriteria
+        SearchResult searchResult = yelp.search(SearchCriteria
             .byLocation("San Antonio")
             .onlyOpenBusinesses()
             .limit(1)
         );
-        assertThat(businesses.size(), is(1));
+        assertThat(searchResult.businesses.size(), is(1));
 
-        Business businessDetails = yelp.searchById(businesses.get(0).basicInformation.id);
+        Business businessDetails = yelp.searchById(searchResult.businesses.get(0).basicInformation.id);
 
         assertThat(businessDetails.details.schedule.openNow, is(true));
     }
 
     @Test
     public void it_searches_by_category() {
-        List<Business> restaurants = yelp.search(SearchCriteria
+        SearchResult restaurants = yelp.search(SearchCriteria
             .byCoordinates(29.426786, -98.489576)
             .inCategories("mexican")
             .limit(2)
         );
-        assertThat(restaurants.size(), is(2));
-        assertThat(restaurants.get(0).isInCategory("mexican"), is(true));
-        assertThat(restaurants.get(1).isInCategory("mexican"), is(true));
+        assertThat(restaurants.businesses.size(), is(2));
+        assertThat(restaurants.businesses.get(0).isInCategory("mexican"), is(true));
+        assertThat(restaurants.businesses.get(1).isInCategory("mexican"), is(true));
     }
 
     @Test
     public void it_searches_with_a_specific_price_level() {
-        List<Business> businesses = yelp.search(SearchCriteria
+        SearchResult searchResult = yelp.search(SearchCriteria
             .byLocation("San Antonio")
             .withPricing(PricingLevel.MODERATE)
             .limit(2)
         );
 
-        assertThat(businesses.size(), is(2));
-        assertThat(businesses.get(0).basicInformation.pricingLevel, is(PricingLevel.MODERATE));
-        assertThat(businesses.get(1).basicInformation.pricingLevel, is(PricingLevel.MODERATE));
+        assertThat(searchResult.businesses.size(), is(2));
+        assertThat(searchResult.businesses.get(0).basicInformation.pricingLevel, is(PricingLevel.MODERATE));
+        assertThat(searchResult.businesses.get(1).basicInformation.pricingLevel, is(PricingLevel.MODERATE));
     }
 
     @Test
@@ -130,38 +131,41 @@ public class YelpTest {
             .limit(1)
         ;
 
-        List<Business> businesses = yelp.search(criteria);
+        SearchResult searchResult = yelp.search(criteria);
 
-        assertThat(businesses.size(), is(1)); // I don't know how to confirm it, I can only trust it :p
+        assertThat(searchResult.businesses.size(), is(1)); // I don't know how to confirm it, I can only trust it :p
     }
 
     @Test
     public void it_searches_businesses_opened_at_a_given_time() {
-        List<Business> businessesOpenAt = yelp.search(SearchCriteria
+        SearchResult searchResultOpenAt = yelp.search(SearchCriteria
             .byLocation("San Antonio")
             .openAt(Instant.now().getEpochSecond())
             .limit(1)
         );
 
-        assertThat(businessesOpenAt.size(), is(1));
+        assertThat(searchResultOpenAt.businesses.size(), is(1));
 
-        List<Business> businessesOpenNow = yelp.search(SearchCriteria
+        SearchResult searchResultOpenNow = yelp.search(SearchCriteria
             .byLocation("San Antonio")
             .onlyOpenBusinesses()
             .limit(1)
         );
 
-        assertThat(businessesOpenNow.size(), is(1));
+        assertThat(searchResultOpenNow.businesses.size(), is(1));
 
-        assertThat(businessesOpenAt.get(0).basicInformation.id, is(businessesOpenNow.get(0).basicInformation.id));
+        assertThat(
+            searchResultOpenAt.businesses.get(0).basicInformation.id,
+            is(searchResultOpenNow.businesses.get(0).basicInformation.id)
+        );
     }
 
     @Test
     public void it_searches_by_coordinates() {
-        List<Business> businesses = yelp.search(SearchCriteria.byCoordinates(29.426786, -98.489576));
+        SearchResult searchResult = yelp.search(SearchCriteria.byCoordinates(29.426786, -98.489576));
 
-        assertThat(businesses.size(), greaterThan(0));
-        assertThat(businesses.get(0).basicInformation.location.city, is("San Antonio"));
+        assertThat(searchResult.businesses.size(), greaterThan(0));
+        assertThat(searchResult.businesses.get(0).basicInformation.location.city, is("San Antonio"));
     }
 
     @Test
@@ -170,44 +174,62 @@ public class YelpTest {
             .byCoordinates(29.426786, -98.489576)
             .limit(3)
         ;
-        List<Business> businesses = yelp.search(criteria);
+        SearchResult searchResult = yelp.search(criteria);
 
-        assertThat(businesses.size(), is(3));
-        assertThat(businesses.get(0).basicInformation.location.city, is("San Antonio"));
-        assertThat(businesses.get(1).basicInformation.location.city, is("San Antonio"));
-        assertThat(businesses.get(2).basicInformation.location.city, is("San Antonio"));
+        assertThat(searchResult.businesses.size(), is(3));
+        assertThat(searchResult.businesses.get(0).basicInformation.location.city, is("San Antonio"));
+        assertThat(searchResult.businesses.get(1).basicInformation.location.city, is("San Antonio"));
+        assertThat(searchResult.businesses.get(2).basicInformation.location.city, is("San Antonio"));
     }
 
     @Test
     public void it_paginates_a_search_result() {
-        List<Business> all = yelp.search(SearchCriteria.byLocation("San Antonio").limit(4));
-        List<Business> firstTwo = yelp.search(SearchCriteria.byLocation("San Antonio").limit(2));
-        List<Business> lastTwo = yelp.search(SearchCriteria
+        SearchResult all = yelp.search(SearchCriteria.byLocation("San Antonio").limit(4));
+        SearchResult firstTwo = yelp.search(SearchCriteria.byLocation("San Antonio").limit(2));
+        SearchResult lastTwo = yelp.search(SearchCriteria
             .byLocation("San Antonio")
             .limit(2)
             .offset(2)
         );
 
-        assertThat(all.get(0).basicInformation.id, is(firstTwo.get(0).basicInformation.id));
-        assertThat(all.get(1).basicInformation.id, is(firstTwo.get(1).basicInformation.id));
-        assertThat(all.get(2).basicInformation.id, is(lastTwo.get(0).basicInformation.id));
-        assertThat(all.get(3).basicInformation.id, is(lastTwo.get(1).basicInformation.id));
+        assertThat(
+            all.businesses.get(0).basicInformation.id,
+            is(firstTwo.businesses.get(0).basicInformation.id)
+        );
+        assertThat(
+            all.businesses.get(1).basicInformation.id,
+            is(firstTwo.businesses.get(1).basicInformation.id)
+        );
+        assertThat(
+            all.businesses.get(2).basicInformation.id,
+            is(lastTwo.businesses.get(0).basicInformation.id)
+        );
+        assertThat(
+            all.businesses.get(3).basicInformation.id,
+            is(lastTwo.businesses.get(1).basicInformation.id)
+        );
     }
 
     @Test
     public void it_sorts_the_search_by_given_mode() {
-        List<Business> sorted = yelp.search(SearchCriteria
+        SearchResult sorted = yelp.search(SearchCriteria
             .byLocation("San Antonio")
             .sortBy(REVIEW_COUNT)
         );
 
-        assertThat(sorted.get(0).basicInformation.reviewCount, greaterThan(sorted.get(1).basicInformation.reviewCount));
-        assertThat(sorted.get(1).basicInformation.reviewCount, greaterThan(sorted.get(2).basicInformation.reviewCount));
+        assertThat(
+            sorted.businesses.get(0).basicInformation.reviewCount,
+            greaterThan(sorted.businesses.get(1).basicInformation.reviewCount)
+        );
+        assertThat(
+            sorted.businesses.get(1).basicInformation.reviewCount,
+            greaterThan(sorted.businesses.get(2).basicInformation.reviewCount)
+        );
     }
 
     @Test
     public void it_searches_using_a_specific_locale() throws Exception {
-        List<Business> businesses = yelp.search(SearchCriteria
+        SearchResult searchResult = yelp.search(SearchCriteria
             .byLocation("San Antonio")
             .withLocale(new Locale("es", "MX"))
             .limit(1)
@@ -215,7 +237,7 @@ public class YelpTest {
 
         DetectLanguage.apiKey = languageDetectKey;
         List<Result> detected = new ArrayList<>();
-        for (Category category : businesses.get(0).basicInformation.categories)
+        for (Category category : searchResult.businesses.get(0).basicInformation.categories)
             detected.addAll(DetectLanguage.detect(category.title));
 
         List<Result> categoriesInSpanish = detected

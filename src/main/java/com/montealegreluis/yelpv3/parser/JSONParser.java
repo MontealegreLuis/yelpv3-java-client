@@ -3,27 +3,18 @@
  */
 package com.montealegreluis.yelpv3.parser;
 
+import com.montealegreluis.yelpv3.businesses.SearchResult;
 import com.montealegreluis.yelpv3.client.AccessToken;
 import com.montealegreluis.yelpv3.businesses.Business;
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class JSONParser {
     public Business business(String response) {
         return Business.from(new JSONObject(response));
     }
 
-    public List<Business> businesses(String response) {
-        List<Business> businesses = new ArrayList<>();
-        JSONArray jsonArray = new JSONObject(response).getJSONArray("businesses");
-
-        for (int i = 0; i < jsonArray.length(); i++)
-            businesses.add(Business.from(jsonArray.getJSONObject(i)));
-
-        return businesses;
+    public SearchResult businesses(String response) {
+        return SearchResult.from(new JSONObject(response));
     }
 
     public AccessToken token(String response) {
