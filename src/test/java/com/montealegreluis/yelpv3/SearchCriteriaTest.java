@@ -3,6 +3,7 @@
  */
 package com.montealegreluis.yelpv3;
 
+import com.montealegreluis.yelpv3.businesses.distance.Distance;
 import com.montealegreluis.yelpv3.search.AreaTooLarge;
 import com.montealegreluis.yelpv3.search.IncompatibleCriteria;
 import com.montealegreluis.yelpv3.search.SearchCriteria;
@@ -24,7 +25,7 @@ public class SearchCriteriaTest {
 
         SearchCriteria
             .byLocation("San Antonio")
-            .withinARadiusOf(40001)
+            .withinARadiusOf(Distance.inMeters(40001))
         ;
     }
 

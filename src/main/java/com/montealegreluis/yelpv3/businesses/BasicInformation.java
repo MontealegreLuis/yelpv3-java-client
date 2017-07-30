@@ -3,6 +3,8 @@
  */
 package com.montealegreluis.yelpv3.businesses;
 
+import com.montealegreluis.yelpv3.businesses.distance.Distance;
+
 import java.util.List;
 
 public class BasicInformation {

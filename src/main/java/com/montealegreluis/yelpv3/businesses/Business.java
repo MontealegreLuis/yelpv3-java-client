@@ -3,6 +3,8 @@
  */
 package com.montealegreluis.yelpv3.businesses;
 
+import com.montealegreluis.yelpv3.businesses.distance.Distance;
+
 import java.util.stream.Collectors;
 
 public class Business {
@@ -18,8 +20,8 @@ public class Business {
         return this.basicInformation.location.city.equalsIgnoreCase(city);
     }
 
-    public boolean isWithinRadius(int radiusInMeters) {
-        return basicInformation.distance.meters <= radiusInMeters;
+    public boolean isWithinRadius(Distance radius) {
+        return basicInformation.distance.smallerThan(radius);
     }
 
     public boolean isOpenNow() {

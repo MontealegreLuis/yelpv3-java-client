@@ -3,16 +3,18 @@
  */
 package com.montealegreluis.yelpv3.search;
 
+import com.montealegreluis.yelpv3.businesses.distance.Distance;
+
 public class AreaTooLarge extends RuntimeException {
     private AreaTooLarge(String format) {
         super(format);
     }
 
-    public static AreaTooLarge withAMeasureOf(Integer meters) {
+    public static AreaTooLarge withADistanceOf(Distance distance) {
         return new AreaTooLarge(String.format(
-            "Cannot search within a radius greater than %d meters, %d given",
-            40000,
-            meters
+            "Cannot search within a radius greater than %s, %s given",
+            Distance.largest().toString(),
+            distance.toString()
         ));
     }
 }

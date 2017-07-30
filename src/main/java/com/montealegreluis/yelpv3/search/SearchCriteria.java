@@ -4,6 +4,7 @@
 package com.montealegreluis.yelpv3.search;
 
 import com.montealegreluis.yelpv3.businesses.PricingLevel;
+import com.montealegreluis.yelpv3.businesses.distance.Distance;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.util.HashMap;
@@ -43,10 +44,10 @@ public class SearchCriteria {
         return this;
     }
 
-    public SearchCriteria withinARadiusOf(Integer meters) {
-        if (meters > 40000) throw AreaTooLarge.withAMeasureOf(meters);
+    public SearchCriteria withinARadiusOf(Distance distance) {
+        if (distance.biggerThan(Distance.largest())) throw AreaTooLarge.withADistanceOf(distance);
 
-        parameters.put("radius", meters.toString());
+        parameters.put("radius", ((Integer) distance.toMeters().intValue()).toString());
         return this;
     }
 

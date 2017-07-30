@@ -4,6 +4,7 @@
 package com.montealegreluis.yelpv3.jsonparser;
 
 import com.montealegreluis.yelpv3.businesses.*;
+import com.montealegreluis.yelpv3.businesses.distance.Distance;
 import com.montealegreluis.yelpv3.parser.ParsingFailure;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +43,7 @@ class BasicInformationParser {
             CoordinatesParser.from(information.getJSONObject("coordinates")),
             information.getString("image_url"),
             LocationParser.from(information.getJSONObject("location")),
-            !information.isNull("distance") ? new Distance(information.getDouble("distance")) : null,
+            !information.isNull("distance") ? Distance.inMeters(information.getDouble("distance")) : null,
             buildTransactions(information.getJSONArray("transactions"))
         );
     }

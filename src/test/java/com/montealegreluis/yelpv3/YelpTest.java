@@ -9,6 +9,7 @@ import com.montealegreluis.yelpv3.businesses.Business;
 import com.montealegreluis.yelpv3.businesses.Category;
 import com.montealegreluis.yelpv3.businesses.PricingLevel;
 import com.montealegreluis.yelpv3.businesses.SearchResult;
+import com.montealegreluis.yelpv3.businesses.distance.Distance;
 import com.montealegreluis.yelpv3.client.AccessToken;
 import com.montealegreluis.yelpv3.client.Credentials;
 import com.montealegreluis.yelpv3.search.SearchCriteria;
@@ -71,25 +72,45 @@ public class YelpTest {
     }
 
     @Test
-    public void it_searches_within_a_specific_radius() {
-        int radiusInMeters = 1000;
-        int deltaInMeters = 200; // Brittle warning...
+    public void it_searches_within_a_specific_radius_in_meters() {
+        Distance radius = Distance.inMeters(1000);
+        // Search by radius is not strict, it might return a business a little further than expected
+        Distance area = Distance.inMeters(1200);
 
         SearchResult result = yelp.search(SearchCriteria
             .byLocation("San Antonio")
-            .withinARadiusOf(radiusInMeters)
+            .withinARadiusOf(radius)
+            .limit(2)
+        );
+
+        assertThat(result.businesses.size(), is(2));
+        assertThat(result.businesses.get(0).isWithinRadius(area), is(true));
+        assertThat(result.businesses.get(1).isWithinRadius(area), is(true));
+    }
+
+    @Test
+    public void it_searches_within_a_specific_radius_in_miles() {
+        Distance radius = Distance.inMiles(1);
+        // Search by radius is not strict, it might return a business a little further than expected
+        Distance area = Distance.inMiles(1.1);
+
+        SearchResult result = yelp.search(SearchCriteria
+            .byLocation("San Antonio")
+            .withinARadiusOf(radius)
             .limit(2)
         );
 
         assertThat(result.businesses.size(), is(2));
         assertThat(
-            result.businesses.get(0).isWithinRadius(radiusInMeters + deltaInMeters),
+            String.format(
+                "Business' distance %s is not within area %s",
+                result.businesses.get(0).basicInformation.distance.toString(),
+                area.toString()
+            ),
+            result.businesses.get(0).isWithinRadius(area),
             is(true)
         );
-        assertThat(
-            result.businesses.get(1).isWithinRadius(radiusInMeters + deltaInMeters),
-            is(true)
-        );
+        assertThat(result.businesses.get(1).isWithinRadius(area), is(true));
     }
 
     @Test
