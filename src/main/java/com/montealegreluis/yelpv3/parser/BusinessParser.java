@@ -98,7 +98,7 @@ class DetailsParser {
         return new Details(
             !information.isNull("is_claimed") && information.getBoolean("is_claimed"),
             !information.isNull("photos") ? buildPhotos(information.getJSONArray("photos")) : null,
-            !information.isNull("hours") ? Schedule.from(information.getJSONArray("hours")) : null
+            !information.isNull("hours") ? ScheduleParser.from(information.getJSONArray("hours")) : null
         );
     }
 
@@ -108,5 +108,25 @@ class DetailsParser {
         for (int i = 0; i < businessPhotos.length(); i++) photos.add(businessPhotos.getString(i));
 
         return photos;
+    }
+}
+
+class ScheduleParser {
+    static Schedule from(JSONArray hours) {
+        JSONObject weekSchedule = hours.getJSONObject(0);
+
+        return new Schedule(
+            weekSchedule.getBoolean("is_open_now"),
+            buildHours(weekSchedule.getJSONArray("open"))
+        );
+    }
+
+    private static List<Hours> buildHours(JSONArray businessHours) {
+        List<Hours> hours = new ArrayList<>();
+
+        for (int i = 0; i < businessHours.length(); i++)
+            hours.add(Hours.from(businessHours.getJSONObject(i)));
+
+        return hours;
     }
 }

@@ -3,28 +3,16 @@
  */
 package com.montealegreluis.yelpv3.businesses;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class Schedule {
-    public final String hoursType = "REGULAR";
+    public final String hoursType;
     public final boolean openNow;
-    public final List<Hours> hours = new ArrayList<>();
+    public final List<Hours> hours;
 
-    public static Schedule from(JSONArray hours) {
-        return new Schedule(hours);
-    }
-
-    private Schedule(JSONArray hours) {
-        JSONObject weekSchedule = hours.getJSONObject(0);
-        openNow = weekSchedule.getBoolean("is_open_now");
-        setHours(weekSchedule.getJSONArray("open"));
-    }
-
-    private void setHours(JSONArray hours) {
-        for (int i = 0; i < hours.length(); i++) this.hours.add(Hours.from(hours.getJSONObject(i)));
+    public Schedule(boolean openNow, List<Hours> hours) {
+        this.hoursType = "REGULAR";
+        this.openNow = openNow;
+        this.hours = hours;
     }
 }
