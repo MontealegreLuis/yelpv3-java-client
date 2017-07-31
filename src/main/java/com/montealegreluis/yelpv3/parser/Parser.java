@@ -10,7 +10,7 @@ import com.montealegreluis.yelpv3.client.AccessToken;
 public interface Parser {
     Business business(String response);
 
-    SearchResult businesses(String response);
+    SearchResult searchResult(String response);
 
     AccessToken token(String response);
 }

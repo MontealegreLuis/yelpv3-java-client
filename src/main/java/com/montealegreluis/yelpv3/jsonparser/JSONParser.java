@@ -16,7 +16,7 @@ public class JSONParser implements Parser {
     }
 
     @Override
-    public SearchResult businesses(String response) {
+    public SearchResult searchResult(String response) {
         return SearchResultParser.parseFrom(new JSONObject(response));
     }
 

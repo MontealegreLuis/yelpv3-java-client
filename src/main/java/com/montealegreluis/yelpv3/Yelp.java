@@ -3,12 +3,7 @@
  */
 package com.montealegreluis.yelpv3;
 
-import com.montealegreluis.yelpv3.businesses.Business;
-import com.montealegreluis.yelpv3.businesses.SearchResult;
-import com.montealegreluis.yelpv3.client.AccessToken;
-import com.montealegreluis.yelpv3.client.Credentials;
-import com.montealegreluis.yelpv3.client.YelpClient;
-import com.montealegreluis.yelpv3.client.YelpURIs;
+import com.montealegreluis.yelpv3.client.*;
 import com.montealegreluis.yelpv3.jsonparser.JSONParser;
 import com.montealegreluis.yelpv3.parser.Parser;
 import com.montealegreluis.yelpv3.search.SearchCriteria;
@@ -39,19 +34,19 @@ public class Yelp {
         this.parser = parser;
     }
 
-    public SearchResult search(SearchCriteria criteria) {
+    public SearchResponse search(SearchCriteria criteria) {
         try {
             yelpClient.allBusinessesMatching(criteria, token().accessToken());
-            return parser.businesses(yelpClient.responseBody());
+            return SearchResponse.fromOriginalResponse(yelpClient.responseBody());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Business searchById(String id) {
+    public BusinessResponse searchById(String id) {
         try {
             yelpClient.businessWith(id, token().accessToken());
-            return parser.business(yelpClient.responseBody());
+            return BusinessResponse.fromOriginalResponse(yelpClient.responseBody());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
