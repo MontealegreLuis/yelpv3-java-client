@@ -19,7 +19,7 @@ class BusinessParser {
     static Business parseFrom(JSONObject businessInformation) {
         try {
             return new Business(
-                BasicInformationParser.from(businessInformation),
+                BasicInformationParser.parseFrom(businessInformation),
                 DetailsParser.from(businessInformation)
             );
         } catch (JSONException exception) {
@@ -29,7 +29,7 @@ class BusinessParser {
 }
 
 class BasicInformationParser {
-    static BasicInformation from(JSONObject information) {
+    static BasicInformation parseFrom(JSONObject information) {
         return new BasicInformation(
             information.getDouble("rating"),
             information.has("price") ? PricingLevel.fromSymbol(information.getString("price")) : PricingLevel.NONE,

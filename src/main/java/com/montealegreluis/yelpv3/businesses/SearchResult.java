@@ -8,10 +8,10 @@ import java.util.List;
 
 public class SearchResult {
     public final int total;
-    public final List<Business> businesses;
+    public final List<BasicInformation> businesses;
     public final Region region;
 
-    public SearchResult(int total, List<Business> businesses, Region region) {
+    public SearchResult(int total, List<BasicInformation> businesses, Region region) {
         this.total = total;
         this.businesses = Collections.unmodifiableList(businesses);
         this.region = region;

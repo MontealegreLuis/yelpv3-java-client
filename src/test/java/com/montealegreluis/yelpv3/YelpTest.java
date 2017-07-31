@@ -104,7 +104,7 @@ public class YelpTest {
         assertThat(
             String.format(
                 "Business' distance %s is not within area %s",
-                result.businesses.get(0).basicInformation.distance.toString(),
+                result.businesses.get(0).distance.toString(),
                 area.toString()
             ),
             result.businesses.get(0).isWithinRadius(area),
@@ -123,7 +123,7 @@ public class YelpTest {
 
         assertThat(result.businesses.size(), is(1));
 
-        Business business = yelp.searchById(result.businesses.get(0).basicInformation.id);
+        Business business = yelp.searchById(result.businesses.get(0).id);
 
         assertThat(business.isOpenNow(), is(true));
     }
@@ -255,7 +255,7 @@ public class YelpTest {
 
         DetectLanguage.apiKey = languageDetectKey;
         List<Result> detected = new ArrayList<>();
-        for (Category category : searchResult.businesses.get(0).basicInformation.categories)
+        for (Category category : searchResult.businesses.get(0).categories)
             detected.addAll(DetectLanguage.detect(category.title));
 
         List<Result> categoriesInSpanish = detected
@@ -275,7 +275,7 @@ public class YelpTest {
         Business business = yelp.searchById(businessId);
 
         assertThat(business.basicInformation.id, is(businessId));
-        assertThat(business.isInCity("San Antonio"), is(true));
+        assertThat(business.basicInformation.isInCity("San Antonio"), is(true));
     }
 
     @Test
@@ -286,7 +286,7 @@ public class YelpTest {
         Business business = yelp.searchById(businessId);
 
         assertThat(business.basicInformation.id, is(businessId));
-        assertThat(business.isInCity("San Antonio"), is(true));
+        assertThat(business.basicInformation.isInCity("San Antonio"), is(true));
     }
 
     @BeforeClass

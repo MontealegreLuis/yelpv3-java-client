@@ -3,7 +3,7 @@
  */
 package com.montealegreluis.yelpv3.jsonparser;
 
-import com.montealegreluis.yelpv3.businesses.Business;
+import com.montealegreluis.yelpv3.businesses.BasicInformation;
 import com.montealegreluis.yelpv3.businesses.Region;
 import com.montealegreluis.yelpv3.businesses.SearchResult;
 import org.json.JSONArray;
@@ -21,10 +21,10 @@ class SearchResultParser {
         );
     }
 
-    private static List<Business> parseBusinesses(JSONArray businessResults) {
-        List<Business> businesses = new ArrayList<>();
+    private static List<BasicInformation> parseBusinesses(JSONArray businessResults) {
+        List<BasicInformation> businesses = new ArrayList<>();
         for (int i = 0; i < businessResults.length(); i++)
-            businesses.add(BusinessParser.parseFrom(businessResults.getJSONObject(i)));
+            businesses.add(BasicInformationParser.parseFrom(businessResults.getJSONObject(i)));
         return businesses;
     }
 }

@@ -7,6 +7,7 @@ import com.montealegreluis.yelpv3.businesses.distance.Distance;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BasicInformation {
     public final double rating;
@@ -54,5 +55,40 @@ public class BasicInformation {
         this.location = location;
         this.distance = distance;
         this.transactions = Collections.unmodifiableList(transactions);
+    }
+
+    public boolean isInCity(String city) {
+        return location.city.equalsIgnoreCase(city);
+    }
+
+    public boolean isWithinRadius(Distance radius) {
+        return distance.smallerThan(radius);
+    }
+
+    public boolean hasPricingLevel(PricingLevel pricingLevel) {
+        return this.pricingLevel.equals(pricingLevel);
+    }
+
+    public boolean hasMoreReviewsThan(BasicInformation business) {
+        return reviewCount > business.reviewCount;
+    }
+
+    public boolean isInCategory(String categoryAlias) {
+        return categories
+            .stream()
+            .filter(category -> category.hasAlias(categoryAlias))
+            .collect(Collectors.toList())
+            .size() > 0
+        ;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
+
+        BasicInformation business = (BasicInformation) other;
+
+        return id.equals(business.id);
     }
 }
