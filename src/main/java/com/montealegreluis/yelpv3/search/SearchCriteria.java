@@ -51,7 +51,7 @@ public class SearchCriteria {
         return this;
     }
 
-    public SearchCriteria onlyOpenBusinesses() {
+    public SearchCriteria openNow() {
         if (parameters.containsKey("open_at"))
             throw IncompatibleCriteria.mixing("open_at", "open_now");
 

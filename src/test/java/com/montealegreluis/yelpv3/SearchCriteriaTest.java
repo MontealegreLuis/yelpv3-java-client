@@ -45,7 +45,7 @@ public class SearchCriteriaTest {
 
         SearchCriteria
             .byCoordinates(29.426786, -98.489576)
-            .onlyOpenBusinesses()
+            .openNow()
             .openAt(Instant.now().getEpochSecond())
         ;
     }

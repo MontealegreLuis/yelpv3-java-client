@@ -122,7 +122,7 @@ public class YelpTest {
     public void it_searches_only_open_businesses() {
         SearchCriteria onlyOpenBusinesses = SearchCriteria
             .byLocation("San Antonio")
-            .onlyOpenBusinesses()
+            .openNow()
             .limit(1)
         ;
 
@@ -189,7 +189,7 @@ public class YelpTest {
         ;
         SearchCriteria businessesOpenNow = SearchCriteria
             .byLocation("San Antonio")
-            .onlyOpenBusinesses()
+            .openNow()
             .limit(1)
         ;
 
