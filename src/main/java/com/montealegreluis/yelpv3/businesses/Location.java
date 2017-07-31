@@ -3,6 +3,7 @@
  */
 package com.montealegreluis.yelpv3.businesses;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Location {
@@ -35,6 +36,6 @@ public class Location {
         this.country = country;
         this.zipCode = zipCode;
         this.crossStreets = crossStreets;
-        this.displayAddress = displayAddress;
+        this.displayAddress = Collections.unmodifiableList(displayAddress);
     }
 }

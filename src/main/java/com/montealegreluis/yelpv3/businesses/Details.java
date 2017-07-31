@@ -3,6 +3,7 @@
  */
 package com.montealegreluis.yelpv3.businesses;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Details {
@@ -12,7 +13,7 @@ public class Details {
 
     public Details(boolean isClaimed, List<String> photos, Schedule schedule) {
         this.isClaimed = isClaimed;
-        this.photos = photos;
+        this.photos = Collections.unmodifiableList(photos);
         this.schedule = schedule;
     }
 }

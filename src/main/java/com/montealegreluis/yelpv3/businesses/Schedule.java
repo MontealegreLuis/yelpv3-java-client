@@ -3,6 +3,7 @@
  */
 package com.montealegreluis.yelpv3.businesses;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Schedule {
@@ -13,6 +14,6 @@ public class Schedule {
     public Schedule(boolean isOpenNow, List<Hours> hours) {
         this.hoursType = "REGULAR";
         this.isOpenNow = isOpenNow;
-        this.hours = hours;
+        this.hours = Collections.unmodifiableList(hours);
     }
 }

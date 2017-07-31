@@ -3,6 +3,7 @@
  */
 package com.montealegreluis.yelpv3.businesses;
 
+import java.util.Collections;
 import java.util.List;
 
 public class SearchResult {
@@ -12,7 +13,7 @@ public class SearchResult {
 
     public SearchResult(int total, List<Business> businesses, Region region) {
         this.total = total;
-        this.businesses = businesses;
+        this.businesses = Collections.unmodifiableList(businesses);
         this.region = region;
     }
 }

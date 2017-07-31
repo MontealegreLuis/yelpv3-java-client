@@ -5,6 +5,7 @@ package com.montealegreluis.yelpv3.businesses;
 
 import com.montealegreluis.yelpv3.businesses.distance.Distance;
 
+import java.util.Collections;
 import java.util.List;
 
 public class BasicInformation {
@@ -44,7 +45,7 @@ public class BasicInformation {
         this.phone = phone;
         this.id = id;
         this.isClosedPermanently = isClosedPermanently;
-        this.categories = categories;
+        this.categories = Collections.unmodifiableList(categories);
         this.reviewCount = reviewCount;
         this.name = name;
         this.url = url;
@@ -52,6 +53,6 @@ public class BasicInformation {
         this.image = image;
         this.location = location;
         this.distance = distance;
-        this.transactions = transactions;
+        this.transactions = Collections.unmodifiableList(transactions);
     }
 }
