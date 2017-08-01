@@ -77,8 +77,8 @@ public class Demo {
     public static void main(String[] args){
         Yelp yelp = new Yelp("YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET");
         
-        yelp.search(SearchCriteria.byLocation("San Antonio")).searchResult();
-        yelp.search(SearchCriteria.byCoordinates(29.426786, -98.489576)).searchResult();
+        yelp.search(SearchCriteria.byLocation("San Antonio"));
+        yelp.search(SearchCriteria.byCoordinates(29.426786, -98.489576));
     }
 }
 ```
