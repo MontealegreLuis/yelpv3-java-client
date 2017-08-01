@@ -31,6 +31,7 @@ import static com.montealegreluis.yelpv3.search.Attribute.HOT_AND_NEW;
 import static com.montealegreluis.yelpv3.search.SortingMode.REVIEW_COUNT;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
 
 public class YelpTest {
@@ -51,6 +52,9 @@ public class YelpTest {
 
         SearchResult result = yelp.search(SearchCriteria.byLocation(city)).searchResult();
 
+        assertThat(result.total, greaterThan(0));
+        assertThat(result.region.center.latitude, is(not(0)));
+        assertThat(result.region.center.longitude, is(not(0)));
         assertThat(result.businesses.size(), is(20));
         assertThat(result.businesses.get(0).isInCity(city), is(true));
         assertThat(result.businesses.get(19).isInCity(city), is(true));

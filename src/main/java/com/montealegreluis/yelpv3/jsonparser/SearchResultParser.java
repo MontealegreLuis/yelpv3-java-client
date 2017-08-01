@@ -17,7 +17,9 @@ class SearchResultParser {
         return new SearchResult(
             result.getInt("total"),
             parseBusinesses(result.getJSONArray("businesses")),
-            Region.withCenter(CoordinatesParser.from(result.getJSONObject("region")))
+            Region.withCenter(CoordinatesParser.from(
+                result.getJSONObject("region").getJSONObject("center")
+            ))
         );
     }
 
