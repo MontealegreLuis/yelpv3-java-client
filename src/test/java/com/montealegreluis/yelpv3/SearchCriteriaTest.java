@@ -14,8 +14,11 @@ import org.junit.rules.ExpectedException;
 
 import java.time.Instant;
 
+import static com.montealegreluis.yelpv3.businesses.PricingLevel.MODERATE;
 import static com.montealegreluis.yelpv3.search.Attribute.*;
+import static com.montealegreluis.yelpv3.search.SortingMode.REVIEW_COUNT;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class SearchCriteriaTest {
@@ -50,7 +53,6 @@ public class SearchCriteriaTest {
         ;
     }
 
-
     @Test
     public void it_adds_several_attributes() {
         SearchCriteria criteria = SearchCriteria
@@ -61,6 +63,27 @@ public class SearchCriteriaTest {
         assertThat(
             criteria.toString(),
             containsString("cashback,deals,gender_neutral_restrooms")
+        );
+    }
+
+    @Test
+    public void it_can_be_represented_as_a_query_string() {
+        SearchCriteria criteria = SearchCriteria
+            .byLocation("San Antonio")
+            .withTerm("restaurants")
+            .withinARadiusOf(Distance.inMiles(2))
+            .inCategories("mexican")
+            .withPricing(MODERATE)
+            .withAttributes(HOT_AND_NEW, DEALS)
+            .openNow()
+            .limit(5)
+            .offset(5)
+            .sortBy(REVIEW_COUNT)
+        ;
+
+        assertThat(
+            criteria.queryStringForPage(2),
+            is("?open_now=true&offset=5&price=2&limit=5&location=San+Antonio&term=restaurants&attributes=hot_and_new%2Cdeals&categories=mexican&sort_by=review_count&radius=3218")
         );
     }
 

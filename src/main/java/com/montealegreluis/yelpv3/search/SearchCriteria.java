@@ -7,6 +7,8 @@ import com.montealegreluis.yelpv3.businesses.PricingLevel;
 import com.montealegreluis.yelpv3.businesses.distance.Distance;
 import org.apache.http.client.utils.URIBuilder;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -115,9 +117,32 @@ public class SearchCriteria {
         return Pagination.fromSearch(this, total);
     }
 
+    public String queryStringForPage(int page) {
+        HashMap<String, String> queryString = new HashMap<>(parameters);
+        queryString.put("offset", String.valueOf((page - 1) * limit()));
+        return queryString.entrySet().stream()
+            .map(this::convertToQueryParameter)
+            .reduce((parameter1, parameter2) -> String.format("%s&%s", parameter1, parameter2))
+            .map(query -> "?" + query)
+            .orElse("")
+        ;
+    }
+
     @Override
     public String toString() {
         return parameters.toString();
+    }
+
+    private String convertToQueryParameter(Map.Entry<String, String> parameter) {
+        try {
+            return String.format(
+                "%s=%s",
+                URLEncoder.encode(parameter.getKey(), "UTF-8"),
+                URLEncoder.encode(parameter.getValue(), "UTF-8")
+            );
+        } catch (UnsupportedEncodingException e) {
+            throw new UnsupportedOperationException(e);
+        }
     }
 
     int limit() {
