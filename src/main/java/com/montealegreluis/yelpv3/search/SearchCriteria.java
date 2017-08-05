@@ -111,6 +111,10 @@ public class SearchCriteria {
         return this;
     }
 
+    public Pagination pagination(int total) {
+        return Pagination.fromSearch(this, total);
+    }
+
     @Override
     public String toString() {
         return parameters.toString();

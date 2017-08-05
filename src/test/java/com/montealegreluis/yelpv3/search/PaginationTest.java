@@ -10,10 +10,10 @@ import static org.junit.Assert.assertThat;
 
 public class PaginationTest {
     @Test
-    public void it_knows_when_it_has_no_pages() {
-        int notMoreThanOnePage = 2;
+    public void it_knows_when_it_has_a_single_page() {
+        int onePage = 2;
         int pageSize = 5;
-        pagination = Pagination.fromSearch(criteria.limit(pageSize), notMoreThanOnePage);
+        Pagination pagination = criteria.limit(pageSize).pagination(onePage);
 
         assertThat(pagination.hasPages(), is(false));
     }
@@ -22,40 +22,40 @@ public class PaginationTest {
     public void it_calculates_how_many_pages_can_be_built() {
         int pageSize = 5;
         int twelvePages = 57;
-        int lastPage = 12;
-        pagination = Pagination.fromSearch(criteria.limit(pageSize), twelvePages);
+        int pageTwelve = 12;
+        Pagination pagination = criteria.limit(pageSize).pagination(twelvePages);
 
-        assertThat(pagination.last(), is(lastPage));
+        assertThat(pagination.last(), is(pageTwelve));
     }
 
     @Test
     public void it_calculates_total_pages_when_total_matches_exactly() {
         int pageSize = 5;
         int twelvePages = 60;
-        int lasPage = 12;
-        pagination = Pagination.fromSearch(criteria.limit(pageSize), twelvePages);
+        int pageTwelve = 12;
+        Pagination pagination = criteria.limit(pageSize).pagination(twelvePages);
 
-        assertThat(pagination.last(), is(lasPage));
+        assertThat(pagination.last(), is(pageTwelve));
     }
 
     @Test
     public void it_knows_when_there_is_no_previous_page() {
         int pageSize = 5;
-        int total = 10;
-        pagination = Pagination.fromSearch(criteria.limit(pageSize), total);
+        int twoPages = 10;
+        Pagination pagination = criteria.limit(pageSize).pagination(twoPages);
 
         assertThat(pagination.hasPrevious(), is(false));
     }
 
     @Test
     public void it_calculates_the_previous_page() {
-        int previousPage = 4;
+        int page4 = 4;
         int offsetPage5 = 20;
         int pageSize = 5;
-        int total = 22;
-        pagination = Pagination.fromSearch(criteria.limit(pageSize).offset(offsetPage5), total);
+        int fivePages = 22;
+        Pagination pagination = criteria.limit(pageSize).offset(offsetPage5).pagination(fivePages);
 
-        assertThat(pagination.previous(), is(previousPage));
+        assertThat(pagination.previous(), is(page4));
     }
 
     @Test
@@ -63,50 +63,53 @@ public class PaginationTest {
         int pageSize = 5;
         int offsetPage3 = 10;
         int threePages = 13;
-        pagination = Pagination.fromSearch(criteria.limit(pageSize).offset(offsetPage3), threePages);
+        Pagination pagination = criteria.limit(pageSize).offset(offsetPage3).pagination(threePages);
 
         assertThat(pagination.hasNext(), is(false));
     }
 
     @Test
     public void it_calculates_the_next_page() {
-        int nextPage = 5;
+        int page5 = 5;
         int offsetPage4 = 15;
-        pagination = Pagination.fromSearch(criteria.limit(5).offset(offsetPage4), 27);
+        int pageSize = 5;
+        int sixPages = 27;
+        Pagination pagination = criteria.limit(pageSize).offset(offsetPage4).pagination(sixPages);
 
-        assertThat(pagination.next(), is(nextPage));
+        assertThat(pagination.next(), is(page5));
     }
 
     @Test
     public void it_calculates_the_first_page() {
-        int firstPage = 1;
-        pagination = Pagination.fromSearch(criteria.limit(5), 40);
+        int page1 = 1;
+        int pageSize = 5;
+        int eightPages = 40;
+        Pagination pagination = criteria.limit(pageSize).pagination(eightPages);
 
-        assertThat(pagination.first(), is(firstPage));
+        assertThat(pagination.first(), is(page1));
     }
 
     @Test
     public void it_defaults_to_the_first_page_if_no_positive_value_for_page_is_provided() {
-        int secondPage = 2;
         int negativeOffset = -3;
-        pagination = Pagination.fromSearch(criteria.offset(negativeOffset), 30);
+        int page2 = 2;
+        int twoPages = 30;
+        Pagination pagination = criteria.offset(negativeOffset).pagination(twoPages);
 
         assertThat(pagination.hasPrevious(), is(false));
-        assertThat(pagination.next(), is(secondPage));
+        assertThat(pagination.next(), is(page2));
     }
 
     @Test
     public void it_defaults_to_the_last_page_if_bigger_value_for_page_is_given() {
-        int offsetBiggerThanPossible = 100;
-        pagination = Pagination.fromSearch(
-            criteria.limit(5).offset(offsetBiggerThanPossible),
-            15
-        );
+        int pageSize = 5;
+        int threePages = 15;
+        int page21 = 100;
+        Pagination pagination = criteria.limit(pageSize).offset(page21).pagination(threePages);
 
         assertThat(pagination.hasNext(), is(false));
         assertThat(pagination.previous(), is(pagination.last() - 1));
     }
 
-    private Pagination pagination;
     private SearchCriteria criteria = SearchCriteria.byLocation("San Antonio");
 }

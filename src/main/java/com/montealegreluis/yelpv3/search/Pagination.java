@@ -7,24 +7,6 @@ public class Pagination {
     private final int pageSize;
     private final int total;
     private final int page;
-    private SearchCriteria criteria;
-
-    public static Pagination fromSearch(SearchCriteria criteria, int total) {
-        return new Pagination(criteria, total);
-    }
-
-    private Pagination(SearchCriteria criteria, int total) {
-        pageSize = criteria.limit();
-        this.total = total;
-        page = normalize((criteria.offset() / criteria.limit()) + 1);
-        this.criteria = criteria;
-    }
-
-    private int normalize(int page) {
-        if (page < 1) return 1;
-        if (page > last()) return last();
-        return page;
-    }
 
     public boolean hasPages() {
         return total >= pageSize;
@@ -52,5 +34,21 @@ public class Pagination {
 
     public int last() {
         return (int) Math.ceil((double) total / pageSize);
+    }
+
+    static Pagination fromSearch(SearchCriteria criteria, int total) {
+        return new Pagination(criteria, total);
+    }
+
+    private Pagination(SearchCriteria criteria, int total) {
+        pageSize = criteria.limit();
+        this.total = total;
+        page = normalize((criteria.offset() / criteria.limit()) + 1);
+    }
+
+    private int normalize(int page) {
+        if (page < 1) return 1;
+        if (page > last()) return last();
+        return page;
     }
 }
