@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class SearchCriteria {
+    private final int defaultPageSize = 20;
     private Map<String, String> parameters = new HashMap<>();
 
     public static SearchCriteria byLocation(String location) {
@@ -113,5 +114,19 @@ public class SearchCriteria {
     @Override
     public String toString() {
         return parameters.toString();
+    }
+
+    int limit() {
+        return parameters.containsKey("limit")
+            ? Integer.valueOf(parameters.get("limit"))
+            : defaultPageSize
+        ;
+    }
+
+    int offset() {
+        return parameters.containsKey("offset")
+            ? Integer.valueOf(parameters.get("offset"))
+            : 0
+        ;
     }
 }
