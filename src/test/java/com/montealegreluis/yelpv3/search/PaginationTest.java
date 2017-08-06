@@ -111,5 +111,29 @@ public class PaginationTest {
         assertThat(pagination.previous(), is(pagination.last() - 1));
     }
 
+    @Test
+    public void it_defaults_to_the_maximum_offset_allowed_by_yelp() {
+        int pageSize = 20;
+        int hundredPages = 2000;
+        int page55 = 1020;
+        int allowedPageCount = 50;
+        Pagination pagination = criteria.limit(pageSize).offset(page55).pagination(hundredPages);
+
+        assertThat(pagination.hasNext(), is(false));
+        assertThat(pagination.exceedsAPILimit(), is(true));
+        assertThat(pagination.last(), is(allowedPageCount));
+    }
+
+    @Test
+    public void it_knows_the_current_page() {
+        int pageSize = 5;
+        int offsetPage7 = 30;
+        int tenPages = 48;
+        int pageSeven = 7;
+        Pagination pagination = criteria.limit(pageSize).offset(offsetPage7).pagination(tenPages);
+
+        assertThat(pagination.currentPage(), is(pageSeven));
+    }
+
     private SearchCriteria criteria = SearchCriteria.byLocation("San Antonio");
 }
