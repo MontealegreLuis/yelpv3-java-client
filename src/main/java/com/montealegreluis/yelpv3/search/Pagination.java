@@ -33,8 +33,16 @@ public class Pagination {
         return page - 1;
     }
 
+    public boolean isFirst() {
+        return page == 1;
+    }
+
     public int first() {
         return 1;
+    }
+
+    public boolean isLast() {
+        return page == last();
     }
 
     public int last() {

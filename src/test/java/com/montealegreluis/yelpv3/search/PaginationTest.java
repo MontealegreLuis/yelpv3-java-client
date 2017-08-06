@@ -45,6 +45,7 @@ public class PaginationTest {
         Pagination pagination = criteria.limit(pageSize).pagination(twoPages);
 
         assertThat(pagination.hasPrevious(), is(false));
+        assertThat(pagination.isFirst(), is(true));
     }
 
     @Test
@@ -66,6 +67,7 @@ public class PaginationTest {
         Pagination pagination = criteria.limit(pageSize).offset(offsetPage3).pagination(threePages);
 
         assertThat(pagination.hasNext(), is(false));
+        assertThat(pagination.isLast(), is(true));
     }
 
     @Test
@@ -87,6 +89,7 @@ public class PaginationTest {
         Pagination pagination = criteria.limit(pageSize).pagination(eightPages);
 
         assertThat(pagination.first(), is(page1));
+        assertThat(pagination.isFirst(), is(true));
     }
 
     @Test
@@ -98,6 +101,7 @@ public class PaginationTest {
 
         assertThat(pagination.hasPrevious(), is(false));
         assertThat(pagination.next(), is(page2));
+        assertThat(pagination.isFirst(), is(true));
     }
 
     @Test
@@ -108,7 +112,7 @@ public class PaginationTest {
         Pagination pagination = criteria.limit(pageSize).offset(page21).pagination(threePages);
 
         assertThat(pagination.hasNext(), is(false));
-        assertThat(pagination.previous(), is(pagination.last() - 1));
+        assertThat(pagination.isLast(), is(true));
     }
 
     @Test
@@ -121,6 +125,7 @@ public class PaginationTest {
 
         assertThat(pagination.hasNext(), is(false));
         assertThat(pagination.exceedsAPILimit(), is(true));
+        assertThat(pagination.isLast(), is(true));
         assertThat(pagination.last(), is(allowedPageCount));
     }
 
