@@ -128,6 +128,20 @@ public class SearchCriteria {
         ;
     }
 
+    public int limit() {
+        return parameters.containsKey("limit")
+            ? Integer.valueOf(parameters.get("limit"))
+            : defaultPageSize
+        ;
+    }
+
+    public int offset() {
+        return parameters.containsKey("offset")
+            ? Integer.valueOf(parameters.get("offset"))
+            : 0
+        ;
+    }
+
     @Override
     public String toString() {
         return parameters.toString();
@@ -143,19 +157,5 @@ public class SearchCriteria {
         } catch (UnsupportedEncodingException e) {
             throw new UnsupportedOperationException(e);
         }
-    }
-
-    int limit() {
-        return parameters.containsKey("limit")
-            ? Integer.valueOf(parameters.get("limit"))
-            : defaultPageSize
-        ;
-    }
-
-    int offset() {
-        return parameters.containsKey("offset")
-            ? Integer.valueOf(parameters.get("offset"))
-            : 0
-        ;
     }
 }

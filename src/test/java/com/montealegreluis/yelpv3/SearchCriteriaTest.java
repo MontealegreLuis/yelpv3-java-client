@@ -87,6 +87,31 @@ public class SearchCriteriaTest {
         );
     }
 
+    @Test
+    public void it_has_access_to_the_current_limit_and_offset_values() {
+        int limit = 5;
+        int offset = 15;
+        SearchCriteria criteria = SearchCriteria
+            .byLocation("San Antonio")
+            .limit(limit)
+            .offset(offset)
+        ;
+
+        assertThat(criteria.limit(), is(limit));
+        assertThat(criteria.offset(), is(offset));
+    }
+
+    @Test
+    public void it_has_default_values_for_limit_and_offset() {
+        int defaultLimit = 20;
+        int defaultOffset = 0;
+        SearchCriteria criteria = SearchCriteria.byLocation("San Antonio");
+
+        assertThat(criteria.limit(), is(defaultLimit));
+        assertThat(criteria.offset(), is(defaultOffset));
+    }
+
+
     @Rule
     public ExpectedException exception = ExpectedException.none();
 }
