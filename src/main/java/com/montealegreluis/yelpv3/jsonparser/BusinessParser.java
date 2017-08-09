@@ -97,15 +97,6 @@ class LocationParser {
     }
 }
 
-class CategoryParser {
-    static Category from(JSONObject category) {
-        return new Category(
-            category.getString("alias"),
-            category.getString("title")
-        );
-    }
-}
-
 class DetailsParser {
     static Details from(JSONObject information) {
         return new Details(

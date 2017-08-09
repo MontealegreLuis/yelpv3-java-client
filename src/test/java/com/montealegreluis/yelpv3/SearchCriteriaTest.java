@@ -111,7 +111,6 @@ public class SearchCriteriaTest {
         assertThat(criteria.offset(), is(defaultOffset));
     }
 
-
     @Rule
     public ExpectedException exception = ExpectedException.none();
 }
