@@ -32,7 +32,8 @@ public class SearchCategoryParser {
 
     private static String readCategories() {
         try {
-            Path path = Paths.get("src/main/resources/categories.json");
+            ClassLoader classLoader = SearchCategoryParser.class.getClassLoader();
+            Path path = Paths.get(classLoader.getResource("categories.json").getPath());
             return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
