@@ -61,6 +61,16 @@ class BasicInformationParser {
             transactions.add(registeredTransactions.getString(i));
         return transactions;
     }
+
+}
+
+class CategoryParser {
+    static Category from(JSONObject category) {
+        return new Category(
+            category.getString("alias"),
+            category.getString("title")
+        );
+    }
 }
 
 class CoordinatesParser {
