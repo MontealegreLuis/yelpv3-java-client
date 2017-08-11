@@ -8,13 +8,10 @@ import com.montealegreluis.yelpv3.search.SearchCategory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class SearchCategoryParser {
     private static final SearchCategories categories = new SearchCategories();
@@ -31,13 +28,10 @@ public class SearchCategoryParser {
     }
 
     private static String readCategories() {
-        try {
-            ClassLoader classLoader = SearchCategoryParser.class.getClassLoader();
-            Path path = Paths.get(classLoader.getResource("categories.json").getPath());
-            return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        ClassLoader classLoader = SearchCategoryParser.class.getClassLoader();
+        InputStream stream = classLoader.getResourceAsStream("categories.json");
+        Scanner scanner = new Scanner(stream).useDelimiter("\\A");
+        return scanner.hasNext() ? scanner.next() : "";
     }
 
     private static SearchCategory parseSearchCategory(JSONObject category) {
