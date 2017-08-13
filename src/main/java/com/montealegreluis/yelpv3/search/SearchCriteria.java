@@ -71,6 +71,16 @@ public class SearchCriteria {
         return this;
     }
 
+    /**
+     * @param category Any of the aliases in categories.json
+     */
+    public SearchCriteria appendCategory(String category) {
+        String categories = parameters.get("categories");
+        parameters.put("categories", String.format("%s,%s", categories, category));
+
+        return this;
+    }
+
     public SearchCriteria withPricing(PricingLevel level) {
         parameters.put("price", level.value().toString());
         return this;

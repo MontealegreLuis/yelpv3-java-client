@@ -88,6 +88,24 @@ public class SearchCriteriaTest {
     }
 
     @Test
+    public void it_can_append_one_more_category_to_the_query_string() {
+        SearchCriteria criteria = SearchCriteria
+            .byLocation("San Antonio")
+            .withinARadiusOf(Distance.inMiles(2))
+            .inCategories("mexican")
+            .limit(5)
+            .offset(5)
+        ;
+
+        criteria.appendCategory("newmexican");
+
+        assertThat(
+            criteria.queryStringForPage(2),
+            is("?limit=5&location=San+Antonio&categories=mexican%2Cnewmexican&offset=5&radius=3218")
+        );
+    }
+
+    @Test
     public void it_has_access_to_the_current_limit_and_offset_values() {
         int limit = 5;
         int offset = 15;
