@@ -88,7 +88,7 @@ public class SearchCriteriaTest {
     }
 
     @Test
-    public void it_can_append_one_more_category_to_the_query_string() {
+    public void it_appends_one_more_category_to_the_query_string() {
         SearchCriteria criteria = SearchCriteria
             .byLocation("San Antonio")
             .withinARadiusOf(Distance.inMiles(2))
@@ -97,11 +97,26 @@ public class SearchCriteriaTest {
             .offset(5)
         ;
 
-        criteria.appendCategory("newmexican");
+        SearchCriteria newCriteria = criteria.appendCategory("newmexican");
 
         assertThat(
-            criteria.queryStringForPage(2),
+            newCriteria.queryStringForPage(2),
             is("?limit=5&location=San+Antonio&categories=mexican%2Cnewmexican&offset=5&radius=3218")
+        );
+    }
+
+    @Test
+    public void it_replaces_the_current_categories_with_a_new_one() {
+        SearchCriteria criteria = SearchCriteria
+            .byLocation("San Antonio")
+            .inCategories("mexican")
+        ;
+
+        SearchCriteria newCriteria = criteria.inCategory("newmexican");
+
+        assertThat(
+            newCriteria.queryStringForPage(2),
+            is("?offset=20&location=San+Antonio&categories=newmexican")
         );
     }
 

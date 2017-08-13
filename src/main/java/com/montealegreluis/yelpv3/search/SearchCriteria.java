@@ -72,13 +72,28 @@ public class SearchCriteria {
     }
 
     /**
+     * Creates a copy of the current criteria, using the category given
+     *
+     * @param category Any of the aliases in categories.json
+     */
+    public SearchCriteria inCategory(String category) {
+        SearchCriteria newCriteria = new SearchCriteria(this);
+        newCriteria.parameters.put("categories", category);
+
+        return newCriteria;
+    }
+
+    /**
+     * Creates a copy of the current criteria, appending the category given
+     *
      * @param category Any of the aliases in categories.json
      */
     public SearchCriteria appendCategory(String category) {
-        String categories = parameters.get("categories");
-        parameters.put("categories", String.format("%s,%s", categories, category));
+        SearchCriteria newCriteria = new SearchCriteria(this);
+        String categories = newCriteria.parameters.get("categories");
+        newCriteria.parameters.put("categories", String.format("%s,%s", categories, category));
 
-        return this;
+        return newCriteria;
     }
 
     public SearchCriteria withPricing(PricingLevel level) {
@@ -103,15 +118,6 @@ public class SearchCriteria {
 
     public void addQueryParametersTo(URIBuilder builder) {
         parameters.forEach(builder::setParameter);
-    }
-
-    private SearchCriteria(Double latitude, Double longitude) {
-        parameters.put("latitude", latitude.toString());
-        parameters.put("longitude", longitude.toString());
-    }
-
-    private SearchCriteria(String location) {
-        parameters.put("location", location);
     }
 
     /**
@@ -150,6 +156,19 @@ public class SearchCriteria {
             ? Integer.valueOf(parameters.get("offset"))
             : 0
         ;
+    }
+
+    SearchCriteria(SearchCriteria another) {
+        parameters = new HashMap<>(another.parameters);
+    }
+
+    private SearchCriteria(Double latitude, Double longitude) {
+        parameters.put("latitude", latitude.toString());
+        parameters.put("longitude", longitude.toString());
+    }
+
+    private SearchCriteria(String location) {
+        parameters.put("location", location);
     }
 
     @Override
