@@ -18,4 +18,18 @@ public class Hours {
         this.start = start;
         this.end = end;
     }
+
+    @Override
+    public boolean equals(Object another) {
+        if (another == null) return false;
+        if (!(another instanceof Hours)) return false;
+
+        Hours anotherHours = (Hours) another;
+
+        return isOvernight == anotherHours.isOvernight
+            && day.equals(anotherHours.day)
+            && start.equals(anotherHours.start)
+            && end.equals(anotherHours.end)
+        ;
+    }
 }

@@ -3,8 +3,10 @@
  */
 package com.montealegreluis.yelpv3.businesses;
 
+import java.time.DayOfWeek;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Schedule {
     public final String hoursType;
@@ -15,5 +17,13 @@ public class Schedule {
         this.hoursType = "REGULAR";
         this.isOpenNow = isOpenNow;
         this.hours = Collections.unmodifiableList(hours);
+    }
+
+    public List<Hours> hoursFor(DayOfWeek day) {
+        return hours
+            .stream()
+            .filter(hour -> hour.day.equals(day))
+            .collect(Collectors.toList())
+        ;
     }
 }
