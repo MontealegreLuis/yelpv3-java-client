@@ -12,6 +12,8 @@ import com.montealegreluis.yelpv3.businesses.distance.Distance;
 import com.montealegreluis.yelpv3.client.AccessToken;
 import com.montealegreluis.yelpv3.client.BusinessResponse;
 import com.montealegreluis.yelpv3.client.Credentials;
+import com.montealegreluis.yelpv3.client.ReviewsResponse;
+import com.montealegreluis.yelpv3.reviews.Review;
 import com.montealegreluis.yelpv3.search.SearchCriteria;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -30,7 +32,9 @@ import static com.montealegreluis.yelpv3.search.Attribute.DEALS;
 import static com.montealegreluis.yelpv3.search.Attribute.HOT_AND_NEW;
 import static com.montealegreluis.yelpv3.search.SortingMode.REVIEW_COUNT;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.Is.isA;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
 
@@ -310,6 +314,17 @@ public class YelpTest {
 
         assertThat(response.business().basicInformation.id, is(businessId));
         assertThat(response.business().basicInformation.isInCity("San Antonio"), is(true));
+    }
+
+    @Test
+    public void it_gets_the_reviews_for_a_specific_business() {
+        String businessId = "bella-on-the-river-san-antonio";
+
+        ReviewsResponse response = yelp.reviews(businessId);
+
+        assertThat(response.reviews().size(), lessThan(4));
+        assertThat(response.reviews().size(), greaterThan(0));
+        assertThat(response.reviews().get(0), isA(Review.class));
     }
 
     @Test

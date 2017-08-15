@@ -38,6 +38,10 @@ public class YelpClient {
         getFrom(yelpURIs.businessBy(id), accessToken);
     }
 
+    public void allReviewsFor(String businessId, String accesToken) throws IOException {
+        getFrom(yelpURIs.reviews(businessId), accesToken);
+    }
+
     public void authenticate(Map<String, String> credentials) throws IOException {
         postTo(yelpURIs.authentication(), credentials);
     }

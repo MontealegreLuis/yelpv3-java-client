@@ -28,6 +28,14 @@ public class YelpURIs {
         }
     }
 
+    public URI reviews(String id) {
+        try {
+            return yelpURIBuilder().setPath(String.format("/v3/businesses/%s/reviews", id)).build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public URI authentication() {
         try {
             return yelpURIBuilder().setPath("/oauth2/token").build();

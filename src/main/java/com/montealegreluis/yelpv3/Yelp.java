@@ -52,6 +52,15 @@ public class Yelp {
         }
     }
 
+    public ReviewsResponse reviews(String id) {
+        try{
+            yelpClient.allReviewsFor(id, token().accessToken());
+            return ReviewsResponse.fromOriginalResponse(yelpClient.responseBody());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public AccessToken token() {
         if (credentials.isTokenExpired()) authenticate();
 
