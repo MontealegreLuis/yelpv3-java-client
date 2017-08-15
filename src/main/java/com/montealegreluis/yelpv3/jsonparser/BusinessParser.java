@@ -13,7 +13,9 @@ import org.json.JSONObject;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 class BusinessParser {
     static Business parseFrom(JSONObject businessInformation) {
@@ -135,11 +137,19 @@ class ScheduleParser {
         );
     }
 
-    private static List<Hours> buildHours(JSONArray businessHours) {
-        List<Hours> hours = new ArrayList<>();
+    private static Map<DayOfWeek, List<Hours>> buildHours(JSONArray businessHours) {
+        Map<DayOfWeek, List<Hours>> hours = new LinkedHashMap<>();
+        List<Hours> allDayHours;
 
-        for (int i = 0; i < businessHours.length(); i++)
-            hours.add(HoursParser.from(businessHours.getJSONObject(i)));
+        for (int i = 0; i < businessHours.length(); i++) {
+            Hours dayHours = HoursParser.from(businessHours.getJSONObject(i));
+
+            if (!hours.containsKey(dayHours.day)) allDayHours = new ArrayList<>();
+            else allDayHours = hours.get(dayHours.day);
+
+            allDayHours.add(dayHours);
+            hours.put(dayHours.day, allDayHours);
+        }
 
         return hours;
     }

@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
@@ -17,23 +18,34 @@ public class ScheduleTest {
     @Test
     public void it_filters_the_hours_for_a_given_day() {
         DayOfWeek monday = DayOfWeek.MONDAY;
+        LinkedHashMap<DayOfWeek, List<Hours>> hours = new LinkedHashMap<>();
         Hours mondayHours = new Hours(
             DayOfWeek.MONDAY, LocalTime.of(8, 0), LocalTime.of(16, 0)
         );
-        List<Hours> hours = Arrays.asList(
-            mondayHours,
-            new Hours(
+        hours.put(monday, Arrays.asList(mondayHours));
+        hours.put(
+            DayOfWeek.TUESDAY,
+            Arrays.asList(new Hours(
                 DayOfWeek.TUESDAY, LocalTime.of(8, 0), LocalTime.of(16, 0)
-            ),
-            new Hours(
+            ))
+        );
+        hours.put(
+            DayOfWeek.WEDNESDAY,
+            Arrays.asList(new Hours(
                 DayOfWeek.WEDNESDAY, LocalTime.of(8, 0), LocalTime.of(16, 0)
-            ),
-            new Hours(
+            ))
+        );
+        hours.put(
+            DayOfWeek.THURSDAY,
+            Arrays.asList(new Hours(
                 DayOfWeek.THURSDAY, LocalTime.of(8, 0), LocalTime.of(16, 0)
-            ),
-            new Hours(
+            ))
+        );
+        hours.put(
+            DayOfWeek.FRIDAY,
+            Arrays.asList(new Hours(
                 DayOfWeek.FRIDAY, LocalTime.of(8, 0), LocalTime.of(16, 0)
-            )
+            ))
         );
         Schedule schedule = new Schedule(true, hours);
 
@@ -52,21 +64,31 @@ public class ScheduleTest {
         Hours eveningMondayHours = new Hours(
             DayOfWeek.MONDAY, LocalTime.of(16, 0), LocalTime.of(20, 0)
         );
-        List<Hours> hours = Arrays.asList(
-            morningMondayHours,
-            eveningMondayHours,
-            new Hours(
+        LinkedHashMap<DayOfWeek, List<Hours>> hours = new LinkedHashMap<>();
+        hours.put(monday, Arrays.asList(morningMondayHours, eveningMondayHours));
+        hours.put(
+            DayOfWeek.TUESDAY,
+            Arrays.asList(new Hours(
                 DayOfWeek.TUESDAY, LocalTime.of(8, 0), LocalTime.of(16, 0)
-            ),
-            new Hours(
+            ))
+        );
+        hours.put(
+            DayOfWeek.WEDNESDAY,
+            Arrays.asList(new Hours(
                 DayOfWeek.WEDNESDAY, LocalTime.of(8, 0), LocalTime.of(16, 0)
-            ),
-            new Hours(
+            ))
+        );
+        hours.put(
+            DayOfWeek.THURSDAY,
+            Arrays.asList(new Hours(
                 DayOfWeek.THURSDAY, LocalTime.of(8, 0), LocalTime.of(16, 0)
-            ),
-            new Hours(
+            ))
+        );
+        hours.put(
+            DayOfWeek.FRIDAY,
+            Arrays.asList(new Hours(
                 DayOfWeek.FRIDAY, LocalTime.of(8, 0), LocalTime.of(16, 0)
-            )
+            ))
         );
         Schedule schedule = new Schedule(true, hours);
 
