@@ -23,7 +23,7 @@ public class BasicInformation {
     public final String image;
     public final Location location;
     public final Distance distance;
-    public final List<String> transactions;
+    public final List<Transaction> transactions;
 
     public BasicInformation(
         double rating,
@@ -39,7 +39,7 @@ public class BasicInformation {
         String image,
         Location location,
         Distance distance,
-        List<String> transactions
+        List<Transaction> transactions
     ) {
         this.rating = rating;
         this.pricingLevel = pricingLevel;

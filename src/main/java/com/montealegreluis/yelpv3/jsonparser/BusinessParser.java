@@ -57,10 +57,10 @@ class BasicInformationParser {
         return categories;
     }
 
-    private static List<String> buildTransactions(JSONArray registeredTransactions) {
-        List<String> transactions = new ArrayList<>();
+    private static List<Transaction> buildTransactions(JSONArray registeredTransactions) {
+        List<Transaction> transactions = new ArrayList<>();
         for (int i = 0; i < registeredTransactions.length(); i++)
-            transactions.add(registeredTransactions.getString(i));
+            transactions.add(new Transaction(registeredTransactions.getString(i)));
         return transactions;
     }
 
