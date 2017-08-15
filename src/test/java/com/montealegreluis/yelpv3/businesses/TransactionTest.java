@@ -1,7 +1,7 @@
-package com.montealegreluis.yelpv3.businesses;
 /*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
+package com.montealegreluis.yelpv3.businesses;
 
 import org.junit.Test;
 
@@ -19,5 +19,4 @@ public class TransactionTest {
         assertThat(delivery.label, is("Delivery"));
         assertThat(reservation.label, is("Restaurant Reservation"));
     }
-
 }
