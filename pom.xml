@@ -45,6 +45,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>0.13</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>com.detectlanguage</groupId>
             <artifactId>detectlanguage</artifactId>
             <version>1.0.5</version>

@@ -5,6 +5,7 @@ package com.montealegreluis.yelpv3.businesses;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SearchResult {
     public final int total;
@@ -15,5 +16,13 @@ public class SearchResult {
         this.total = total;
         this.businesses = Collections.unmodifiableList(businesses);
         this.region = region;
+    }
+
+    public List<Coordinates> coordinates() {
+        return businesses
+            .stream()
+            .map(business -> business.coordinates)
+            .collect(Collectors.toList())
+        ;
     }
 }
