@@ -5,7 +5,7 @@ package com.montealegreluis.yelpv3.businesses;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 public class SearchResult {
     public final int total;
@@ -18,11 +18,11 @@ public class SearchResult {
         this.region = region;
     }
 
-    public List<Coordinates> coordinates() {
-        return businesses
-            .stream()
-            .map(business -> business.coordinates)
-            .collect(Collectors.toList())
-        ;
+    public List<Map<String, Object>> businessesToMap(CustomBusinessesMapper mapper) {
+        return mapper.map(businesses);
+    }
+
+    public interface CustomBusinessesMapper {
+        List<Map<String,Object>> map(List<BasicInformation> businesses);
     }
 }
