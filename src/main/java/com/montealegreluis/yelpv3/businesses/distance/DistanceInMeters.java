@@ -4,19 +4,18 @@
 package com.montealegreluis.yelpv3.businesses.distance;
 
 public class DistanceInMeters extends Distance {
-    public final double meters;
 
     public DistanceInMeters(double meters) {
-        this.meters = meters;
+        super(Unit.METERS, meters);
+    }
+
+    @Override
+    public Double toMiles() {
+        return value / 1609.344;
     }
 
     @Override
     public Double toMeters() {
-        return meters;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%.2f meters", meters);
+        return value;
     }
 }

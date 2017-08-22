@@ -4,6 +4,16 @@
 package com.montealegreluis.yelpv3.businesses.distance;
 
 abstract public class Distance {
+    enum Unit {METERS, MILES}
+
+    public final Unit unit;
+    public final double value;
+
+    protected Distance(Unit unit, double value) {
+        this.unit = unit;
+        this.value = value;
+    }
+
     public static Distance inMeters(double meters) {
         return new DistanceInMeters(meters);
     }
@@ -24,5 +34,12 @@ abstract public class Distance {
         return toMeters() < distance.toMeters();
     }
 
+    @Override
+    public String toString() {
+        return String.format("%.2f %s", value, unit.toString().toLowerCase());
+    }
+
     public abstract Double toMeters();
+
+    public abstract Double toMiles();
 }
