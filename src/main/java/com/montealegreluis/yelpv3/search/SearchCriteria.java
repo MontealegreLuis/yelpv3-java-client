@@ -3,6 +3,7 @@
  */
 package com.montealegreluis.yelpv3.search;
 
+import com.montealegreluis.yelpv3.businesses.Coordinates;
 import com.montealegreluis.yelpv3.businesses.PricingLevel;
 import com.montealegreluis.yelpv3.businesses.distance.Distance;
 import org.apache.http.client.utils.URIBuilder;
@@ -19,6 +20,10 @@ public class SearchCriteria {
 
     public static SearchCriteria byLocation(String location) {
         return new SearchCriteria(location);
+    }
+
+    public static SearchCriteria byCoordinates(Coordinates coordinates) {
+        return new SearchCriteria(coordinates.latitude, coordinates.longitude);
     }
 
     public static SearchCriteria byCoordinates(Double latitude, Double longitude) {
