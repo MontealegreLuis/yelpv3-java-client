@@ -121,14 +121,7 @@ public class SearchCriteria {
     }
 
     public String queryStringForPage(int page) {
-        HashMap<String, String> queryString = new HashMap<>(parameters);
-        queryString.put("offset", String.valueOf((page - 1) * limit()));
-        return queryString.entrySet().stream()
-            .map(this::convertToQueryParameter)
-            .reduce((parameter1, parameter2) -> String.format("%s&%s", parameter1, parameter2))
-            .map(query -> "?" + query)
-            .orElse("")
-        ;
+        return QueryString.build(page, parameters, limit());
     }
 
     public int limit() {
@@ -162,8 +155,21 @@ public class SearchCriteria {
     public String toString() {
         return parameters.toString();
     }
+}
 
-    private String convertToQueryParameter(Map.Entry<String, String> parameter) {
+class QueryString {
+    static String build(int page, Map<String, String> parameters, int limit) {
+        HashMap<String, String> queryString = new HashMap<>(parameters);
+        queryString.put("offset", String.valueOf((page - 1) * limit));
+        return queryString.entrySet().stream()
+            .map(QueryString::convertToQueryParameter)
+            .reduce((parameter1, parameter2) -> String.format("%s&%s", parameter1, parameter2))
+            .map(query -> "?" + query)
+            .orElse("")
+        ;
+    }
+
+    private static String convertToQueryParameter(Map.Entry<String, String> parameter) {
         try {
             return String.format(
                 "%s=%s",
