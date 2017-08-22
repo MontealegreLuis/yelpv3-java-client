@@ -83,19 +83,6 @@ public class SearchCriteria {
         return newCriteria;
     }
 
-    /**
-     * Creates a copy of the current criteria, appending the category given
-     *
-     * @param category Any of the aliases in categories.json
-     */
-    public SearchCriteria appendCategory(String category) {
-        SearchCriteria newCriteria = new SearchCriteria(this);
-        String categories = newCriteria.parameters.get("categories");
-        newCriteria.parameters.put("categories", String.format("%s,%s", categories, category));
-
-        return newCriteria;
-    }
-
     public SearchCriteria withPricing(PricingLevel level) {
         parameters.put("price", level.value().toString());
         return this;
