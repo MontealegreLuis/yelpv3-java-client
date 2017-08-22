@@ -15,7 +15,7 @@ public class BasicInformation {
     public final String phone;
     public final String id;
     public final boolean isClosedPermanently;
-    public final List<Category> categories;
+    public final Categories categories;
     public final int reviewCount;
     public final String name;
     public final String url;
@@ -31,7 +31,7 @@ public class BasicInformation {
         String phone,
         String id,
         boolean isClosedPermanently,
-        List<Category> categories,
+        Categories categories,
         int reviewCount,
         String name,
         String url,
@@ -46,7 +46,7 @@ public class BasicInformation {
         this.phone = phone;
         this.id = id;
         this.isClosedPermanently = isClosedPermanently;
-        this.categories = Collections.unmodifiableList(categories);
+        this.categories = categories;
         this.reviewCount = reviewCount;
         this.name = name;
         this.url = url;

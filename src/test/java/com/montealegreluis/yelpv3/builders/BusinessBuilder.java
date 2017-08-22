@@ -5,6 +5,7 @@ package com.montealegreluis.yelpv3.builders;
 
 import com.github.javafaker.Faker;
 import com.montealegreluis.yelpv3.businesses.BasicInformation;
+import com.montealegreluis.yelpv3.businesses.Categories;
 import com.montealegreluis.yelpv3.businesses.PricingLevel;
 
 import java.util.Collections;
@@ -26,7 +27,7 @@ public class BusinessBuilder {
             faker.phoneNumber().phoneNumber(),
             faker.internet().slug(),
             faker.bool().bool(),
-            Collections.emptyList(),
+            new Categories(),
             faker.number().numberBetween(1, 500),
             faker.company().name(),
             faker.internet().url(),

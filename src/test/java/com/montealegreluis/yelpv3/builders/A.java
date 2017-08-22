@@ -11,13 +11,18 @@ import java.util.List;
 public class A {
     private static BusinessBuilder businessBuilder = new BusinessBuilder();
     private static CoordinatesBuilder coordinatesBuilder = new CoordinatesBuilder();
-
-    public static BusinessBuilder business() {
-        return businessBuilder;
-    }
+    private static CategoryBuilder categoryBuilder = new CategoryBuilder();
 
     public static CoordinatesBuilder coordinate() {
         return coordinatesBuilder;
+    }
+
+    public static CategoryBuilder category() {
+        return categoryBuilder;
+    }
+
+    public static BusinessBuilder business() {
+        return businessBuilder;
     }
 
     public static List<BasicInformation> groupOfBusinesses(int count) {

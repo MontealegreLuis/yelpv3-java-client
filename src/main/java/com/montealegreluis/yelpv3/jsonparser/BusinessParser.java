@@ -50,11 +50,11 @@ class BasicInformationParser {
         );
     }
 
-    private static List<Category> buildCategories(JSONArray businessCategories) {
+    private static Categories buildCategories(JSONArray businessCategories) {
         List<Category> categories = new ArrayList<>();
         for (int i = 0; i < businessCategories.length(); i++)
             categories.add(CategoryParser.from(businessCategories.getJSONObject(i)));
-        return categories;
+        return new Categories(categories);
     }
 
     private static List<Transaction> buildTransactions(JSONArray registeredTransactions) {
