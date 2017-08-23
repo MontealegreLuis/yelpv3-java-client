@@ -120,10 +120,10 @@ public class YelpTest {
                 result.businesses.get(0).distance.toString(),
                 area.toString()
             ),
-            result.businesses.get(0).isWithinRadius(area),
+            result.businesses.get(0).isWithinRadius(area.toMeters()),
             is(true)
         );
-        assertThat(result.businesses.get(1).isWithinRadius(area), is(true));
+        assertThat(result.businesses.get(1).isWithinRadius(area.toMeters()), is(true));
     }
 
     @Test

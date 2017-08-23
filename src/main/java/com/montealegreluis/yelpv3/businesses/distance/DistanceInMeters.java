@@ -5,17 +5,17 @@ package com.montealegreluis.yelpv3.businesses.distance;
 
 public class DistanceInMeters extends Distance {
 
-    public DistanceInMeters(double meters) {
+    DistanceInMeters(double meters) {
         super(Unit.METERS, meters);
     }
 
     @Override
-    public Double toMiles() {
-        return value / 1609.344;
+    public DistanceInMiles toMiles() {
+        return new DistanceInMiles(value / 1609.344);
     }
 
     @Override
-    public Double toMeters() {
-        return value;
+    public DistanceInMeters toMeters() {
+        return new DistanceInMeters(value);
     }
 }

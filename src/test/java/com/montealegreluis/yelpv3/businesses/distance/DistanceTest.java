@@ -17,8 +17,8 @@ public class DistanceTest {
         final Distance distance = Distance.inMeters(meters);
 
         assertThat(distance, instanceOf(DistanceInMeters.class));
-        assertThat(distance.toMeters(), is(meters));
-        assertThat(distance.toMiles(), closeTo(1.24, 0.01));
+        assertThat(distance.toMeters().value, is(meters));
+        assertThat(distance.toMiles().value, closeTo(1.24, 0.01));
     }
 
     @Test
@@ -27,7 +27,7 @@ public class DistanceTest {
         final Distance distance = Distance.inMiles(miles);
 
         assertThat(distance, instanceOf(DistanceInMiles.class));
-        assertThat(distance.toMeters(), closeTo(8046.72, .01));
-        assertThat(distance.toMiles(), is(miles));
+        assertThat(distance.toMeters().value, closeTo(8046.72, .01));
+        assertThat(distance.toMiles().value, is(miles));
     }
 }

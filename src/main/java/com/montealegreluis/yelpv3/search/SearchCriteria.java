@@ -55,7 +55,7 @@ public class SearchCriteria {
     public SearchCriteria withinARadiusOf(Distance distance) {
         if (distance.biggerThan(Distance.largest())) throw AreaTooLarge.withADistanceOf(distance);
 
-        parameters.put("radius", ((Integer) distance.toMeters().intValue()).toString());
+        parameters.put("radius", (Integer.valueOf(distance.toMeters().value.intValue())).toString());
         return this;
     }
 

@@ -7,7 +7,7 @@ abstract public class Distance {
     enum Unit {METERS, MILES}
 
     public final Unit unit;
-    public final double value;
+    public final Double value;
 
     protected Distance(Unit unit, double value) {
         this.unit = unit;
@@ -27,11 +27,11 @@ abstract public class Distance {
     }
 
     public boolean biggerThan(Distance distance) {
-        return toMeters() > distance.toMeters();
+        return value > distance.value;
     }
 
     public boolean smallerThan(Distance distance) {
-        return toMeters() < distance.toMeters();
+        return value < distance.value;
     }
 
     @Override
@@ -39,7 +39,7 @@ abstract public class Distance {
         return String.format("%.2f %s", value, unit.toString().toLowerCase());
     }
 
-    public abstract Double toMeters();
+    public abstract DistanceInMeters toMeters();
 
-    public abstract Double toMiles();
+    public abstract DistanceInMiles toMiles();
 }
