@@ -125,8 +125,8 @@ public class SearchCriteria {
         return Pagination.fromSearch(this, total);
     }
 
-    public String queryStringForPage(int page) {
-        return QueryString.build(page, parameters, limit());
+    public QueryString toQueryString() {
+        return QueryString.build(parameters, limit());
     }
 
     public int limit() {
@@ -159,30 +159,5 @@ public class SearchCriteria {
     @Override
     public String toString() {
         return parameters.toString();
-    }
-}
-
-class QueryString {
-    static String build(int page, Map<String, String> parameters, int limit) {
-        HashMap<String, String> queryString = new HashMap<>(parameters);
-        queryString.put("offset", String.valueOf((page - 1) * limit));
-        return queryString.entrySet().stream()
-            .map(QueryString::convertToQueryParameter)
-            .reduce((parameter1, parameter2) -> String.format("%s&%s", parameter1, parameter2))
-            .map(query -> "?" + query)
-            .orElse("")
-        ;
-    }
-
-    private static String convertToQueryParameter(Map.Entry<String, String> parameter) {
-        try {
-            return String.format(
-                "%s=%s",
-                URLEncoder.encode(parameter.getKey(), "UTF-8"),
-                URLEncoder.encode(parameter.getValue(), "UTF-8")
-            );
-        } catch (UnsupportedEncodingException e) {
-            throw new UnsupportedOperationException(e);
-        }
     }
 }

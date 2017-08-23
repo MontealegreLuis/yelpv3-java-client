@@ -67,42 +67,6 @@ public class SearchCriteriaTest {
     }
 
     @Test
-    public void it_can_be_represented_as_a_query_string() {
-        SearchCriteria criteria = SearchCriteria
-            .byLocation("San Antonio")
-            .withTerm("restaurants")
-            .withinARadiusOf(Distance.inMiles(2))
-            .inCategories("mexican")
-            .withPricing(MODERATE)
-            .withAttributes(HOT_AND_NEW, DEALS)
-            .openNow()
-            .limit(5)
-            .offset(5)
-            .sortBy(REVIEW_COUNT)
-        ;
-
-        assertThat(
-            criteria.queryStringForPage(2),
-            is("?open_now=true&offset=5&price=2&limit=5&location=San+Antonio&term=restaurants&attributes=hot_and_new%2Cdeals&categories=mexican&sort_by=review_count&radius=3218")
-        );
-    }
-
-    @Test
-    public void it_replaces_the_current_categories_with_a_new_one() {
-        SearchCriteria criteria = SearchCriteria
-            .byLocation("San Antonio")
-            .inCategories("mexican")
-        ;
-
-        SearchCriteria newCriteria = criteria.inCategory("newmexican");
-
-        assertThat(
-            newCriteria.queryStringForPage(2),
-            is("?offset=20&location=San+Antonio&categories=newmexican")
-        );
-    }
-
-    @Test
     public void it_has_access_to_the_current_limit_and_offset_values() {
         int limit = 5;
         int offset = 15;
