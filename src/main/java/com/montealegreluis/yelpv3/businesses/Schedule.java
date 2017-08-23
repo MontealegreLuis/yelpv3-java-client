@@ -24,7 +24,7 @@ public class Schedule {
             .entrySet()
             .stream()
             .filter(entry -> entry.getKey().equals(day))
-            .map(entry -> entry.getValue())
+            .map(Map.Entry::getValue)
             .findFirst()
             .orElse(Collections.emptyList())
         ;

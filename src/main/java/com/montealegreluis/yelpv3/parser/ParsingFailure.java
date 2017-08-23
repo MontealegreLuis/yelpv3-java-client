@@ -3,16 +3,15 @@
  */
 package com.montealegreluis.yelpv3.parser;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ParsingFailure extends RuntimeException {
 
-    private ParsingFailure(String format, JSONException e) {
+    private ParsingFailure(String format, Exception e) {
         super(format, e);
     }
 
-    public static ParsingFailure producedBy(JSONObject information, JSONException exception) {
+    public static ParsingFailure producedBy(JSONObject information, Exception exception) {
         return new ParsingFailure(
             String.format("Cannot parse object%n%s", information.toString(2)),
             exception

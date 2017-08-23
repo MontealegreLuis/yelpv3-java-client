@@ -5,6 +5,7 @@ package com.montealegreluis.yelpv3.businesses;
 
 import com.montealegreluis.yelpv3.businesses.distance.Distance;
 
+import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,9 +19,9 @@ public class BasicInformation {
     public final Categories categories;
     public final int reviewCount;
     public final String name;
-    public final String url;
+    public final URL url;
     public final Coordinates coordinates;
-    public final String image;
+    public final URL image;
     public final Location location;
     public final Distance distance;
     public final List<Transaction> transactions;
@@ -34,9 +35,9 @@ public class BasicInformation {
         Categories categories,
         int reviewCount,
         String name,
-        String url,
+        URL url,
         Coordinates coordinates,
-        String image,
+        URL image,
         Location location,
         Distance distance,
         List<Transaction> transactions
