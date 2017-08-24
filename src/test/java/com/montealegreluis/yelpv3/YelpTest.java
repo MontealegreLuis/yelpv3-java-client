@@ -20,6 +20,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
@@ -335,16 +336,27 @@ public class YelpTest {
 
     @BeforeClass
     public static void loadYelpCredentials() throws Exception {
+        if (System.getenv("YELP_ID") != null) loadKeysFromEnv();
+        else loadKeysFromFile();
+
+        yelp = new Yelp(new Credentials(clientID, clientSecret));
+        token = yelp.token();
+    }
+
+    private static void loadKeysFromEnv() {
+        clientID = System.getenv("YELP_ID");
+        clientSecret = System.getenv("YELP_SECRET");
+        languageDetectKey = System.getenv("LANGUAGE_KEY");
+    }
+
+    private static void loadKeysFromFile() throws IOException {
         Properties properties = new Properties();
         Path path = Paths.get("src/main/resources/application.properties");
         properties.load(new FileInputStream(path.toAbsolutePath().toString()));
 
-        languageDetectKey = properties.getProperty("languagedetect.api.key");
         clientID = properties.getProperty("yelp.api.client_id");
         clientSecret = properties.getProperty("yelp.api.client_secret");
-
-        yelp = new Yelp(new Credentials(clientID, clientSecret));
-        token = yelp.token();
+        languageDetectKey = properties.getProperty("languagedetect.api.key");
     }
 
     private static Yelp yelp;
