@@ -17,6 +17,12 @@ public class QueryString {
         return new QueryString(parameters, pageSize);
     }
 
+    public QueryString inCategory(String category) {
+        QueryString queryString = new QueryString(new HashMap<>(parameters), pageSize);
+        queryString.parameters.put("categories", category);
+        return queryString;
+    }
+
     public QueryString forPage(int page) {
         this.page = page;
         return this;

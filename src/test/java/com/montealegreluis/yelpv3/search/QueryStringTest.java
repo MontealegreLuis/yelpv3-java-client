@@ -28,25 +28,25 @@ public class QueryStringTest {
             .offset(5)
             .sortBy(REVIEW_COUNT)
         ;
-        QueryString queryString = criteria.toQueryString();
+        QueryString query = criteria.toQueryString();
+
+        String queryString = query.forPage(2).toString();
 
         assertThat(
-            queryString.forPage(2).toString(),
+            queryString,
             is("?open_now=true&offset=5&price=2&limit=5&location=San+Antonio&term=restaurants&attributes=hot_and_new%2Cdeals&categories=mexican&sort_by=review_count&radius=3218")
         );
     }
 
     @Test
     public void it_gets_build_correctly_when_the_current_category_is_replaced() {
-        SearchCriteria criteria = SearchCriteria
-            .byLocation("San Antonio")
-            .inCategories("mexican")
-        ;
-        SearchCriteria newCriteria = criteria.inCategory("newmexican");
-        QueryString queryString = newCriteria.toQueryString();
+        SearchCriteria criteria = SearchCriteria.byLocation("San Antonio").inCategories("mexican");
+        QueryString query = criteria.toQueryString();
+
+        String queryString = query.inCategory("newmexican").forPage(2).toString();
 
         assertThat(
-            queryString.forPage(2).toString(),
+            queryString,
             is("?offset=20&location=San+Antonio&categories=newmexican")
         );
     }
