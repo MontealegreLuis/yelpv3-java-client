@@ -4,6 +4,7 @@
 package com.montealegreluis.yelpv3.jsonparser;
 
 import com.montealegreluis.yelpv3.businesses.Business;
+import com.montealegreluis.yelpv3.businesses.Businesses;
 import com.montealegreluis.yelpv3.businesses.Region;
 import com.montealegreluis.yelpv3.businesses.SearchResult;
 import com.montealegreluis.yelpv3.parser.ParsingFailure;
@@ -29,12 +30,12 @@ class SearchResultParser {
         }
     }
 
-    private static List<Business> parseBusinesses(
+    private static Businesses parseBusinesses(
         JSONArray businessResults
     ) throws MalformedURLException {
         List<Business> businesses = new ArrayList<>();
         for (int i = 0; i < businessResults.length(); i++)
             businesses.add(BusinessParser.businessFrom(businessResults.getJSONObject(i)));
-        return businesses;
+        return new Businesses(businesses);
     }
 }

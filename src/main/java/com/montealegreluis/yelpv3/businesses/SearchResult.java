@@ -3,18 +3,17 @@
  */
 package com.montealegreluis.yelpv3.businesses;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 public class SearchResult {
     public final int total;
-    public final List<Business> businesses;
+    public final Businesses businesses;
     public final Region region;
 
-    public SearchResult(int total, List<Business> businesses, Region region) {
+    public SearchResult(int total, Businesses businesses, Region region) {
         this.total = total;
-        this.businesses = Collections.unmodifiableList(businesses);
+        this.businesses = businesses;
         this.region = region;
     }
 
@@ -23,6 +22,6 @@ public class SearchResult {
     }
 
     public interface CustomBusinessesMapper {
-        List<Map<String,Object>> map(List<Business> businesses);
+        List<Map<String,Object>> map(Businesses businesses);
     }
 }

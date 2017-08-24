@@ -4,6 +4,7 @@
 package com.montealegreluis.yelpv3.builders;
 
 import com.montealegreluis.yelpv3.businesses.Business;
+import com.montealegreluis.yelpv3.businesses.Businesses;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +26,11 @@ public class A {
         return businessBuilder;
     }
 
-    public static List<Business> groupOfBusinesses(int count) {
+    public static Businesses groupOfBusinesses(int count) {
         List<Business> businesses = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             businesses.add(businessBuilder.build());
         }
-        return businesses;
+        return new Businesses(businesses);
     }
 }
