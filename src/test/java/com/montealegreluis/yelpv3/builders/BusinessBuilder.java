@@ -14,9 +14,15 @@ import java.util.Collections;
 
 public class BusinessBuilder {
     private final Faker faker;
+    private String id;
 
     BusinessBuilder() {
         faker = new Faker();
+    }
+
+    public BusinessBuilder withId(String businessId) {
+        id = businessId;
+        return this;
     }
 
     public Business build() {
@@ -28,7 +34,7 @@ public class BusinessBuilder {
                     Collections.nCopies(faker.number().numberBetween(1, 4), "$")
                 )),
                 faker.phoneNumber().phoneNumber(),
-                faker.internet().slug(),
+                id != null ? id : faker.internet().slug(),
                 faker.bool().bool(),
                 new Categories(),
                 faker.number().numberBetween(1, 500),
