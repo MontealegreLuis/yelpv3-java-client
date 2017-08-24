@@ -312,8 +312,8 @@ public class YelpTest {
 
         BusinessResponse response = yelp.searchById(businessId);
 
-        assertThat(response.business().basicInformation.id, is(businessId));
-        assertThat(response.business().basicInformation.isInCity("San Antonio"), is(true));
+        assertThat(response.business().id, is(businessId));
+        assertThat(response.business().isInCity("San Antonio"), is(true));
     }
 
     @Test
@@ -334,8 +334,8 @@ public class YelpTest {
 
         BusinessResponse response = yelp.searchById(businessId);
 
-        assertThat(response.business().basicInformation.id, is(businessId));
-        assertThat(response.business().basicInformation.isInCity("San Antonio"), is(true));
+        assertThat(response.business().id, is(businessId));
+        assertThat(response.business().isInCity("San Antonio"), is(true));
     }
 
     @BeforeClass

@@ -3,14 +3,14 @@
  */
 package com.montealegreluis.yelpv3.client;
 
-import com.montealegreluis.yelpv3.businesses.Business;
+import com.montealegreluis.yelpv3.businesses.BusinessDetails;
 
 public class BusinessResponse extends Response {
     public static BusinessResponse fromOriginalResponse(String jsonResponse) {
         return new BusinessResponse(jsonResponse);
     }
 
-    public Business business() {
+    public BusinessDetails business() {
         return parser.business(jsonResponse);
     }
 

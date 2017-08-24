@@ -3,7 +3,7 @@
  */
 package com.montealegreluis.yelpv3.jsonparser;
 
-import com.montealegreluis.yelpv3.businesses.Business;
+import com.montealegreluis.yelpv3.businesses.BusinessDetails;
 import com.montealegreluis.yelpv3.businesses.SearchResult;
 import com.montealegreluis.yelpv3.client.AccessToken;
 import com.montealegreluis.yelpv3.parser.Parser;
@@ -14,8 +14,8 @@ import java.util.List;
 
 public class JSONParser implements Parser {
     @Override
-    public Business business(String response) {
-        return BusinessParser.parseFrom(new JSONObject(response));
+    public BusinessDetails business(String response) {
+        return BusinessParser.detailsFrom(new JSONObject(response));
     }
 
     @Override

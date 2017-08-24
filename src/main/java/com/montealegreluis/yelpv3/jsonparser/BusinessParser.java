@@ -20,36 +20,53 @@ import java.util.List;
 import java.util.Map;
 
 class BusinessParser {
-    static Business parseFrom(JSONObject businessInformation) {
+    static BusinessDetails detailsFrom(JSONObject information) {
         try {
-            return new Business(
-                BasicInformationParser.parseFrom(businessInformation),
-                DetailsParser.from(businessInformation)
+            return new BusinessDetails(
+                information.getDouble("rating"),
+                information.has("price") ? PricingLevel.fromSymbol(information.getString("price")) : PricingLevel.NONE,
+                information.getString("phone"),
+                information.getString("id"),
+                information.getBoolean("is_closed"),
+                buildCategories(information.getJSONArray("categories")),
+                information.getInt("review_count"),
+                information.getString("name"),
+                new URL(information.getString("url")),
+                CoordinatesParser.from(information.getJSONObject("coordinates")),
+                new URL(information.getString("image_url")),
+                LocationParser.from(information.getJSONObject("location")),
+                !information.isNull("distance") ? Distance.inMeters(information.getDouble("distance")) : null,
+                buildTransactions(information.getJSONArray("transactions")),
+                !information.isNull("is_claimed") && information.getBoolean("is_claimed"),
+                !information.isNull("photos") ? buildPhotos(information.getJSONArray("photos")) : null,
+                !information.isNull("hours") ? ScheduleParser.from(information.getJSONArray("hours")) : null
             );
         } catch (JSONException | MalformedURLException exception) {
-            throw ParsingFailure.producedBy(businessInformation, exception);
+            throw ParsingFailure.producedBy(information, exception);
         }
     }
-}
 
-class BasicInformationParser {
-    static BasicInformation parseFrom(JSONObject information) throws MalformedURLException {
-        return new BasicInformation(
-            information.getDouble("rating"),
-            information.has("price") ? PricingLevel.fromSymbol(information.getString("price")) : PricingLevel.NONE,
-            information.getString("phone"),
-            information.getString("id"),
-            information.getBoolean("is_closed"),
-            buildCategories(information.getJSONArray("categories")),
-            information.getInt("review_count"),
-            information.getString("name"),
-            new URL(information.getString("url")),
-            CoordinatesParser.from(information.getJSONObject("coordinates")),
-            new URL(information.getString("image_url")),
-            LocationParser.from(information.getJSONObject("location")),
-            !information.isNull("distance") ? Distance.inMeters(information.getDouble("distance")) : null,
-            buildTransactions(information.getJSONArray("transactions"))
-        );
+    static Business businessFrom(JSONObject information) {
+        try {
+            return new Business(
+                information.getDouble("rating"),
+                information.has("price") ? PricingLevel.fromSymbol(information.getString("price")) : PricingLevel.NONE,
+                information.getString("phone"),
+                information.getString("id"),
+                information.getBoolean("is_closed"),
+                buildCategories(information.getJSONArray("categories")),
+                information.getInt("review_count"),
+                information.getString("name"),
+                new URL(information.getString("url")),
+                CoordinatesParser.from(information.getJSONObject("coordinates")),
+                new URL(information.getString("image_url")),
+                LocationParser.from(information.getJSONObject("location")),
+                !information.isNull("distance") ? Distance.inMeters(information.getDouble("distance")) : null,
+                buildTransactions(information.getJSONArray("transactions"))
+            );
+        } catch (JSONException | MalformedURLException exception) {
+            throw ParsingFailure.producedBy(information, exception);
+        }
     }
 
     private static Categories buildCategories(JSONArray businessCategories) {
@@ -66,6 +83,14 @@ class BasicInformationParser {
         return transactions;
     }
 
+    private static List<URL> buildPhotos(JSONArray businessPhotos) throws MalformedURLException {
+        List<URL> photos = new ArrayList<>();
+
+        for (int i = 0; i < businessPhotos.length(); i++)
+            photos.add(new URL(businessPhotos.getString(i)));
+
+        return photos;
+    }
 }
 
 class CategoryParser {
@@ -108,25 +133,6 @@ class LocationParser {
             displayAddress.add(businessDisplayAddress.getString(i));
 
         return displayAddress;
-    }
-}
-
-class DetailsParser {
-    static Details from(JSONObject information) throws MalformedURLException {
-        return new Details(
-            !information.isNull("is_claimed") && information.getBoolean("is_claimed"),
-            !information.isNull("photos") ? buildPhotos(information.getJSONArray("photos")) : null,
-            !information.isNull("hours") ? ScheduleParser.from(information.getJSONArray("hours")) : null
-        );
-    }
-
-    private static List<URL> buildPhotos(JSONArray businessPhotos) throws MalformedURLException {
-        List<URL> photos = new ArrayList<>();
-
-        for (int i = 0; i < businessPhotos.length(); i++)
-            photos.add(new URL(businessPhotos.getString(i)));
-
-        return photos;
     }
 }
 

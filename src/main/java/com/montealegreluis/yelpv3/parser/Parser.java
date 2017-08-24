@@ -3,7 +3,7 @@
  */
 package com.montealegreluis.yelpv3.parser;
 
-import com.montealegreluis.yelpv3.businesses.Business;
+import com.montealegreluis.yelpv3.businesses.BusinessDetails;
 import com.montealegreluis.yelpv3.businesses.SearchResult;
 import com.montealegreluis.yelpv3.client.AccessToken;
 import com.montealegreluis.yelpv3.reviews.Review;
@@ -11,7 +11,7 @@ import com.montealegreluis.yelpv3.reviews.Review;
 import java.util.List;
 
 public interface Parser {
-    Business business(String response);
+    BusinessDetails business(String response);
 
     SearchResult searchResult(String response);
 

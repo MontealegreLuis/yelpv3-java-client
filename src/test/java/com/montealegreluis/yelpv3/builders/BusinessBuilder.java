@@ -4,7 +4,7 @@
 package com.montealegreluis.yelpv3.builders;
 
 import com.github.javafaker.Faker;
-import com.montealegreluis.yelpv3.businesses.BasicInformation;
+import com.montealegreluis.yelpv3.businesses.Business;
 import com.montealegreluis.yelpv3.businesses.Categories;
 import com.montealegreluis.yelpv3.businesses.PricingLevel;
 
@@ -19,9 +19,9 @@ public class BusinessBuilder {
         faker = new Faker();
     }
 
-    public BasicInformation build() {
+    public Business build() {
         try {
-            return new BasicInformation(
+            return new Business(
                 faker.number().numberBetween(1, 5),
                 PricingLevel.fromSymbol(String.join(
                     "",
