@@ -5,6 +5,7 @@ package com.montealegreluis.yelpv3;
 
 import com.detectlanguage.DetectLanguage;
 import com.detectlanguage.Result;
+import com.montealegreluis.yelpv3.businesses.Businesses;
 import com.montealegreluis.yelpv3.businesses.Category;
 import com.montealegreluis.yelpv3.businesses.PricingLevel;
 import com.montealegreluis.yelpv3.businesses.SearchResult;
@@ -269,16 +270,10 @@ public class YelpTest {
             .sortBy(REVIEW_COUNT)
         ;
 
-        SearchResult sorted = yelp.search(withMoreReviews).searchResult();
+        Businesses sorted = yelp.search(withMoreReviews).searchResult().businesses.sortByReviewCount();
 
-        assertThat(
-            sorted.businesses.get(0).hasMoreReviewsThan(sorted.businesses.get(1)),
-            is(true)
-        );
-        assertThat(
-            sorted.businesses.get(1).hasMoreReviewsThan(sorted.businesses.get(2)),
-            is(true)
-        );
+        assertThat(sorted.get(0).hasMoreReviewsThan(sorted.get(1)), is(true));
+        assertThat(sorted.get(1).hasMoreReviewsThan(sorted.get(2)), is(true));
     }
 
     @Test

@@ -3,6 +3,7 @@
  */
 package com.montealegreluis.yelpv3.businesses;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,5 +19,12 @@ public class Businesses extends ImmutableList<Business> {
             .collect(Collectors.toList())
         ;
         return new Businesses(filteredBusiness);
+    }
+
+    public Businesses sortByReviewCount() {
+        List<Business> businesses = new ArrayList<>(this);
+        businesses.sort((businessA, businessB) -> businessB.reviewCount - businessA.reviewCount);
+
+        return new Businesses(businesses);
     }
 }
