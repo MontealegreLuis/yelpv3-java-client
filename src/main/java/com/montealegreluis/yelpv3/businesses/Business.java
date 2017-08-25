@@ -86,10 +86,10 @@ public class Business {
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        if (other == null || getClass() != other.getClass()) return false;
+        if (other == null || !(other instanceof Business)) return false;
 
-        Business business = (Business) other;
+        Business anotherBusiness = (Business) other;
 
-        return id.equals(business.id);
+        return this.id.equals(anotherBusiness.id);
     }
 }
