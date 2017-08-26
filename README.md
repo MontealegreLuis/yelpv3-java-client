@@ -152,7 +152,7 @@ public class Demo {
         SearchResult result = yelp.search(criteria).searchResult();
 
         System.out.println(result.total);
-        for (BasicInformation business : result.businesses) {
+        for (Business business : result.businesses) {
             System.out.println("--------------------------------------");
             System.out.println(business.id);
             System.out.println(business.name);
@@ -189,26 +189,26 @@ public class Demo {
 
         String jsonResponse = response.originalResponse();
 
-        Business business = response.business();
+        BusinessDetails business = response.business();
 
-        System.out.println(business.basicInformation.id);
-        System.out.println(business.basicInformation.name);
-        System.out.println(business.basicInformation.rating);
-        System.out.println(business.basicInformation.distance);
+        System.out.println(business.id);
+        System.out.println(business.name);
+        System.out.println(business.rating);
+        System.out.println(business.distance);
         System.out.println("Location:");
-        System.out.println(business.basicInformation.location.address1);
-        System.out.println(business.basicInformation.location.zipCode);
+        System.out.println(business.location.address1);
+        System.out.println(business.location.zipCode);
         System.out.println("Coordinates:");
-        System.out.println(business.basicInformation.coordinates.latitude);
-        System.out.println(business.basicInformation.coordinates.longitude);
+        System.out.println(business.coordinates.latitude);
+        System.out.println(business.coordinates.longitude);
         System.out.println("Transactions");
-        if (business.basicInformation.transactions.size() > 0)
-            business.basicInformation.transactions.forEach(transaction -> System.out.println(transaction.label));
+        if (business.transactions.size() > 0)
+            business.transactions.forEach(transaction -> System.out.println(transaction.label));
         else System.out.println("No transactions for this business");
         System.out.println("Photos");
-        for (String photo: business.details.photos) System.out.println(photo);
-        if (business.details.schedule.isOpenNow) System.out.println("Business is open now!");
-        business.details.schedule.hours.forEach((day, hours) -> {
+        for (String photo: business.photos) System.out.println(photo);
+        if (business.schedule.isOpenNow) System.out.println("Business is open now!");
+        business.schedule.hours.forEach((day, hours) -> {
             System.out.println(hour.day.toString());
             for (Hour hour : hours) {
                 System.out.println(hour.start.toString());
