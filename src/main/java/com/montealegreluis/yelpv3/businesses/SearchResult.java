@@ -17,6 +17,35 @@ public class SearchResult {
         this.region = region;
     }
 
+    /**
+     * Sometimes it will be needed to convert a search result to JSON. Using a <code>Map</code> to
+     * convert it to JSON later, is one way that requires few effort.
+     * <p>
+     * One common use case is to create a Google map for the businesses in the current search result
+     * <p>
+     * In this case it is possible to customize which properties to use. Let's suppose that only the
+     * business ID, name, and coordinates are needed
+     * <p>
+     * <code>
+     *     class BusinessMapper implements CustomBusinessesMapper {
+     *         public List<Map<String,Object>> map(Businesses businesses) {
+     *             return businesses
+     *                 .stream()
+     *                 .map(this::businessToMap)
+     *                 .collect(Collectors.toList())
+     *             ;
+     *         }
+     *
+     *         private Map<String, Object> businessToMap(Business business) {
+     *             Map<String, Object> businessInformation = new HashMap<>();
+     *             businessInformation.put("id", business.id);
+     *             businessInformation.put("name", business.name);
+     *             businessInformation.put("coordinates", business.coordinates);
+     *             return businessInformation;
+     *         }
+     *     }
+     * </code>
+     */
     public List<Map<String, Object>> businessesToMap(CustomBusinessesMapper mapper) {
         return mapper.map(businesses);
     }
