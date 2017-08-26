@@ -30,6 +30,7 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+import static com.montealegreluis.yelpv3.businesses.distance.UnitOfLength.METERS;
 import static com.montealegreluis.yelpv3.search.Attribute.DEALS;
 import static com.montealegreluis.yelpv3.search.Attribute.HOT_AND_NEW;
 import static com.montealegreluis.yelpv3.search.SortingMode.REVIEW_COUNT;
@@ -122,10 +123,10 @@ public class YelpTest {
                 result.businesses.get(0).distance.toString(),
                 area.toString()
             ),
-            result.businesses.get(0).isWithinRadius(area.toMeters()),
+            result.businesses.get(0).isWithinRadius(area.convertTo(METERS)),
             is(true)
         );
-        assertThat(result.businesses.get(1).isWithinRadius(area.toMeters()), is(true));
+        assertThat(result.businesses.get(1).isWithinRadius(area.convertTo(METERS)), is(true));
     }
 
     @Test

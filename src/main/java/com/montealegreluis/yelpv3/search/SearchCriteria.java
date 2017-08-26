@@ -8,11 +8,11 @@ import com.montealegreluis.yelpv3.businesses.PricingLevel;
 import com.montealegreluis.yelpv3.businesses.distance.Distance;
 import org.apache.http.client.utils.URIBuilder;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import static com.montealegreluis.yelpv3.businesses.distance.UnitOfLength.METERS;
 
 public class SearchCriteria {
     private final int defaultPageSize = 20;
@@ -55,7 +55,11 @@ public class SearchCriteria {
     public SearchCriteria withinARadiusOf(Distance distance) {
         if (distance.biggerThan(Distance.largest())) throw AreaTooLarge.withADistanceOf(distance);
 
-        parameters.put("radius", (Integer.valueOf(distance.toMeters().value.intValue())).toString());
+        parameters.put(
+            "radius",
+            (Integer.valueOf(distance.convertTo(METERS).value.intValue())).toString()
+        );
+
         return this;
     }
 
