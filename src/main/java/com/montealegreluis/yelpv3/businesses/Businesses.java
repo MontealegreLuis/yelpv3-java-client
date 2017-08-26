@@ -12,15 +12,24 @@ public class Businesses extends ImmutableList<Business> {
         super(businesses);
     }
 
+    /**
+     * It is often useful to perform a new search using a given business' coordinate and categories
+     * in order to suggest similar places
+     * <p>
+     * This method will exclude that said business from the current collection.
+     */
     public Businesses excluding(Business excludedBusiness) {
         List<Business> filteredBusiness = this
             .stream()
             .filter(business -> !business.equals(excludedBusiness))
-            .collect(Collectors.toList())
-        ;
+            .collect(Collectors.toList());
         return new Businesses(filteredBusiness);
     }
 
+    /**
+     * Sort businesses by their review count in descending order, since Yelp may return them in a
+     * different order even when review count is specified in the search
+     */
     public Businesses sortByReviewCount() {
         List<Business> businesses = new ArrayList<>(this);
         businesses.sort((businessA, businessB) -> businessB.reviewCount - businessA.reviewCount);

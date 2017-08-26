@@ -14,6 +14,13 @@ public class Categories extends ImmutableList<Category> {
         super();
     }
 
+    /**
+     * It is often useful to perform a new search using a given business' categories in order to
+     * suggest similar places
+     * <p>
+     * This method will transform the current collection of categories into a CSV string which is
+     * the format expected by <code>SearchCriteria</code>
+     */
     public String toCsv() {
         return this
             .stream()
