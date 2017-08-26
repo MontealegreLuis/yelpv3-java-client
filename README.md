@@ -9,10 +9,15 @@ It currently supports
 
 * [Search](https://www.yelp.com/developers/documentation/v3/business_search)
 * [Business](https://www.yelp.com/developers/documentation/v3/business)
+* [Reviews](https://www.yelp.com/developers/documentation/v3/business_reviews)
+
+
+** NOTE. ** This is a work in progress, expect breaking changes. Take a look at the `Releases` tab
+for a stable version. This branch will be tagged as `v2`, as soon as I can.
 
 # Installation
 
-Install this library via Maven and [Jitpack](https://jitpack.io/). Add 
+Install this library via Maven and [Jitpack](https://jitpack.io/). Add
 the following repository to your POM file.
 
 ```xml
@@ -31,7 +36,7 @@ Now add the following dependency.
     <dependency>
         <groupId>com.github.MontealegreLuis</groupId>
         <artifactId>yelpv3-java-client</artifactId>
-        <version>1.0.0</version>
+        <version>master-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```
@@ -43,16 +48,16 @@ That's it! Enjoy!
 ### Authentication
 
 Since access tokens expire in 180 days, you could save the token in your database,
-and renew it only if needed. All methods will authenticate automatically if no 
+and renew it only if needed. All methods will authenticate automatically if no
 access token is present.
 
 ```java
 public class Demo {
     public static void main(String[] args){
         Yelp yelp = new Yelp("YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET");
-        
+
         AccessToken token = yelp.token();
-        
+
         System.out.printf("Access token:%s%n", token.accessToken());
         System.out.printf("Token type:%s%n", token.tokenType());
         System.out.printf("Expires on:%s%n", token.expiresOn());
@@ -63,9 +68,9 @@ public class Demo {
 
 ### Searching businesses
 
-Yelp's Business Search API supports two types of search
+Yelp's Business Search API supports two types of searches
 
-* **By Location**. It uses the combination of address, neighborhood, city, state or zip, 
+* **By Location**. It uses the combination of address, neighborhood, city, state or zip,
   and optionally the country
 * **By Coordinates**. The latitude and longitude of the business
 
@@ -77,9 +82,10 @@ They cannot be used at the same time
 public class Demo {
     public static void main(String[] args){
         Yelp yelp = new Yelp("YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET");
-        
+
         yelp.search(SearchCriteria.byLocation("San Antonio"));
         yelp.search(SearchCriteria.byCoordinates(29.426786, -98.489576));
+        yelp.search(SearchCriteria.byCoordinates(new Coordinates(29.426786, -98.489576)));
     }
 }
 ```
@@ -87,13 +93,13 @@ public class Demo {
 #### Searching options
 
 See the official 
-[documentation](https://www.yelp.com/developers/documentation/v3/business_search) for more details. 
+[documentation](https://www.yelp.com/developers/documentation/v3/business_search) for more details.
 
 ```java
 public class Demo {
     public static void main(String[] args) {
         Yelp yelp = new Yelp("YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET");
-        
+
         SearchCriteria criteria = SearchCriteria
             .byLocation("San Antonio")
             .withTerm("restaurants")
@@ -106,7 +112,7 @@ public class Demo {
             .offset(5)
             .sortBy(SortingMode.REVIEW_COUNT)
         ;
-        
+
         yelp.search(criteria);
     }
 }
@@ -116,16 +122,16 @@ It is possible to specify the same criteria when using coordinates instead of lo
 
 #### Using this library as a proxy
 
-If you want to use this library as a proxy to avoid CORS issues in your JavaScript. It is possible 
+If you want to use this library as a proxy to avoid CORS issues in your JavaScript. It is possible
 to get the original Yelp JSON response.
 
 ```java
 public class Demo {
     public static void main(String[] args) {
         Yelp yelp = new Yelp("YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET");
-        
+
         SearchCriteria criteria = SearchCriteria.byLocation("San Antonio");
-        
+
         String originalJsonResponse = yelp.search(criteria).originalResponse();
     }
 }
@@ -140,11 +146,11 @@ DTO.
 public class Demo {
     public static void main(String[] args){
         Yelp yelp = new Yelp("YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET");
-                
+
         SearchCriteria criteria = SearchCriteria.byLocation("San Antonio");
-        
+
         SearchResult result = yelp.search(criteria).searchResult();
-        
+
         System.out.println(result.total);
         for (BasicInformation business : result.businesses) {
             System.out.println("--------------------------------------");
@@ -160,7 +166,7 @@ public class Demo {
             System.out.println(business.coordinates.longitude);
             System.out.println("Transactions");
             if (business.transactions.size() > 0)
-                business.transactions.forEach(System.out::println);
+                business.transactions.forEach(transaction -> System.out.println(transaction.label));
             else System.out.println("No transactions were registered for this business");
         }
     }
@@ -178,13 +184,13 @@ We also have 2 options when searching by ID
 public class Demo {
     public static void main(String[] args){
         Yelp yelp = new Yelp("YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET");
-        
+
         BusinessResponse response = yelp.searchById("bella-on-the-river-san-antonio");
-        
+
         String jsonResponse = response.originalResponse();
-        
+
         Business business = response.business();
-       
+
         System.out.println(business.basicInformation.id);
         System.out.println(business.basicInformation.name);
         System.out.println(business.basicInformation.rating);
@@ -197,15 +203,46 @@ public class Demo {
         System.out.println(business.basicInformation.coordinates.longitude);
         System.out.println("Transactions");
         if (business.basicInformation.transactions.size() > 0)
-            business.basicInformation.transactions.forEach(System.out::println);
+            business.basicInformation.transactions.forEach(transaction -> System.out.println(transaction.label));
         else System.out.println("No transactions for this business");
         System.out.println("Photos");
         for (String photo: business.details.photos) System.out.println(photo);
         if (business.details.schedule.isOpenNow) System.out.println("Business is open now!");
-        for (Hour hours : business.details.schedule.hours) {
-            System.out.println(hours.day.toString());
-            System.out.println(hours.start.toString());
-            System.out.println(hours.end.toString());
+        business.details.schedule.hours.forEach((day, hours) -> {
+            System.out.println(hour.day.toString());
+            for (Hour hour : hours) {
+                System.out.println(hour.start.toString());
+                System.out.println(hour.end.toString());
+            }
+        });
+    }
+}
+```
+
+### Business reviews
+
+We also have 2 options when getting a business reviews
+
+* Get the original response
+* De-serialize the response to a DTO
+
+```java
+public class Demo {
+    public static void main(String[] args){
+        Yelp yelp = new Yelp("YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET");
+
+        BusinessResponse response = yelp.reviews("bella-on-the-river-san-antonio");
+
+        String jsonResponse = response.originalResponse();
+
+        List<Review> reviews = response.reviews();
+        
+        for (Review review: reviews) {
+            System.out.println(review.createdAt);
+            System.out.println(review.rating);
+            System.out.println(review.text);
+            System.out.println(review.user.image);
+            System.out.println(review.user.name);
         }
     }
 }
@@ -222,11 +259,11 @@ public class Demo {
         String token;    // It should come from your database
         String type;     // It should come from your database
         long expiresOn;  // It should come from your database
-        
+
         AccessToken token = AccessToken.fromValues(token, type, expiresOn);
-        
+
         Yelp yelp = new Yelp("YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", token);
-        
+
         Business business = yelp.searchById("bella-on-the-river-san-antonio");
     }
 }
