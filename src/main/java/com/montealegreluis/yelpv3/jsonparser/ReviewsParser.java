@@ -16,8 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReviewsParser {
-    public static List<Review> parseFrom(JSONObject reviewsResult) {
+class ReviewsParser {
+    static List<Review> parseFrom(JSONObject reviewsResult) {
         JSONArray jsonReviews = reviewsResult.getJSONArray("reviews");
         List<Review> reviews = new ArrayList<>();
 

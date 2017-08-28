@@ -23,6 +23,7 @@ public class JSONParser implements Parser {
         return SearchResultParser.parseFrom(new JSONObject(response));
     }
 
+    @Override
     public List<Review> reviews(String response) {
         return ReviewsParser.parseFrom(new JSONObject(response));
     }

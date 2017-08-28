@@ -13,6 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Since there's no endpoint to get all  the available categories in Yelp, this class will read them
+ * from the <code>categories.json</code> file
+ * <p>
+ * This class is useful if you want to populate a drop down with the available categories in a page
+ */
 public class SearchCategoryParser {
     private static final SearchCategories categories = new SearchCategories();
 
