@@ -9,6 +9,9 @@ import org.apache.http.client.utils.URIBuilder;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+/**
+ * Factory with links to the endpoints currently available
+ */
 public class YelpURIs {
     public URI searchBy(SearchCriteria criteria) {
         try {

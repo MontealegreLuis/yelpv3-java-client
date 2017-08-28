@@ -20,6 +20,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This client is currently supporting the following endpoints
+ * <p>
+ * <ul>
+ * <li>Authentication</li>
+ * <li>Search API</li>
+ * <li>Business API</li>
+ * <li>Reviews API</li>
+ * </ul>
+ */
 public class YelpClient {
     private final CloseableHttpClient client;
     private CloseableHttpResponse response;

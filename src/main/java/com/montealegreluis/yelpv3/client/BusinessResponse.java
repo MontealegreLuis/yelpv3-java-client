@@ -5,6 +5,11 @@ package com.montealegreluis.yelpv3.client;
 
 import com.montealegreluis.yelpv3.businesses.BusinessDetails;
 
+/**
+ * Response sent by Yelp's Business API
+ *
+ * @link https://www.yelp.com/developers/documentation/v3/business
+ */
 public class BusinessResponse extends Response {
     public static BusinessResponse fromOriginalResponse(String jsonResponse) {
         return new BusinessResponse(jsonResponse);
