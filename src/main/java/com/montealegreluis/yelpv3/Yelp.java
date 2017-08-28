@@ -3,6 +3,7 @@
  */
 package com.montealegreluis.yelpv3;
 
+import com.montealegreluis.yelpv3.apacheclient.ApacheHttpClient;
 import com.montealegreluis.yelpv3.client.*;
 import com.montealegreluis.yelpv3.jsonparser.JSONParser;
 import com.montealegreluis.yelpv3.parser.Parser;
@@ -19,7 +20,7 @@ public class Yelp {
     public Yelp(Credentials credentials) {
         this(
             credentials,
-            new YelpClient(HttpClientBuilder.create().build(), new YelpURIs()),
+            new ApacheHttpClient(HttpClientBuilder.create().build(), new YelpURIs()),
             new JSONParser()
         );
     }
@@ -35,30 +36,18 @@ public class Yelp {
     }
 
     public SearchResponse search(SearchCriteria criteria) {
-        try {
-            yelpClient.allBusinessesMatching(criteria, token().accessToken());
-            return SearchResponse.fromOriginalResponse(yelpClient.responseBody());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        yelpClient.allBusinessesMatching(criteria, token().accessToken());
+        return SearchResponse.fromOriginalResponse(yelpClient.responseBody());
     }
 
     public BusinessResponse searchById(String id) {
-        try {
-            yelpClient.businessWith(id, token().accessToken());
-            return BusinessResponse.fromOriginalResponse(yelpClient.responseBody());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        yelpClient.businessWith(id, token().accessToken());
+        return BusinessResponse.fromOriginalResponse(yelpClient.responseBody());
     }
 
     public ReviewsResponse reviews(String id) {
-        try{
-            yelpClient.allReviewsFor(id, token().accessToken());
-            return ReviewsResponse.fromOriginalResponse(yelpClient.responseBody());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        yelpClient.allReviewsFor(id, token().accessToken());
+        return ReviewsResponse.fromOriginalResponse(yelpClient.responseBody());
     }
 
     public AccessToken token() {
@@ -68,11 +57,7 @@ public class Yelp {
     }
 
     private void authenticate() {
-        try {
-            yelpClient.authenticate(credentials.toMap());
-            credentials.updateToken(parser.token(yelpClient.responseBody()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        yelpClient.authenticate(credentials.toMap());
+        credentials.updateToken(parser.token(yelpClient.responseBody()));
     }
 }
