@@ -16,18 +16,16 @@ import static org.junit.Assert.assertThat;
 public class QueryStringTest {
     @Test
     public void it_can_be_represented_as_a_query_string() {
-        SearchCriteria criteria = SearchCriteria
-            .byLocation("San Antonio")
-            .withTerm("restaurants")
-            .withinARadiusOf(Distance.inMiles(2))
-            .inCategories("mexican")
-            .withPricing(MODERATE)
-            .withAttributes(HOT_AND_NEW, DEALS)
-            .openNow()
-            .limit(5)
-            .offset(5)
-            .sortBy(REVIEW_COUNT)
-        ;
+        SearchCriteria criteria = SearchCriteria.byLocation("San Antonio");
+        criteria.withTerm("restaurants");
+        criteria.withinARadiusOf(Distance.inMiles(2));
+        criteria.inCategories("mexican");
+        criteria.withPricing(MODERATE);
+        criteria.withAttributes(HOT_AND_NEW, DEALS);
+        criteria.openNow();
+        criteria.limit(5);
+        criteria.offset(5);
+        criteria.sortBy(REVIEW_COUNT);
         QueryString query = criteria.toQueryString();
 
         String queryString = query.forPage(2).toString();
@@ -40,7 +38,8 @@ public class QueryStringTest {
 
     @Test
     public void it_gets_build_correctly_when_the_current_category_is_replaced() {
-        SearchCriteria criteria = SearchCriteria.byLocation("San Antonio").inCategories("mexican");
+        SearchCriteria criteria = SearchCriteria.byLocation("San Antonio");
+        criteria.inCategories("mexican");
         QueryString query = criteria.toQueryString();
 
         String queryString = query.inCategory("newmexican").forPage(2).toString();

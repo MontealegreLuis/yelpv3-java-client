@@ -14,9 +14,7 @@ import org.junit.rules.ExpectedException;
 
 import java.time.Instant;
 
-import static com.montealegreluis.yelpv3.businesses.PricingLevel.MODERATE;
 import static com.montealegreluis.yelpv3.search.Attribute.*;
-import static com.montealegreluis.yelpv3.search.SortingMode.REVIEW_COUNT;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -46,19 +44,15 @@ public class SearchCriteriaTest {
     public void it_does_not_allow_searches_with_open_at_and_open_now() {
         exception.expect(IncompatibleCriteria.class);
 
-        SearchCriteria
-            .byCoordinates(29.426786, -98.489576)
-            .openNow()
-            .openAt(Instant.now().getEpochSecond())
-        ;
+        SearchCriteria invalidCriteria = SearchCriteria.byCoordinates(29.426786, -98.489576);
+        invalidCriteria.openNow();
+        invalidCriteria.openAt(Instant.now().getEpochSecond());
     }
 
     @Test
     public void it_adds_several_attributes() {
-        SearchCriteria criteria = SearchCriteria
-            .byLocation("San Antonio")
-            .withAttributes(CASHBACK, DEALS, GENDER_NEUTRAL_RESTROOMS)
-        ;
+        SearchCriteria criteria = SearchCriteria.byLocation("San Antonio");
+        criteria.withAttributes(CASHBACK, DEALS, GENDER_NEUTRAL_RESTROOMS);
 
         assertThat(
             criteria.toString(),
@@ -70,11 +64,9 @@ public class SearchCriteriaTest {
     public void it_has_access_to_the_current_limit_and_offset_values() {
         int limit = 5;
         int offset = 15;
-        SearchCriteria criteria = SearchCriteria
-            .byLocation("San Antonio")
-            .limit(limit)
-            .offset(offset)
-        ;
+        SearchCriteria criteria = SearchCriteria.byLocation("San Antonio");
+        criteria.limit(limit);
+        criteria.offset(offset);
 
         assertThat(criteria.limit(), is(limit));
         assertThat(criteria.offset(), is(offset));

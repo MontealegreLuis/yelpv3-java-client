@@ -70,11 +70,9 @@ public class YelpTest {
     @Test
     public void it_includes_a_term_in_the_search() {
         String searchTerm = "bbq";
-        SearchCriteria usingTerm = SearchCriteria
-            .byLocation("San Antonio")
-            .limit(2)
-            .withTerm(searchTerm)
-        ;
+        SearchCriteria usingTerm = SearchCriteria.byLocation("San Antonio");
+        usingTerm.limit(2);
+        usingTerm.withTerm(searchTerm);
 
         SearchResult result = yelp.search(usingTerm).searchResult();
 
@@ -86,11 +84,9 @@ public class YelpTest {
     @Test
     public void it_searches_within_a_specific_radius_in_meters() {
         Distance radius = Distance.inMeters(1000);
-        SearchCriteria withinARadiusInMeters = SearchCriteria
-            .byLocation("San Antonio")
-            .withinARadiusOf(radius)
-            .limit(2)
-        ;
+        SearchCriteria withinARadiusInMeters = SearchCriteria.byLocation("San Antonio");
+        withinARadiusInMeters.withinARadiusOf(radius);
+        withinARadiusInMeters.limit(2);
 
         // Search by radius is not strict, it might return a business a little further than expected
         Distance area = Distance.inMeters(1200);
@@ -105,11 +101,9 @@ public class YelpTest {
     @Test
     public void it_searches_within_a_specific_radius_in_miles() {
         Distance radius = Distance.inMiles(1);
-        SearchCriteria withinARadiusOfMiles = SearchCriteria
-            .byLocation("San Antonio")
-            .withinARadiusOf(radius)
-            .limit(2)
-        ;
+        SearchCriteria withinARadiusOfMiles = SearchCriteria.byLocation("San Antonio");
+        withinARadiusOfMiles.withinARadiusOf(radius);
+        withinARadiusOfMiles.limit(2);
 
         // Search by radius is not strict, it might return a business a little further than expected
         Distance area = Distance.inMiles(1.1);
@@ -131,11 +125,9 @@ public class YelpTest {
 
     @Test
     public void it_searches_only_open_businesses() {
-        SearchCriteria onlyOpenBusinesses = SearchCriteria
-            .byLocation("San Antonio")
-            .openNow()
-            .limit(1)
-        ;
+        SearchCriteria onlyOpenBusinesses = SearchCriteria.byLocation("San Antonio");
+        onlyOpenBusinesses.openNow();
+        onlyOpenBusinesses.limit(1);
 
         SearchResult result = yelp.search(onlyOpenBusinesses).searchResult();
 
@@ -149,11 +141,9 @@ public class YelpTest {
     @Test
     public void it_searches_by_category() {
         String category = "mexican";
-        SearchCriteria byCategory = SearchCriteria
-            .byCoordinates(29.426786, -98.489576)
-            .inCategories(category)
-            .limit(2)
-        ;
+        SearchCriteria byCategory = SearchCriteria.byCoordinates(29.426786, -98.489576);
+        byCategory.inCategories(category);
+        byCategory.limit(2);
 
         SearchResult restaurants = yelp.search(byCategory).searchResult();
 
@@ -164,11 +154,9 @@ public class YelpTest {
 
     @Test
     public void it_searches_with_a_specific_price_level() {
-        SearchCriteria byPricingLevel = SearchCriteria
-            .byLocation("San Antonio")
-            .withPricing(PricingLevel.MODERATE)
-            .limit(2)
-        ;
+        SearchCriteria byPricingLevel = SearchCriteria.byLocation("San Antonio");
+        byPricingLevel.withPricing(PricingLevel.MODERATE);
+        byPricingLevel.limit(2);
 
         SearchResult result = yelp.search(byPricingLevel).searchResult();
 
@@ -179,11 +167,9 @@ public class YelpTest {
 
     @Test
     public void it_searches_with_specific_attributes() {
-        SearchCriteria withMatchingAttributes = SearchCriteria
-            .byLocation("San Antonio")
-            .withAttributes(HOT_AND_NEW, DEALS)
-            .limit(1)
-        ;
+        SearchCriteria withMatchingAttributes = SearchCriteria.byLocation("San Antonio");
+        withMatchingAttributes.withAttributes(HOT_AND_NEW, DEALS);
+        withMatchingAttributes.limit(1);
 
         SearchResult result = yelp.search(withMatchingAttributes).searchResult();
 
@@ -193,16 +179,13 @@ public class YelpTest {
 
     @Test
     public void it_searches_businesses_opened_at_a_given_time() {
-        SearchCriteria businessesOpenAtThisMoment = SearchCriteria
-            .byLocation("San Antonio")
-            .openAt(Instant.now().getEpochSecond())
-            .limit(1)
-        ;
-        SearchCriteria businessesOpenNow = SearchCriteria
-            .byLocation("San Antonio")
-            .openNow()
-            .limit(1)
-        ;
+        SearchCriteria businessesOpenAtThisMoment = SearchCriteria.byLocation("San Antonio");
+        businessesOpenAtThisMoment.openAt(Instant.now().getEpochSecond());
+        businessesOpenAtThisMoment.limit(1);
+
+        SearchCriteria businessesOpenNow = SearchCriteria.byLocation("San Antonio");
+        businessesOpenNow.openNow();
+        businessesOpenNow.limit(1);
 
         SearchResult openAt = yelp.search(businessesOpenAtThisMoment).searchResult();
 
@@ -228,10 +211,8 @@ public class YelpTest {
 
     @Test
     public void it_limits_the_amount_of_results() {
-        SearchCriteria onlyThreeBusinesses = SearchCriteria
-            .byCoordinates(29.426786, -98.489576)
-            .limit(3)
-        ;
+        SearchCriteria onlyThreeBusinesses = SearchCriteria.byCoordinates(29.426786, -98.489576);
+        onlyThreeBusinesses.limit(3);
 
         SearchResult result = yelp.search(onlyThreeBusinesses).searchResult();
 
@@ -243,19 +224,17 @@ public class YelpTest {
 
     @Test
     public void it_paginates_a_search_result() {
-        SearchCriteria withAnOffsetOf2 = SearchCriteria
-            .byLocation("San Antonio")
-            .limit(2)
-            .offset(2)
-        ;
-        SearchResult all = yelp
-            .search(SearchCriteria.byLocation("San Antonio").limit(4))
-            .searchResult()
-        ;
-        SearchResult firstTwo = yelp
-            .search(SearchCriteria.byLocation("San Antonio").limit(2))
-            .searchResult()
-        ;
+        SearchCriteria withAnOffsetOf2 = SearchCriteria.byLocation("San Antonio");
+        withAnOffsetOf2.limit(2);
+        withAnOffsetOf2.offset(2);
+
+        SearchCriteria allCriteria = SearchCriteria.byLocation("San Antonio");
+        allCriteria.limit(4);
+        SearchResult all = yelp.search(allCriteria).searchResult();
+
+        SearchCriteria first2Criteria = SearchCriteria.byLocation("San Antonio");
+        first2Criteria.limit(2);
+        SearchResult firstTwo = yelp.search(first2Criteria).searchResult();
 
         SearchResult lastTwo = yelp.search(withAnOffsetOf2).searchResult();
 
@@ -267,10 +246,8 @@ public class YelpTest {
 
     @Test
     public void it_sorts_the_search_by_given_mode() {
-        SearchCriteria withMoreReviews = SearchCriteria
-            .byLocation("San Antonio")
-            .sortBy(REVIEW_COUNT)
-        ;
+        SearchCriteria withMoreReviews = SearchCriteria.byLocation("San Antonio");
+        withMoreReviews.sortBy(REVIEW_COUNT);
 
         Businesses sorted = yelp.search(withMoreReviews).searchResult().businesses.sortByReviewCount();
 
@@ -280,11 +257,9 @@ public class YelpTest {
 
     @Test
     public void it_searches_using_a_specific_locale() throws Exception {
-        SearchCriteria usingSpanishLocale = SearchCriteria
-            .byLocation("San Antonio")
-            .withLocale(new Locale("es", "MX"))
-            .limit(1)
-        ;
+        SearchCriteria usingSpanishLocale = SearchCriteria.byLocation("San Antonio");
+        usingSpanishLocale.withLocale(new Locale("es", "MX"));
+        usingSpanishLocale.limit(1);
 
         SearchResult searchResult = yelp.search(usingSpanishLocale).searchResult();
 

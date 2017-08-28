@@ -30,87 +30,75 @@ public class SearchCriteria {
         return new SearchCriteria(latitude, longitude);
     }
 
-    public SearchCriteria limit(Integer limit) {
+    public void limit(Integer limit) {
         if (limit > 50) throw TooManyResults.requested(limit);
 
         parameters.put("limit", limit.toString());
-        return this;
     }
 
-    public SearchCriteria offset(Integer offset) {
+    public void offset(Integer offset) {
         parameters.put("offset", offset.toString());
-        return this;
     }
 
-    public SearchCriteria sortBy(SortingMode mode) {
+    public void sortBy(SortingMode mode) {
         parameters.put("sort_by", mode.toString());
-        return this;
     }
 
-    public SearchCriteria withTerm(String term) {
+    public void withTerm(String term) {
         parameters.put("term", term);
-        return this;
     }
 
-    public SearchCriteria withinARadiusOf(Distance distance) {
+    public void withinARadiusOf(Distance distance) {
         if (distance.biggerThan(Distance.largest())) throw AreaTooLarge.withADistanceOf(distance);
 
         parameters.put(
             "radius",
             (Integer.valueOf(distance.convertTo(METERS).value.intValue())).toString()
         );
-
-        return this;
     }
 
-    public SearchCriteria openNow() {
+    public void openNow() {
         if (parameters.containsKey("open_at"))
             throw IncompatibleCriteria.mixing("open_at", "open_now");
 
         parameters.put("open_now", Boolean.toString(true));
-        return this;
     }
 
     /**
      * @param categories Comma separated list of categories
      *                   See https://www.yelp.com/developers/documentation/v2/all_category_list
      */
-    public SearchCriteria inCategories(String categories) {
+    public void inCategories(String categories) {
         parameters.put("categories", categories);
-        return this;
     }
 
-    public SearchCriteria withPricing(PricingLevel level) {
+    public void withPricing(PricingLevel level) {
         parameters.put("price", level.value().toString());
-        return this;
     }
 
-    public SearchCriteria withAttributes(Attribute... attributes) {
+    public void withAttributes(Attribute... attributes) {
         StringBuilder filters = new StringBuilder();
         for (Attribute attribute : attributes) filters.append(attribute.value()).append(",");
         parameters.put("attributes", filters.substring(0, filters.length() - 1));
-        return this;
     }
 
-    public SearchCriteria openAt(Long timestamp) {
+    public void openAt(Long timestamp) {
         if (parameters.containsKey("open_now"))
             throw IncompatibleCriteria.mixing("open_now", "open_at");
 
         parameters.put("open_at", timestamp.toString());
-        return this;
-    }
-
-    public void addQueryParametersTo(URIBuilder builder) {
-        parameters.forEach(builder::setParameter);
     }
 
     /**
      * See https://www.yelp.com/developers/documentation/v3/supported_locales for the full list
      * of supported locales
      */
-    public SearchCriteria withLocale(Locale locale) {
+    public void withLocale(Locale locale) {
         parameters.put("locale", locale.toString());
-        return this;
+    }
+
+    public void addQueryParametersTo(URIBuilder builder) {
+        parameters.forEach(builder::setParameter);
     }
 
     public Pagination pagination(int total) {
