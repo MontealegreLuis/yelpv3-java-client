@@ -111,8 +111,14 @@ public class SearchCriteria {
         parameters.put("categories", categories);
     }
 
-    public void withPricing(PricingLevel level) {
-        parameters.put("price", level.value().toString());
+    /**
+     * If several levels are provided, for example, <code>INEXPENSIVE, MODERATE, PRICEY</code> it
+     * will filter the results to show the ones that are $, $$, OR $$$.
+     */
+    public void withPricing(PricingLevel... levels) {
+        StringBuilder prices = new StringBuilder();
+        for (PricingLevel level : levels) prices.append(level.value()).append(",");
+        parameters.put("price", prices.substring(0, prices.length() - 1));
     }
 
     /**

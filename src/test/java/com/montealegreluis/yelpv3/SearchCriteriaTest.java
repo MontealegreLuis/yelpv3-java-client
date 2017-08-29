@@ -14,6 +14,7 @@ import org.junit.rules.ExpectedException;
 
 import java.time.Instant;
 
+import static com.montealegreluis.yelpv3.businesses.PricingLevel.*;
 import static com.montealegreluis.yelpv3.search.Attribute.*;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
@@ -59,6 +60,15 @@ public class SearchCriteriaTest {
             containsString("cashback,deals,gender_neutral_restrooms")
         );
     }
+
+    @Test
+    public void it_adds_several_pricing_levels() {
+        SearchCriteria criteria = SearchCriteria.byLocation("San Antonio");
+        criteria.withPricing(INEXPENSIVE, MODERATE, PRICEY);
+
+        assertThat(criteria.toQueryString().toString(), containsString("price=1%2C2%2C3"));
+    }
+
 
     @Test
     public void it_has_access_to_the_current_limit_and_offset_values() {

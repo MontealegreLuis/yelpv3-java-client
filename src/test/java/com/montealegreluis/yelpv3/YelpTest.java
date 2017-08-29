@@ -7,7 +7,6 @@ import com.detectlanguage.DetectLanguage;
 import com.detectlanguage.Result;
 import com.montealegreluis.yelpv3.businesses.Businesses;
 import com.montealegreluis.yelpv3.businesses.Category;
-import com.montealegreluis.yelpv3.businesses.PricingLevel;
 import com.montealegreluis.yelpv3.businesses.SearchResult;
 import com.montealegreluis.yelpv3.businesses.distance.Distance;
 import com.montealegreluis.yelpv3.client.AccessToken;
@@ -30,6 +29,8 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+import static com.montealegreluis.yelpv3.businesses.PricingLevel.INEXPENSIVE;
+import static com.montealegreluis.yelpv3.businesses.PricingLevel.MODERATE;
 import static com.montealegreluis.yelpv3.businesses.distance.UnitOfLength.METERS;
 import static com.montealegreluis.yelpv3.search.Attribute.DEALS;
 import static com.montealegreluis.yelpv3.search.Attribute.HOT_AND_NEW;
@@ -155,14 +156,35 @@ public class YelpTest {
     @Test
     public void it_searches_with_a_specific_price_level() {
         SearchCriteria byPricingLevel = SearchCriteria.byLocation("San Antonio");
-        byPricingLevel.withPricing(PricingLevel.MODERATE);
+        byPricingLevel.withPricing(MODERATE);
         byPricingLevel.limit(2);
 
         SearchResult result = yelp.search(byPricingLevel).searchResult();
 
         assertThat(result.businesses.size(), is(2));
-        assertThat(result.businesses.get(0).hasPricingLevel(PricingLevel.MODERATE), is(true));
-        assertThat(result.businesses.get(1).hasPricingLevel(PricingLevel.MODERATE), is(true));
+        assertThat(result.businesses.get(0).hasPricingLevel(MODERATE), is(true));
+        assertThat(result.businesses.get(1).hasPricingLevel(MODERATE), is(true));
+    }
+
+    @Test
+    public void it_searches_with_several_price_levels() {
+        SearchCriteria withPricingLevels = SearchCriteria.byLocation("San Antonio");
+        withPricingLevels.withPricing(INEXPENSIVE, MODERATE);
+        withPricingLevels.limit(2);
+
+        SearchResult result = yelp.search(withPricingLevels).searchResult();
+
+        assertThat(result.businesses.size(), is(2));
+        assertThat(
+            result.businesses.get(0).hasPricingLevel(MODERATE)
+            || result.businesses.get(0).hasPricingLevel(INEXPENSIVE),
+            is(true)
+        );
+        assertThat(
+            result.businesses.get(1).hasPricingLevel(MODERATE)
+            || result.businesses.get(1).hasPricingLevel(INEXPENSIVE),
+            is(true)
+        );
     }
 
     @Test
