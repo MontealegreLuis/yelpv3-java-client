@@ -49,11 +49,11 @@ public class Pagination {
     }
 
     public boolean exceedsAPILimit() {
-        return total > Limit.MAX_LIMIT;
+        return total > Offset.MAX_OFFSET;
     }
 
     private int maxCountAllowed() {
-        return (int) Math.ceil((double) Limit.MAX_LIMIT / pageSize);
+        return (int) Math.ceil((double) Offset.MAX_OFFSET / pageSize);
     }
 
     private int pagesCount() {
