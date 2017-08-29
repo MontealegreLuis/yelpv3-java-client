@@ -12,8 +12,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import static com.montealegreluis.yelpv3.businesses.distance.UnitOfLength.METERS;
-
 public class SearchCriteria {
     private final int defaultPageSize = 20;
     private Map<String, String> parameters = new HashMap<>();
@@ -79,15 +77,10 @@ public class SearchCriteria {
      * <p>
      * The max value is 40000 meters (40 kilometers or 25 miles).
      *
-     * @see Distance
+     * @see Radius
      */
-    public void withinARadiusOf(Distance distance) {
-        if (distance.biggerThan(Distance.largest())) throw AreaTooLarge.withADistanceOf(distance);
-
-        parameters.put(
-            "radius",
-            (Integer.valueOf(distance.convertTo(METERS).value.intValue())).toString()
-        );
+    public void withinARadiusOf(Radius radius) {
+        parameters.put("radius", radius.toMeters());
     }
 
     /**

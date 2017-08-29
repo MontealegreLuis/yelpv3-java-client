@@ -3,11 +3,7 @@
  */
 package com.montealegreluis.yelpv3;
 
-import com.montealegreluis.yelpv3.businesses.distance.Distance;
-import com.montealegreluis.yelpv3.search.AreaTooLarge;
-import com.montealegreluis.yelpv3.search.IncompatibleCriteria;
-import com.montealegreluis.yelpv3.search.SearchCriteria;
-import com.montealegreluis.yelpv3.search.TooManyResults;
+import com.montealegreluis.yelpv3.search.*;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -27,7 +23,7 @@ public class SearchCriteriaTest {
 
         SearchCriteria
             .byLocation("San Antonio")
-            .withinARadiusOf(Distance.inMeters(40001))
+            .withinARadiusOf(Radius.inMeters(40001))
         ;
     }
 

@@ -18,7 +18,7 @@ public class QueryStringTest {
     public void it_can_be_represented_as_a_query_string() {
         SearchCriteria criteria = SearchCriteria.byLocation("San Antonio");
         criteria.withTerm("restaurants");
-        criteria.withinARadiusOf(Distance.inMiles(2));
+        criteria.withinARadiusOf(Radius.inMiles(2));
         criteria.inCategories("mexican");
         criteria.withPricing(MODERATE);
         criteria.withAttributes(HOT_AND_NEW, DEALS);

@@ -14,6 +14,7 @@ import com.montealegreluis.yelpv3.client.BusinessResponse;
 import com.montealegreluis.yelpv3.client.Credentials;
 import com.montealegreluis.yelpv3.client.ReviewsResponse;
 import com.montealegreluis.yelpv3.reviews.Review;
+import com.montealegreluis.yelpv3.search.Radius;
 import com.montealegreluis.yelpv3.search.SearchCriteria;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -84,7 +85,7 @@ public class YelpTest {
 
     @Test
     public void it_searches_within_a_specific_radius_in_meters() {
-        Distance radius = Distance.inMeters(1000);
+        Radius radius = Radius.inMeters(1000);
         SearchCriteria withinARadiusInMeters = SearchCriteria.byLocation("San Antonio");
         withinARadiusInMeters.withinARadiusOf(radius);
         withinARadiusInMeters.limit(2);
@@ -101,9 +102,8 @@ public class YelpTest {
 
     @Test
     public void it_searches_within_a_specific_radius_in_miles() {
-        Distance radius = Distance.inMiles(1);
         SearchCriteria withinARadiusOfMiles = SearchCriteria.byLocation("San Antonio");
-        withinARadiusOfMiles.withinARadiusOf(radius);
+        withinARadiusOfMiles.withinARadiusOf(Radius.inMiles(1));
         withinARadiusOfMiles.limit(2);
 
         // Search by radius is not strict, it might return a business a little further than expected

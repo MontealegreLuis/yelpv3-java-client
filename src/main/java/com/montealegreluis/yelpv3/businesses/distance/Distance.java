@@ -3,9 +3,7 @@
  */
 package com.montealegreluis.yelpv3.businesses.distance;
 
-import static com.montealegreluis.yelpv3.businesses.distance.UnitOfLength.KILOMETERS;
-import static com.montealegreluis.yelpv3.businesses.distance.UnitOfLength.METERS;
-import static com.montealegreluis.yelpv3.businesses.distance.UnitOfLength.MILES;
+import static com.montealegreluis.yelpv3.businesses.distance.UnitOfLength.*;
 
 /**
  * Searching using a coordinate will include the distance from that point to where the business is
@@ -15,32 +13,24 @@ import static com.montealegreluis.yelpv3.businesses.distance.UnitOfLength.MILES;
  * or kilometers
  */
 public class Distance {
-
     public final UnitOfLength unit;
     public final Double value;
 
     public static Distance inMeters(double meters) {
-        return new Distance(METERS, meters);
+        return new Distance(meters, METERS);
     }
 
     public static Distance inMiles(double miles) {
-        return new Distance(MILES, miles);
+        return new Distance(miles, MILES);
     }
 
-    public static Distance inKilometers(double miles) {
-        return new Distance(KILOMETERS, miles);
+    public static Distance inKilometers(double kilometers) {
+        return new Distance(kilometers, KILOMETERS);
     }
 
-    private Distance(UnitOfLength unit, double value) {
+    protected Distance(double value, UnitOfLength unit) {
         this.unit = unit;
         this.value = value;
-    }
-
-    /**
-     * When a search is performed within a given value the maximum distance is 40, 000 meters
-     */
-    public static Distance largest() {
-        return new Distance(METERS, 40000);
     }
 
     /**
@@ -63,7 +53,7 @@ public class Distance {
      * A conversion will be common in a UI where Kilometers or Miles will be easier to read
      */
     public Distance convertTo(UnitOfLength unit) {
-        return new Distance(unit, UnitsConverter.convert(value, this.unit, unit));
+        return new Distance(UnitsConverter.convert(value, this.unit, unit), unit);
     }
 
     /**
