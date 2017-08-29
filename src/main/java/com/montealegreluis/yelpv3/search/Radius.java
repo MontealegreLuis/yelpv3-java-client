@@ -6,12 +6,10 @@ package com.montealegreluis.yelpv3.search;
 import com.montealegreluis.yelpv3.businesses.distance.Distance;
 import com.montealegreluis.yelpv3.businesses.distance.UnitOfLength;
 
-import static com.montealegreluis.yelpv3.businesses.distance.UnitOfLength.KILOMETERS;
-import static com.montealegreluis.yelpv3.businesses.distance.UnitOfLength.METERS;
-import static com.montealegreluis.yelpv3.businesses.distance.UnitOfLength.MILES;
+import static com.montealegreluis.yelpv3.businesses.distance.UnitOfLength.*;
 
 public class Radius extends Distance {
-    public static final Distance largest = Distance.inMeters(40000);
+    static final Distance largest = Distance.inMeters(40000);
 
     public static Radius inMeters(double meters) {
         return new Radius(meters, METERS);

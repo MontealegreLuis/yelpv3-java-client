@@ -5,7 +5,6 @@ package com.montealegreluis.yelpv3.search;
 
 import com.montealegreluis.yelpv3.businesses.Coordinates;
 import com.montealegreluis.yelpv3.businesses.PricingLevel;
-import com.montealegreluis.yelpv3.businesses.distance.Distance;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.util.HashMap;
@@ -37,10 +36,8 @@ public class SearchCriteria {
     /**
      * Number of business results to return. Default value is 20. Maximum is 50
      */
-    public void limit(Integer limit) {
-        if (limit > 50) throw TooManyResults.requested(limit);
-
-        parameters.put("limit", limit.toString());
+    public void limit(Limit limit) {
+        parameters.put("limit", limit.value().toString());
     }
 
     /**

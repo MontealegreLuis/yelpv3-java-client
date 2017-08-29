@@ -13,7 +13,7 @@ public class PaginationTest {
     public void it_knows_when_it_has_a_single_page() {
         int resultsCount = 2;
         int pageSize = 5;
-        criteria.limit(pageSize);
+        criteria.limit(Limit.of(pageSize));
 
         Pagination pagination = criteria.pagination(resultsCount);
 
@@ -25,7 +25,7 @@ public class PaginationTest {
         int pageSize = 5;
         int countForTwelvePages = 57;
         int pageTwelve = 12;
-        criteria.limit(pageSize);
+        criteria.limit(Limit.of(pageSize));
 
         Pagination pagination = criteria.pagination(countForTwelvePages);
 
@@ -37,7 +37,7 @@ public class PaginationTest {
         int pageSize = 5;
         int resultsForTwelvePages = 60;
         int pageTwelve = 12;
-        criteria.limit(pageSize);
+        criteria.limit(Limit.of(pageSize));
 
         Pagination pagination = criteria.pagination(resultsForTwelvePages);
 
@@ -48,7 +48,7 @@ public class PaginationTest {
     public void it_knows_when_there_is_no_previous_page() {
         int pageSize = 5;
         int resultsForTwoPages = 10;
-        criteria.limit(pageSize);
+        criteria.limit(Limit.of(pageSize));
 
         Pagination pagination = criteria.pagination(resultsForTwoPages);
 
@@ -62,7 +62,7 @@ public class PaginationTest {
         int offsetPage5 = 20;
         int pageSize = 5;
         int resultsForFivePages = 22;
-        criteria.limit(pageSize);
+        criteria.limit(Limit.of(pageSize));
         criteria.offset(offsetPage5);
 
         Pagination pagination = criteria.pagination(resultsForFivePages);
@@ -75,7 +75,7 @@ public class PaginationTest {
         int pageSize = 5;
         int offsetPage3 = 10;
         int resultsForThreePages = 13;
-        criteria.limit(pageSize);
+        criteria.limit(Limit.of(pageSize));
         criteria.offset(offsetPage3);
 
         Pagination pagination = criteria.pagination(resultsForThreePages);
@@ -90,7 +90,7 @@ public class PaginationTest {
         int offsetPage4 = 15;
         int pageSize = 5;
         int resultsForSixPages = 27;
-        criteria.limit(pageSize);
+        criteria.limit(Limit.of(pageSize));
         criteria.offset(offsetPage4);
 
         Pagination pagination = criteria.pagination(resultsForSixPages);
@@ -103,7 +103,7 @@ public class PaginationTest {
         int page1 = 1;
         int pageSize = 5;
         int resultsForEightPages = 40;
-        criteria.limit(pageSize);
+        criteria.limit(Limit.of(pageSize));
 
         Pagination pagination = criteria.pagination(resultsForEightPages);
 
@@ -130,7 +130,7 @@ public class PaginationTest {
         int pageSize = 5;
         int resultsForThreePages = 15;
         int page21 = 100;
-        criteria.limit(pageSize);
+        criteria.limit(Limit.of(pageSize));
         criteria.offset(page21);
 
         Pagination pagination = criteria.pagination(resultsForThreePages);
@@ -145,7 +145,7 @@ public class PaginationTest {
         int resultsForOneHundredPages = 2000;
         int page55 = 1020;
         int allowedPageCount = 50;
-        criteria.limit(pageSize);
+        criteria.limit(Limit.of(pageSize));
         criteria.offset(page55);
 
         Pagination pagination = criteria.pagination(resultsForOneHundredPages);
@@ -162,7 +162,7 @@ public class PaginationTest {
         int offsetPage7 = 30;
         int resultsForTenPages = 48;
         int pageSeven = 7;
-        criteria.limit(pageSize);
+        criteria.limit(Limit.of(pageSize));
         criteria.offset(offsetPage7);
 
         Pagination pagination = criteria.pagination(resultsForTenPages);

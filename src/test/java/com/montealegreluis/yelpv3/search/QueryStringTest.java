@@ -3,7 +3,6 @@
  */
 package com.montealegreluis.yelpv3.search;
 
-import com.montealegreluis.yelpv3.businesses.distance.Distance;
 import org.junit.Test;
 
 import static com.montealegreluis.yelpv3.businesses.PricingLevel.MODERATE;
@@ -23,7 +22,7 @@ public class QueryStringTest {
         criteria.withPricing(MODERATE);
         criteria.withAttributes(HOT_AND_NEW, DEALS);
         criteria.openNow();
-        criteria.limit(5);
+        criteria.limit(Limit.of(5));
         criteria.offset(5);
         criteria.sortBy(REVIEW_COUNT);
         QueryString query = criteria.toQueryString();

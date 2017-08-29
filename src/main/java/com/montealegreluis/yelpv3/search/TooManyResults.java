@@ -10,7 +10,7 @@ public class TooManyResults extends RuntimeException {
 
     public static TooManyResults requested(Integer limit) {
         return new TooManyResults(String.format(
-            "Maximum amount of results is %d, %d given", 50, limit
+            "Maximum amount of results is %d, %d given", Limit.MAX_LIMIT, limit
         ));
     }
 }
