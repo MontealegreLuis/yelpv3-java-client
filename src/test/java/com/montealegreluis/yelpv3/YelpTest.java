@@ -15,6 +15,7 @@ import com.montealegreluis.yelpv3.client.Credentials;
 import com.montealegreluis.yelpv3.client.ReviewsResponse;
 import com.montealegreluis.yelpv3.reviews.Review;
 import com.montealegreluis.yelpv3.search.Limit;
+import com.montealegreluis.yelpv3.search.Offset;
 import com.montealegreluis.yelpv3.search.Radius;
 import com.montealegreluis.yelpv3.search.SearchCriteria;
 import org.junit.BeforeClass;
@@ -249,7 +250,7 @@ public class YelpTest {
     public void it_paginates_a_search_result() {
         SearchCriteria withAnOffsetOf2 = SearchCriteria.byLocation("San Antonio");
         withAnOffsetOf2.limit(Limit.of(2));
-        withAnOffsetOf2.offset(2);
+        withAnOffsetOf2.offset(Offset.of(2));
 
         SearchCriteria allCriteria = SearchCriteria.byLocation("San Antonio");
         allCriteria.limit(Limit.of(4));

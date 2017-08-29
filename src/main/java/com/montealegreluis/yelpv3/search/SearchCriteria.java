@@ -43,8 +43,8 @@ public class SearchCriteria {
     /**
      * Maximum offset is 1, 000
      */
-    public void offset(Integer offset) {
-        parameters.put("offset", offset.toString());
+    public void offset(Offset offset) {
+        parameters.put("offset", offset.value().toString());
     }
 
     /**

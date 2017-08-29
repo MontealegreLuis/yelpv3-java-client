@@ -4,7 +4,6 @@
 package com.montealegreluis.yelpv3.search;
 
 public class Pagination {
-    private static final int MAX_YELP_OFFSET = 1000;
     private final int pageSize;
     private final int total;
     private final int page;
@@ -50,11 +49,11 @@ public class Pagination {
     }
 
     public boolean exceedsAPILimit() {
-        return total > MAX_YELP_OFFSET;
+        return total > Limit.MAX_LIMIT;
     }
 
     private int maxCountAllowed() {
-        return (int) Math.ceil((double) MAX_YELP_OFFSET / pageSize);
+        return (int) Math.ceil((double) Limit.MAX_LIMIT / pageSize);
     }
 
     private int pagesCount() {

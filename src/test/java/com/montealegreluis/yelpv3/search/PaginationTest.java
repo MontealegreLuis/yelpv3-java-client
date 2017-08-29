@@ -63,7 +63,7 @@ public class PaginationTest {
         int pageSize = 5;
         int resultsForFivePages = 22;
         criteria.limit(Limit.of(pageSize));
-        criteria.offset(offsetPage5);
+        criteria.offset(Offset.of(offsetPage5));
 
         Pagination pagination = criteria.pagination(resultsForFivePages);
 
@@ -76,7 +76,7 @@ public class PaginationTest {
         int offsetPage3 = 10;
         int resultsForThreePages = 13;
         criteria.limit(Limit.of(pageSize));
-        criteria.offset(offsetPage3);
+        criteria.offset(Offset.of(offsetPage3));
 
         Pagination pagination = criteria.pagination(resultsForThreePages);
 
@@ -91,7 +91,7 @@ public class PaginationTest {
         int pageSize = 5;
         int resultsForSixPages = 27;
         criteria.limit(Limit.of(pageSize));
-        criteria.offset(offsetPage4);
+        criteria.offset(Offset.of(offsetPage4));
 
         Pagination pagination = criteria.pagination(resultsForSixPages);
 
@@ -116,7 +116,7 @@ public class PaginationTest {
         int negativeOffset = -3;
         int page2 = 2;
         int resultsForTwoPages = 30;
-        criteria.offset(negativeOffset);
+        criteria.offset(Offset.of(negativeOffset));
 
         Pagination pagination = criteria.pagination(resultsForTwoPages);
 
@@ -131,29 +131,12 @@ public class PaginationTest {
         int resultsForThreePages = 15;
         int page21 = 100;
         criteria.limit(Limit.of(pageSize));
-        criteria.offset(page21);
+        criteria.offset(Offset.of(page21));
 
         Pagination pagination = criteria.pagination(resultsForThreePages);
 
         assertThat(pagination.hasNext(), is(false));
         assertThat(pagination.isLast(), is(true));
-    }
-
-    @Test
-    public void it_defaults_to_the_maximum_offset_allowed_by_yelp() {
-        int pageSize = 20;
-        int resultsForOneHundredPages = 2000;
-        int page55 = 1020;
-        int allowedPageCount = 50;
-        criteria.limit(Limit.of(pageSize));
-        criteria.offset(page55);
-
-        Pagination pagination = criteria.pagination(resultsForOneHundredPages);
-
-        assertThat(pagination.hasNext(), is(false));
-        assertThat(pagination.exceedsAPILimit(), is(true));
-        assertThat(pagination.isLast(), is(true));
-        assertThat(pagination.last(), is(allowedPageCount));
     }
 
     @Test
@@ -163,7 +146,7 @@ public class PaginationTest {
         int resultsForTenPages = 48;
         int pageSeven = 7;
         criteria.limit(Limit.of(pageSize));
-        criteria.offset(offsetPage7);
+        criteria.offset(Offset.of(offsetPage7));
 
         Pagination pagination = criteria.pagination(resultsForTenPages);
 

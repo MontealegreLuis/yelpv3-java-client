@@ -23,7 +23,7 @@ public class QueryStringTest {
         criteria.withAttributes(HOT_AND_NEW, DEALS);
         criteria.openNow();
         criteria.limit(Limit.of(5));
-        criteria.offset(5);
+        criteria.offset(Offset.of(5));
         criteria.sortBy(REVIEW_COUNT);
         QueryString query = criteria.toQueryString();
 

@@ -5,6 +5,7 @@ package com.montealegreluis.yelpv3;
 
 import com.montealegreluis.yelpv3.search.IncompatibleCriteria;
 import com.montealegreluis.yelpv3.search.Limit;
+import com.montealegreluis.yelpv3.search.Offset;
 import com.montealegreluis.yelpv3.search.SearchCriteria;
 import org.junit.Rule;
 import org.junit.Test;
@@ -47,14 +48,13 @@ public class SearchCriteriaTest {
         assertThat(criteria.toQueryString().toString(), containsString("price=1%2C2%2C3"));
     }
 
-
     @Test
     public void it_has_access_to_the_current_limit_and_offset_values() {
         int limit = 5;
         int offset = 15;
         SearchCriteria criteria = SearchCriteria.byLocation("San Antonio");
         criteria.limit(Limit.of(limit));
-        criteria.offset(offset);
+        criteria.offset(Offset.of(offset));
 
         assertThat(criteria.limit(), is(limit));
         assertThat(criteria.offset(), is(offset));
