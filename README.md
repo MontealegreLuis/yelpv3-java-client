@@ -12,7 +12,7 @@ It currently supports
 * [Reviews](https://www.yelp.com/developers/documentation/v3/business_reviews)
 
 
-** NOTE. ** This is a work in progress, expect breaking changes. Take a look at the `Releases` tab
+**NOTE.** This is a work in progress, expect breaking changes. Take a look at the `releases` tab
 for a stable version. This branch will be tagged as `v2`, as soon as I can.
 
 # Installation
@@ -100,18 +100,16 @@ public class Demo {
     public static void main(String[] args) {
         Yelp yelp = new Yelp("YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET");
 
-        SearchCriteria criteria = SearchCriteria
-            .byLocation("San Antonio")
-            .withTerm("restaurants")
-            .withinARadiusOf(Distance.inMiles(2))
-            .inCategories("mexican")
-            .withPricing(PricingLevel.MODERATE)
-            .withAttributes(Attribute.HOT_AND_NEW, Attribute.DEALS)
-            .openNow()
-            .limit(10)
-            .offset(5)
-            .sortBy(SortingMode.REVIEW_COUNT)
-        ;
+        SearchCriteria criteria = SearchCriteria.byLocation("San Antonio");
+        criteria.withTerm("restaurants");
+        criteria.withinARadiusOf(Distance.inMiles(2));
+        criteria.inCategories("mexican");
+        criteria.withPricing(PricingLevel.MODERATE);
+        criteria.withAttributes(Attribute.HOT_AND_NEW, Attribute.DEALS);
+        criteria.openNow();
+        criteria.limit(10);
+        criteria.offset(5);
+        criteria.sortBy(SortingMode.REVIEW_COUNT);
 
         yelp.search(criteria);
     }
