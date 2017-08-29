@@ -3,6 +3,7 @@
  */
 package com.montealegreluis.yelpv3.businesses.distance;
 
+import static com.montealegreluis.yelpv3.businesses.distance.UnitOfLength.KILOMETERS;
 import static com.montealegreluis.yelpv3.businesses.distance.UnitOfLength.METERS;
 import static com.montealegreluis.yelpv3.businesses.distance.UnitOfLength.MILES;
 
@@ -24,6 +25,10 @@ public class Distance {
 
     public static Distance inMiles(double miles) {
         return new Distance(MILES, miles);
+    }
+
+    public static Distance inKilometers(double miles) {
+        return new Distance(KILOMETERS, miles);
     }
 
     private Distance(UnitOfLength unit, double value) {

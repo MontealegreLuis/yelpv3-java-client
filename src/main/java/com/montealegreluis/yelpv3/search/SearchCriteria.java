@@ -75,9 +75,9 @@ public class SearchCriteria {
     }
 
     /**
-     * Search radius in meters or miles.
+     * Search radius in meters, kilometers or miles.
      * <p>
-     * The max value is 40000 meters (25 miles).
+     * The max value is 40000 meters (40 kilometers or 25 miles).
      *
      * @see Distance
      */

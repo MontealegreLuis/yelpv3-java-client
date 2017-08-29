@@ -34,6 +34,17 @@ public class DistanceTest {
     }
 
     @Test
+    public void it_creates_a_distance_measured_in_kilometers() {
+        final double kilometers = 5.0;
+        final Distance distance = Distance.inKilometers(kilometers);
+
+        assertThat(distance.unit, is(KILOMETERS));
+        assertThat(distance.convertTo(METERS).value, closeTo(5000.0, .01));
+        assertThat(distance.convertTo(MILES).value, closeTo(3.106855, .01));
+        assertThat(distance.convertTo(KILOMETERS).value, is(kilometers));
+    }
+
+    @Test
     public void it_knows_when_its_bigger_than_another_distance() {
         Distance oneMile = Distance.inMiles(1);
         Distance oneKilometer = Distance.inMeters(1000);
