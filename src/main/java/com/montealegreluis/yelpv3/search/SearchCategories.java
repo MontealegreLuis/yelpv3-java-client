@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * Method calls can be chained. The following code will return all the parent categories available
  * in the US:
  *<p>
- * <code>SearchCategories.main().availableAt(new Locale("US", "EN"))</code>
+ * <code>SearchCategories.parentCategories().availableAt(new Locale("US", "EN"))</code>
  */
 public class SearchCategories extends ArrayList<SearchCategory> {
     public SearchCategories(List<SearchCategory> categories) {
@@ -30,7 +30,7 @@ public class SearchCategories extends ArrayList<SearchCategory> {
         super();
     }
 
-    public SearchCategories main() {
+    public SearchCategories parentCategories() {
         return new SearchCategories(stream()
             .filter(SearchCategory::isParent)
             .collect(Collectors.toList())

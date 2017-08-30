@@ -15,7 +15,7 @@ public class SearchCategoryParserTest {
     @Test
     public void it_loads_all_parent_categories_available_in_the_us() {
         SearchCategories searchCategories = SearchCategoryParser.all()
-            .main()
+            .parentCategories()
             .availableAt(new Locale("en", "US"))
         ;
 
