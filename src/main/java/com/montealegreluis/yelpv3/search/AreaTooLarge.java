@@ -5,6 +5,11 @@ package com.montealegreluis.yelpv3.search;
 
 import com.montealegreluis.yelpv3.businesses.distance.UnitOfLength;
 
+/**
+ * Exception thrown when searching businesses within a radius
+ * <p>
+ * The maximum value for searching withing a radius is 40000 meters/40 kilometers/25 miles
+ */
 public class AreaTooLarge extends RuntimeException {
     private AreaTooLarge(String format) {
         super(format);

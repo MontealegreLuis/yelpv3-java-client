@@ -3,6 +3,9 @@
  */
 package com.montealegreluis.yelpv3.search;
 
+/**
+ * Exception thrown when an offset exceeds the maximum allowed value in Yelp, which is 1, 000
+ */
 public class InvalidOffset extends RuntimeException {
     public static InvalidOffset of(int value) {
         return new InvalidOffset(String.format(

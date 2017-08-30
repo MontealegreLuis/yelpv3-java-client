@@ -3,6 +3,13 @@
  */
 package com.montealegreluis.yelpv3.search;
 
+/**
+ * Exception thrown when the combination of two parameters in a search will produce an error
+ * response with Yelp
+ * <p>
+ * For instance, it is not possible to combine <code>open_now</code> and <code>open_at</code>
+ * in a search
+ */
 public class IncompatibleCriteria extends RuntimeException {
     private IncompatibleCriteria(String format) {
         super(format);

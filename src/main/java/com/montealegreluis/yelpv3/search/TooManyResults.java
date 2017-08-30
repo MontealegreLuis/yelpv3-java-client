@@ -3,6 +3,11 @@
  */
 package com.montealegreluis.yelpv3.search;
 
+/**
+ * This exception is thrown when a search is requesting more results than the allowed in Yelp.
+ * <p>
+ * The maximum allowed is 50 results
+ */
 public class TooManyResults extends RuntimeException {
     private TooManyResults(String format) {
         super(format);
