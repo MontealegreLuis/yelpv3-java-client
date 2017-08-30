@@ -41,17 +41,21 @@ public class SearchCategoryParser {
     }
 
     private static SearchCategory parseSearchCategory(JSONObject category) {
-        List<String> countries = null;
+        List<String> whitelist = null;
+        List<String> blacklist = null;
         List<String> parents = extract(category.getJSONArray("parents"));
 
         if (!category.isNull("country_whitelist"))
-            countries = extract(category.getJSONArray("country_whitelist"));
+            whitelist = extract(category.getJSONArray("country_whitelist"));
+        if (!category.isNull("country_blacklist"))
+            blacklist = extract(category.getJSONArray("country_blacklist"));
 
         return new SearchCategory(
             category.getString("alias"),
             category.getString("title"),
             parents,
-            countries
+            whitelist,
+            blacklist
         );
     }
 
