@@ -21,4 +21,12 @@ public class SearchCategory extends Category {
         this.parents = parents;
         this.countries = countries;
     }
+
+    public boolean isParent() {
+        return parents.isEmpty();
+    }
+
+    public boolean isAvailableAt(String country) {
+        return this.countries == null || this.countries.indexOf(country) > 0;
+    }
 }
