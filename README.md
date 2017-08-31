@@ -24,6 +24,7 @@ It currently supports the following endpoints
     1. [Using an existing token](#using-an-existing-token)
     1. [Working with Yelp's categories](#working-with-yelps-categories)
 1. [Tests](#tests)
+1. [LICENSE](#license)
 
 ## Installation
 
@@ -323,3 +324,7 @@ Run the tests suite using Maven
 ```
 $ mvn test
 ```
+
+## License
+
+Released under the [MIT License](LICENSE)
