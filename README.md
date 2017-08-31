@@ -23,6 +23,7 @@ It currently supports the following endpoints
     1. [Business reviews](#business-reviews)
     1. [Using an existing token](#using-an-existing-token)
     1. [Working with Yelp's categories](#working-with-yelps-categories)
+1. [Tests](#tests)
 
 ## Installation
 
@@ -301,4 +302,24 @@ public class Demo {
         ;
     }
 }
+```
+
+## Tests
+
+To run the test suite, you'll need to create an `application.properties` file. You will need both, 
+your Yelp API client and secret. This library has some integration tests to verify that when a
+specific locale is requested, messages are translated to the correct language. You'll need a key
+from the [Language detection API](https://detectlanguage.com/users/sign_up) in order to run those
+tests.
+
+Create a copy from `example.properties` and use your keys as values
+
+```
+$ cp src/main/resources/example.properties src/main/resources/application.properties
+```
+
+Run the tests suite using Maven
+
+```
+$ mvn test
 ```
