@@ -59,7 +59,7 @@ class BusinessParser {
                 information.getString("name"),
                 new URL(information.getString("url")),
                 CoordinatesParser.from(information.getJSONObject("coordinates")),
-                new URL(information.getString("image_url")),
+                !information.getString("image_url").trim().isEmpty() ? new URL(information.getString("image_url")) : null,
                 LocationParser.from(information.getJSONObject("location")),
                 !information.isNull("distance") ? Distance.inMeters(information.getDouble("distance")) : null,
                 buildTransactions(information.getJSONArray("transactions"))
