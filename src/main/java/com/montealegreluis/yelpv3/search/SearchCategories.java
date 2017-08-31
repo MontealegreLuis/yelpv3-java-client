@@ -14,12 +14,15 @@ import java.util.stream.Collectors;
  * <p>
  * This class reads that file and provides an interface to the categories information
  * <p>
- * You can find all the parents categories and all the categories available for a country
+ * Method calls can be chained.
  * <p>
- * Method calls can be chained. The following code will return all the parent categories available
- * in the US:
- *<p>
- * <code>SearchCategories.parentCategories().availableAt(new Locale("US", "EN"))</code>
+ * The following will return all the parent categories available in the US:
+ * <p>
+ * <code>SearchCategories.parentCategories().availableAt(Locale.US)</code>
+ * <p>
+ * The following will return all the children categories of "restaurants" available in Mexico
+ * <p>
+ * <code>SearchCategories.childrenOf("restaurants").availableAt(new Locale("es", "MX"))</code>
  */
 public class SearchCategories extends ArrayList<SearchCategory> {
     public SearchCategories(List<SearchCategory> categories) {
@@ -40,6 +43,13 @@ public class SearchCategories extends ArrayList<SearchCategory> {
     public SearchCategories availableAt(Locale locale) {
         return new SearchCategories(stream()
             .filter(category -> category.isAvailableAt(locale.getCountry()))
+            .collect(Collectors.toList())
+        );
+    }
+
+    public SearchCategories childrenOf(String category) {
+        return new SearchCategories(stream()
+            .filter(searchCategory -> searchCategory.isChildOf(category))
             .collect(Collectors.toList())
         );
     }

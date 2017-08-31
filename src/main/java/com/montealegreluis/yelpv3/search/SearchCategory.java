@@ -30,15 +30,31 @@ public class SearchCategory extends Category {
     }
 
     public boolean isAvailableAt(String country) {
-        if (isBlacklistedAt(country)) return false;
-        return isWhitelistedAt(country);
+        return !isBlacklistedAt(country) && (hasNoWhitelist() || isWhitelistedAt(country));
+    }
+
+    private boolean hasNoWhitelist() {
+        return whitelist == null;
     }
 
     private boolean isWhitelistedAt(String country) {
-        return whitelist == null || whitelist.indexOf(country) > 0;
+        return whitelist.indexOf(country) > 0;
     }
 
     private boolean isBlacklistedAt(String country) {
         return blacklist != null && blacklist.indexOf(country) > 0;
+    }
+
+    public boolean isChildOf(String categoryAlias) {
+        return parents.indexOf(categoryAlias) >= 0;
+    }
+
+    @Override
+    public boolean equals(Object another) {
+        if (another == null) return false;
+        if (!(another instanceof SearchCategory)) return false;
+
+        SearchCategory anotherCategory = (SearchCategory) another;
+        return alias.equals(anotherCategory.alias) && title.equals(anotherCategory.title);
     }
 }
