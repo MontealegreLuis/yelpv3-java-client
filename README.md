@@ -5,17 +5,26 @@
 
 This is a Java Client for [YELP Fusion](https://www.yelp.com/developers/documentation/v3)
 
-It currently supports
+It currently supports the following endpoints
 
 * [Search](https://www.yelp.com/developers/documentation/v3/business_search)
 * [Business](https://www.yelp.com/developers/documentation/v3/business)
 * [Reviews](https://www.yelp.com/developers/documentation/v3/business_reviews)
 
+1. [Installation](#installation)
+1. [Usage](#usage)
+    1. [Authentication](#authentication)
+    1. [Searching businesses](#searching-businesses)
+        1. [Search by location and coordinates](#search-by-location-and-coordinates)
+        1. [Searching options](#searching-options)
+        1. [Using this library as a proxy](#using-this-library-as-a-proxy)
+        1. [De-serializing the response](#de-serializing-the-response)
+    1. [Searching by ID](#searching-by-id)
+    1. [Business reviews](#business-reviews)
+    1. [Using an existing token](#using-an-existing-token)
+    1. [Working with Yelp's categories](#working-with-yelps-categories)
 
-**NOTE.** This is a work in progress, expect breaking changes. Take a look at the `releases` tab
-for a stable version. This branch will be tagged as `v2`, as soon as I can.
-
-# Installation
+## Installation
 
 Install this library via Maven and [Jitpack](https://jitpack.io/). Add
 the following repository to your POM file.
