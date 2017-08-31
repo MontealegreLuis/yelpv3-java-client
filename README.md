@@ -266,3 +266,30 @@ public class Demo {
     }
 }
 ```
+
+### Working with Yelp's categories
+
+Currently, there's no endpoint to retrieve all the available categories in Yelp. However they offer
+[this file](https://www.yelp.com/developers/documentation/v2/all_category_list/categories.json)
+to download them in JSON format.
+
+You can use the classes `SearchCategoriesParser` and `SearchCategories` to load and filter 
+categories using a local copy of this file.
+
+```java
+public class Demo {
+    public static void main(String[] args){
+        SearchCategories categories = SearchCategoriesParser.all();
+        
+        SearchCategories parentCategoriesAvailableInTheUS = categories
+            .parentCategories()
+            .availableAt(Locale.US)
+        ;
+
+        SearchCategories childrenOfRestaurantsAvailableInMX = categories
+            .childrenOf("restaurants")
+            .availableAt(new Locale("es", "MX"))
+        ;
+    }
+}
+```
