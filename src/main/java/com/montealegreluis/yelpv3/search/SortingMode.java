@@ -4,10 +4,16 @@
 package com.montealegreluis.yelpv3.search;
 
 public enum SortingMode {
-    BEST_MATCH, // Default sorting mode
-    RATING,
-    REVIEW_COUNT,
-    DISTANCE;
+    BEST_MATCH("Best match"), // Default sorting mode
+    RATING("Highest rated"),
+    REVIEW_COUNT("Most Reviewed"),
+    DISTANCE("Closest");
+
+    public final String label;
+
+    SortingMode(String label) {
+        this.label = label;
+    }
 
     @Override
     public String toString() {

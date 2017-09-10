@@ -36,7 +36,6 @@ import static com.montealegreluis.yelpv3.businesses.PricingLevel.INEXPENSIVE;
 import static com.montealegreluis.yelpv3.businesses.PricingLevel.MODERATE;
 import static com.montealegreluis.yelpv3.businesses.distance.UnitOfLength.METERS;
 import static com.montealegreluis.yelpv3.search.Attribute.DEALS;
-import static com.montealegreluis.yelpv3.search.Attribute.HOT_AND_NEW;
 import static com.montealegreluis.yelpv3.search.SortingMode.REVIEW_COUNT;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
@@ -192,7 +191,7 @@ public class YelpTest {
     @Test
     public void it_searches_with_specific_attributes() {
         SearchCriteria withMatchingAttributes = SearchCriteria.byLocation("San Antonio");
-        withMatchingAttributes.withAttributes(HOT_AND_NEW, DEALS);
+        withMatchingAttributes.withAttributes(DEALS);
         withMatchingAttributes.limit(Limit.of(1));
 
         SearchResult result = yelp.search(withMatchingAttributes).searchResult();
