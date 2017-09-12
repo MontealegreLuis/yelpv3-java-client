@@ -114,9 +114,9 @@ class CoordinatesParser {
 class LocationParser {
     static Location from(JSONObject location) {
         return new Location(
-            location.getString("address1"),
-            !location.isNull("address2") ? location.getString("address2") : "",
-            !location.isNull("address3") ? location.getString("address3") : "",
+            !location.isNull("address1") ? location.getString("address1") : null,
+            !location.isNull("address2") ? location.getString("address2") : null,
+            !location.isNull("address3") ? location.getString("address3") : null,
             location.getString("city"),
             location.getString("state"),
             location.getString("country"),
