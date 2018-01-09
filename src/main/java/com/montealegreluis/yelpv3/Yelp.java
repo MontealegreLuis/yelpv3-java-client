@@ -10,8 +10,6 @@ import com.montealegreluis.yelpv3.parser.Parser;
 import com.montealegreluis.yelpv3.search.SearchCriteria;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-import java.io.IOException;
-
 public class Yelp {
     private final Credentials credentials;
     private final YelpClient yelpClient;

@@ -34,23 +34,23 @@ public class SearchCategories extends ArrayList<SearchCategory> {
     }
 
     public SearchCategories parentCategories() {
-        return new SearchCategories(stream()
+        return stream()
             .filter(SearchCategory::isParent)
-            .collect(Collectors.toList())
-        );
+            .collect(Collectors.toCollection(SearchCategories::new))
+        ;
     }
 
     public SearchCategories availableAt(Locale locale) {
-        return new SearchCategories(stream()
+        return stream()
             .filter(category -> category.isAvailableAt(locale.getCountry()))
-            .collect(Collectors.toList())
-        );
+            .collect(Collectors.toCollection(SearchCategories::new))
+        ;
     }
 
     public SearchCategories childrenOf(String category) {
-        return new SearchCategories(stream()
+        return stream()
             .filter(searchCategory -> searchCategory.isChildOf(category))
-            .collect(Collectors.toList())
-        );
+            .collect(Collectors.toCollection(SearchCategories::new))
+        ;
     }
 }
